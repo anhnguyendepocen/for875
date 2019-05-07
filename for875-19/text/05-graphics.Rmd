@@ -107,4 +107,203 @@ ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) +
     geom_line(aes(color=Species))
 ```
 
+## Labels, Axes, Text, etc.
 
+The default settings of `ggplot2` often produce excellent graphics, but once a graphic is chosen for dissemination, the user will likely want to customize things like the title, axes, etc. In this section some tools for customization are presented. Most will be illustrated in the context of a data set on crime rates in the 50 states in the United States. These data were made available by Nathan Yau at http://flowingdata.com/2010/11/23/how-to-make-bubble-charts/. The data include crime rates per 100,000 people for various crimes such as murder and robbery, and also include each state's population. The crime rates are from the year 2005, while the population numbers are from the year 2008, but the difference in population between the years is not great, and the exact population is not particularly important for what we'll do below.
+
+First, read in the data, examine its structure, and produce a simple scatter plot of motor vehicle theft versus burglary.
+```{r, tidy = FALSE}
+u.crime <- "http://blue.for.msu.edu/FOR875/data/crimeRatesByState2005.csv"
+crime <- read.csv(u.crime, header=TRUE)
+str(crime)
+ggplot(data <- crime, aes(x = burglary, y = motor_vehicle_theft)) + 
+    geom_point()
+```
+
+### Labels
+
+By default axis and legend labels are the names of the relevant columns in the data frame. While convenient, we often want to customize these labels. Here we use `labs()` to change the x and y axis labels and other descriptive text.^[Axis and legend labels can also be set in the individual scales, see the subsequent sections.]
+
+```{r, prompt=FALSE, tidy=FALSE}
+ggplot(data = crime, aes(x = burglary, y = motor_vehicle_theft)) + 
+    geom_point() + 
+    labs(x = "Burglaries per 100,000 population", 
+         y = "Motor vehicle theft per 100,000 population",
+         title = "Burglaries vs motor vehicle theft for US states",
+         subtitle = "2005 crime rates and 2008 population",
+         caption = "Data from Nathan Yau http://flowingdata.com"
+         )
+```
+
+## Customizing Axes
+
+`ggplot` also provides default axis extents (i.e., limits) and other axis features. These, and other axis features such as tick marks, labels, and transformations, can be changed using the scale functions. Here the range of the x and y axis is altered to start at zero and go to the maximum of the x and y variables.^[`ggplot2` makes the axes extend slightly beyond the given range, since typically this is what the user wants.] Here too, axis labels are specified within the scale function, which is an alterative to using the `labs()` function.
+
+```{r, prompt=FALSE, tidy=FALSE}
+ggplot(data = crime, aes(x = burglary, y = motor_vehicle_theft)) + 
+    geom_point() + 
+    scale_x_continuous(name="Burglaries per 100,000 population", 
+                       limits=c(0,max(crime$burglary))) +
+    scale_y_continuous(name="Motor vehicle theft per 100,000 population", 
+                       limits = c(0, max(crime$motor_vehicle_theft)))
+```
+
+
+### Text, Point Size, and Color
+
+Next we make point size proportional to population, change the color, and add a state label. Note, in the `ggplot()` call I scaled `population` by 100,000 to help with the interpretability of the legend. Accordingly, I also changed the "population" label on the legend to "Population\\n(100,000)" using the `labs()` function^[The  \\n is the line break and puts "(100,000)" below "Population".]. We use the `geom_label()` function to add the label, which provides an outline around the label text and allows you to control the box characteristics, e.g., I make the boxes slightly transparent using the `alpha` argument.^[You can also add labels via `geom_text()` function or a `label` argument in the `ggplot()` call.] 
+
+```{r, prompt=FALSE, tidy=FALSE}
+ggplot(data = crime, aes(x = burglary, y = motor_vehicle_theft, 
+           size=population/100000)) + 
+    geom_point(color = "blue") + 
+    geom_label(aes(label = state), alpha = 0.5) +
+    scale_x_continuous(name="Burglaries per 100,000 population", 
+                       limits=c(0,max(crime$burglary))) +
+    scale_y_continuous(name="Motor vehicle theft per 100,000 population", 
+                       limits = c(0, max(crime$motor_vehicle_theft))) +
+    labs(size="Population\n(100,000)")
+```
+
+The labels are helpful but just too cluttered. There are some additional arguments that can go into `geom_label()` that allow for label offset; however, this won't help us much here. Instead, we can try the `ggrepel` package by Kamil Slowikowski. This useful package will automatically adjust labels so that they don't overlap. First we need to download and add the package using either RStudio's install package buttons or via `install.packages("ggrepel")`. Next to make all of `ggrepel`'s functions available we can call `library(ggrepel)` function or, if we know which function we want, we can load only that particular function using the `::` operators. I use `::` below to make clear which function is coming from `ggrepel` and which is coming from `ggplot2`.
+
+```{r, prompt=FALSE, tidy=FALSE}
+ggplot(data = crime, aes(x = burglary, y = motor_vehicle_theft, 
+           size=population/100000)) + 
+    geom_point(color = "blue") + 
+    scale_x_continuous(name="Burglaries per 100,000 population", 
+                       limits=c(0,max(crime$burglary))) +
+    scale_y_continuous(name="Motor vehicle theft per 100,000 population", 
+                       limits = c(0, max(crime$motor_vehicle_theft))) +
+    labs(size="Population\n(100,000)") +
+    ggrepel::geom_label_repel(aes(label = state), alpha = 0.5)
+```
+
+This looks a bit better. We'll resist making additional improvements to the figure for now.
+
+## Other Types of Graphics
+
+Scatter and line plots, which have just been presented, are common but certainly not the only graphical displays in common use. Histograms, boxplots, and bar graphs, as well as more "mathematical" displays such as the graph of a function, are commonly used to represent data. Examples of each are presented below. 
+
+### Histograms
+
+Simon Newcomb conducted several experiments to estimate the speed of light by measuring the time it took for light to travel from his laboratory to a mirror at the base of the Washington Monument, and then back to his lab. This is a distance of $7.44373$ km, and by dividing this distance by the measured time, an estimate for the speed of light is obtained. 
+
+The times are of course quite small, and to avoid working with very small numbers, the data are recoded to be the deviation from $24800$ nanoseconds. For example an observation coded as $28$ represents a time of $24828$ nanoseconds, while an observation coded as $-44$ represents a time of $24756$ nanoseconds.  
+
+```{r}
+u.newcomb <- "http://blue.for.msu.edu/FOR875/data/Newcomb.csv"
+Newcomb <- read.csv(u.newcomb, header=TRUE)
+head(Newcomb)
+```
+
+```{r, prompt=FALSE, tidy=FALSE}
+ggplot(Newcomb, aes(x = Time)) + geom_histogram()
+```
+
+The software has an algorithm to calculate bin widths for the histogram. Sometimes the algorithm makes choices that aren't suitable (hence the R message above), and these can be changed by specifying a `binwidth`. In addition, the appearance of the bars also can be changed.
+
+```{r, prompt = FALSE, tidy=FALSE}
+ggplot(Newcomb, aes(x = Time)) + 
+    geom_histogram(binwidth = 5, color = "black", fill = "blue" )
+```
+
+### Boxplots
+
+Next we consider some data from the gap minder data set to construct some box plots. These data are available in the `gapminder` package, which might need to be installed via `install.packages("gapminder")`.
+
+```{r, prompt = FALSE, tidy=FALSE, warning = FALSE}
+library(gapminder)
+ggplot(data = subset(gapminder,  year == 2002), 
+       aes(x = continent, y = gdpPercap)) + 
+    geom_boxplot(color = "black", fill = "lightblue")
+```
+
+Here's the same set of boxplots, but with different colors, different axis labels, and the boxes plotted horizontally rather than vertically.
+```{r, prompt = FALSE, tidy=FALSE}
+ggplot(data = subset(gapminder,  year == 2002), 
+       aes(x = continent, y = gdpPercap)) + 
+    geom_boxplot(color = "red", fill = "lightblue") + 
+    scale_x_discrete(name = "Continent") + 
+    scale_y_continuous(name = "Per Capita GDP") + coord_flip()
+```
+
+### Bar Graphs
+
+As part of a study, elementary school students were asked which was more important to them: good grades, popularity, or athletic ability. Here is a brief look at the data.
+
+```{r}
+u.goals <- "http://blue.for.msu.edu/FOR875/data/StudentGoals.csv"
+StudentGoals <- read.csv(u.goals, header=TRUE)
+head(StudentGoals)
+```
+
+First, a simple bar graph of the most important goal chosen is drawn, followed by a stacked bar graph which also includes the student's gender. We then add a side by side bar graph that includes the student's gender.
+
+```{r, prompt = FALSE, tidy=FALSE}
+ggplot(StudentGoals, aes(x = Goals)) + geom_bar()
+ggplot(StudentGoals, aes(x = Goals, fill = Gender)) + geom_bar()
+ggplot(StudentGoals, aes(x = Goals, fill = Gender)) + 
+    geom_bar(position = "dodge")
+```
+
+In this example R counted the number of students who had each goal and used these counts as the height of the bars. Sometimes the data contain the bar heights as a variable. For example, we create a bar graph of India's per capita GDP with separate bars for each year in the data^[R offers a large color palette, run `colors()` on the console to see a list of color names.]. 
+
+```{r, prompt = FALSE, tidy=FALSE}
+ggplot(subset(gapminder, country == "India"), aes(x = year, y = gdpPercap)) + 
+    geom_bar(stat = "identity", color = "black", fill = "steelblue2") + 
+    ggtitle("India's per-capita GDP")
+```
+
+### Graphs of Functions
+
+One way to create a plot of a mathematical function $f$ is to create a data frame with $x$ values in one column and $f(x)$ values in another column, and then draw a line plot. 
+
+```{r, prompt = FALSE, tidy=FALSE}
+x <- seq(-pi, pi, len = 1000)
+sin.data <- data.frame(x = x, y = sin(x))
+ggplot(data = sin.data, aes(x = x, y = y)) + geom_line() + 
+    scale_y_continuous(name = "sin(x)")
+```
+
+This method works well, but with a better understanding of functions in R we will be able to plot mathematical functions in a simpler and  more natural way. 
+
+## Themes
+
+The theme defines non-data aspects of the plot's characteristics such as background color, axes, and grid lines. Default themes include: `theme_bw()`, `theme_classic()`, `theme_dark()`, `theme_gray()`, `theme_light()`, `theme_linedraw()`, `theme_minimal()`, and `theme_void()`. Changing the theme is as easy as adding it to your initial `ggplot()` call. Here I replace the default implicit `theme_bw()` theme with the classic theme.
+
+```{r, prompt = FALSE, tidy=FALSE}
+ggplot(data = sin.data, aes(x = x, y = y)) + geom_line() + 
+    scale_y_continuous(name = "sin(x)") +
+    theme_classic()
+```
+
+The `ggthemes` add-on package [https://github.com/jrnold/ggthemes] by Jeffrey Arnold provides a large selection of themes beyond the eight themes that come with `ggplot2`.
+
+
+\section{Saving graphics}
+We often want to export our graphics to use in an external document or share with colleagues. There are several ways to save graphics in a variety of file formats. The \verb+ggsave()+ function will allow you to save your most recent \verb+ggplot()+ to a variety of vector (e.g., ``eps'', ``ps'', ``pdf'', ``svg'') or raster (e.g., ``jpeg'', ``tiff'', ``png'', ``bmp'', ``wmf'') formats\footnote{Vector files comprise lines and curves known as paths, whereas raster files are comprised of pixels. Vector images are often preferred for publication quality graphics because they can be edited, scale well, and provide crisper detail.}. The subsequent call to \verb+ggsave()+ saves the \verb+sin.data+ plot to a pdf file called ``sin-plot.pdf''.
+<<prompt = FALSE, tidy=FALSE, eval=FALSE>>=
+ggplot(filename = "sin-plot.pdf", device="pdf")
+@ 
+The \verb+ggplot()+ function takes additional arguments to control scale, measurement units, and raster plot resolution, i.e., dots per inch (dpi). 
+
+## More Resources
+
+In summary, `ggplot2` provides a fairly intuitive^[Like everything else in this book, it takes practice to get used to the syntax.] framework for developing an enormous variety of graphics. In addition to the resources mentioned at the beginning of this chapter, there are numerous online `ggplot2` resources and galleries to get ideas for creating beautiful graphics to convey the stories in your data. See, for example, 
+
++ http://docs.ggplot2.org
++ http://www.r-graph-gallery.com/portfolio/ggplot2-package
++ http://www.ggplot2-exts.org/gallery
++ http://www.cookbook-r.com/Graphs
++ and of course www.google.com
+
+While the built-in `ggplot2` package documentation (accessible via the help tab in RStudio) is helpful, the official online documentation at http://docs.ggplot2.org is particularly useful because it provides example plots and easy navigation between related topics. The large number number of functions and syntax in `ggplot2` can be daunting. RStudio provides some handy cheatsheets to help you along www.rstudio.com/resources/cheatsheets or direct link www.rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf.
+
+`ggplot2` also has an active mailing list at http://groups.google.com/group/ggplot2. The list is an excellent resource for users at all stages of experience. Another useful resource is stackoverflow, http://stackoverflow.com. There is an active `ggplot2` community on stackoverflow, and many common questions have already been asked and answered. When posting questions on any programming mailing list, it is best to provide a minimal reproducible example of your issue. The `reprex` https://github.com/jennybc/reprex package by Jenny Bryan provides a convenient way to do this, and also includes advice on creating a good example. The more information you provide about your issue, the more likely the community is to help you. 
+
+## Practice Exercises
+
+## Homework
+
+**Exercise 6** Learning objectives: practice using `ggplot2` functions; summarize variables using graphics; introduce `ggplot2` facets.
