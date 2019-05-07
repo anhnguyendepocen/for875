@@ -1,0 +1,3 @@
+Rscript -e "knitr::knit('Small.Rmd', 'Small.md')"
+pandoc Small.md -s -o Small.html
+pandoc Small.html -s -o Small.png

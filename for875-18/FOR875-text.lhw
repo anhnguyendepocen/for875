@@ -1,0 +1,31 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {exercise}{\numberline {1}{\ignorespaces Learning objectives: practice setting up a working directory and read in data; explore the workspace within RStudio and associated commands; produce basic descriptive statistics and graphics.\relax }}{38}{exercise.caption.25}
+\contentsline {exercise}{\numberline {2}{\ignorespaces Learning objectives: practice working within RStudio; create a R Markdown document and resulting html document in RStudio; calculate descriptive statistics and produce graphics.\relax }}{38}{exercise.caption.26}
+\addvspace {10\p@ }
+\contentsline {exercise}{\numberline {3}{\ignorespaces Learning objectives: create, subset, and manipulate vector contents and attributes; summarize vector data using R {\tt table} and other functions; generate basic graphics using vector data.\relax }}{66}{exercise.caption.29}
+\contentsline {exercise}{\numberline {4}{\ignorespaces Learning objectives: use functions to describe data frame characteristics; summarize and generate basic graphics for variables held in data frames; apply the subset function with logical operators; illustrate {\tt NA}, {\tt NaN}, {\tt Inf}, and other special values occur; recognize the implications of using floating point arithmetic with logical operators.\relax }}{67}{exercise.caption.30}
+\contentsline {exercise}{\numberline {5}{\ignorespaces Learning objectives: practice with lists, data frames, and associated functions; summarize variables held in lists and data frames; work with R’s linear regression {\tt lm} function output; review logical subsetting of vectors for partitioning and assigning of new values; generate and visualize data from mathematical functions.\relax }}{67}{exercise.caption.31}
+\addvspace {10\p@ }
+\contentsline {exercise}{\numberline {6}{\ignorespaces Learning objectives: practice using {\tt ggplot2} functions; summarize variables using graphics; introduce {\tt ggplot2} facets.\relax }}{101}{exercise.caption.32}
+\addvspace {10\p@ }
+\contentsline {exercise}{\numberline {7}{\ignorespaces Learning objectives: introduce {\tt with}, {\tt tapply}, and {\tt cut} functions; summarize data using the {\tt table} function with logical subsetting; practice using factor data types.\relax }}{141}{exercise.caption.33}
+\contentsline {exercise}{\numberline {8}{\ignorespaces Learning objectives: work with messy data; import data from an external spreadsheet; practice using functions in {\tt tidyr} and {\tt ggplot2}.\relax }}{141}{exercise.caption.34}
+\contentsline {exercise}{\numberline {9}{\ignorespaces Learning objectives: work with several key {\tt dplyr} functions; manipulate data frames (actually tibbles); summarize and visualize data from large data files.\relax }}{141}{exercise.caption.35}
+\addvspace {10\p@ }
+\contentsline {exercise}{\numberline {10}{\ignorespaces Learning objectives: translate statistical notation into coded functions; learn about tools for checking validity of function arguments; practice writing functions that return multiple objects.\relax }}{163}{exercise.caption.36}
+\addvspace {10\p@ }
+\contentsline {exercise}{\numberline {11}{\ignorespaces Learning objectives: practice loading and reprojecting spatial data; analyze spatial data; create leaflet maps to convey analysis results; interpret analysis results.\relax }}{194}{exercise.caption.40}
+\addvspace {10\p@ }
+\contentsline {exercise}{\numberline {12}{\ignorespaces Learning objectives: practice updating {\tt ggplot2} plot aesthetics; modify Shiny HTML output; add an interactive Shiny element.\relax }}{207}{exercise.caption.45}
+\addvspace {10\p@ }
+\contentsline {exercise}{\numberline {13}{\ignorespaces Learning objectives: explore the logistic regression classification method; apply the kNN classification method; create confusion matrices to compare classification methods; plot classified data.\relax }}{233}{exercise.caption.46}
+\addvspace {10\p@ }
+\contentsline {exercise}{\numberline {14}{\ignorespaces Learning objectives: read and write text data; concatenate text with the {\tt paste} function; analyze text with {\tt nchar}; practice with functions; manipulate strings with {\tt substr} and {\tt strtrim}.\relax }}{252}{exercise.caption.54}
+\addvspace {10\p@ }
+\contentsline {exercise}{\numberline {15}{\ignorespaces Learning objectives: practice using {\tt Rcpp} to run a C++ function through R; use {\tt microbenchmark()} to compare function performance.\relax }}{263}{exercise.caption.55}
+\addvspace {10\p@ }
+\contentsline {exercise}{\numberline {16}{\ignorespaces Learning objectives: connect to an external database; perform simple queries using {\tt dplyr}; use data from a database in a Shiny app; learn how to perform changes (update/delete/insert) on a database\relax }}{280}{exercise.caption.57}
+\addvspace {10\p@ }
+\contentsline {exercise}{\numberline {17}{\ignorespaces Learning objectives: download, manipulate, and play sound files using R, produce spectrograms of audio files, use filters, use acoustic indices to analyze western New York soundscape data\relax }}{308}{exercise.caption.64}

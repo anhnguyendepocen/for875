@@ -1,0 +1,4 @@
+mv FOR875-text.Rnw tmp
+rm FOR875-text*
+mv tmp FOR875-text.Rnw
+rm -rf sp/PEF*

@@ -1,0 +1,170 @@
+\contentsline {chapter}{\numberline {1}Data}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Baby crawling data}{1}{section.1.1}
+\contentsline {section}{\numberline {1.2}World Bank Data}{1}{section.1.2}
+\contentsline {section}{\numberline {1.3}Email data}{3}{section.1.3}
+\contentsline {section}{\numberline {1.4}Handwritten digit recognition}{5}{section.1.4}
+\contentsline {section}{\numberline {1.5}Looking forward}{9}{section.1.5}
+\contentsline {section}{\numberline {1.6}How to learn (The most important section in this book!)}{9}{section.1.6}
+\contentsline {chapter}{\numberline {2}Introduction to R and RStudio}{11}{chapter.2}
+\contentsline {section}{\numberline {2.1}Obtaining and installing R}{11}{section.2.1}
+\contentsline {section}{\numberline {2.2}Obtaining and installing RStudio}{12}{section.2.2}
+\contentsline {section}{\numberline {2.3}Using R and RStudio}{12}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}R as a calculator}{14}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}Basic descriptive statistics and graphics in R}{15}{subsection.2.3.2}
+\contentsline {subsection}{\numberline {2.3.3}An initial tour of RStudio}{18}{subsection.2.3.3}
+\contentsline {section}{\numberline {2.4}Getting help}{19}{section.2.4}
+\contentsline {section}{\numberline {2.5}Workspace, working directory, and keeping organized}{19}{section.2.5}
+\contentsline {section}{\numberline {2.6}Quality of R code}{20}{section.2.6}
+\contentsline {subsection}{\numberline {2.6.1}Naming Files}{21}{subsection.2.6.1}
+\contentsline {subsection}{\numberline {2.6.2}Naming Variables}{21}{subsection.2.6.2}
+\contentsline {subsection}{\numberline {2.6.3}Syntax}{21}{subsection.2.6.3}
+\contentsline {chapter}{\numberline {3}Scripts and R Markdown}{23}{chapter.3}
+\contentsline {section}{\numberline {3.1}Scripts in R}{24}{section.3.1}
+\contentsline {section}{\numberline {3.2}R Markdown}{29}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Creating and processing R Markdown documents}{32}{subsection.3.2.1}
+\contentsline {subsubsection}{Text: Lists and Headers}{32}{section*.18}
+\contentsline {subsubsection}{Code Chunks}{34}{section*.22}
+\contentsline {subsection}{\numberline {3.2.2}Output formats other than HTML}{38}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}\LaTeX \ and knitr}{38}{subsection.3.2.3}
+\contentsline {chapter}{\numberline {4}Data Structures}{39}{chapter.4}
+\contentsline {section}{\numberline {4.1}Vectors}{40}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Types, conversion, coercion}{41}{subsection.4.1.1}
+\contentsline {subsubsection}{Coercion}{43}{section*.28}
+\contentsline {subsection}{\numberline {4.1.2}Accessing specific elements of vectors}{44}{subsection.4.1.2}
+\contentsline {section}{\numberline {4.2}Factors}{46}{section.4.2}
+\contentsline {section}{\numberline {4.3}Names of objects in R}{47}{section.4.3}
+\contentsline {section}{\numberline {4.4}Missing Data, Infinity, etc.}{48}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}Infinity and NaN}{49}{subsection.4.4.1}
+\contentsline {section}{\numberline {4.5}Data Frames}{50}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}Accessing specific elements of data frames}{52}{subsection.4.5.1}
+\contentsline {section}{\numberline {4.6}Lists}{54}{section.4.6}
+\contentsline {subsection}{\numberline {4.6.1}Accessing specific elements of lists}{56}{subsection.4.6.1}
+\contentsline {section}{\numberline {4.7}Subsetting with logical vectors}{58}{section.4.7}
+\contentsline {subsection}{\numberline {4.7.1}Modifying or creating objects via subsetting}{60}{subsection.4.7.1}
+\contentsline {subsection}{\numberline {4.7.2}Logical subsetting and data frames}{60}{subsection.4.7.2}
+\contentsline {section}{\numberline {4.8}Patterned data}{65}{section.4.8}
+\contentsline {chapter}{\numberline {5}Graphics in R}{68}{chapter.5}
+\contentsline {section}{\numberline {5.1}Scatter Plots}{69}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Structure of a typical \texttt {ggplot}}{72}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Adding lines to a scatter plot}{74}{subsection.5.1.2}
+\contentsline {section}{\numberline {5.2}Labels, axes, text, etc.}{80}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Labels}{82}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Customizing axes}{83}{subsection.5.2.2}
+\contentsline {subsection}{\numberline {5.2.3}Text, point size, and color}{85}{subsection.5.2.3}
+\contentsline {section}{\numberline {5.3}Other types of graphics}{88}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Histograms}{88}{subsection.5.3.1}
+\contentsline {subsection}{\numberline {5.3.2}Boxplots}{90}{subsection.5.3.2}
+\contentsline {subsection}{\numberline {5.3.3}Bar graphs}{92}{subsection.5.3.3}
+\contentsline {subsection}{\numberline {5.3.4}Graphs of functions}{97}{subsection.5.3.4}
+\contentsline {section}{\numberline {5.4}Themes}{98}{section.5.4}
+\contentsline {section}{\numberline {5.5}Saving graphics}{99}{section.5.5}
+\contentsline {section}{\numberline {5.6}More resources}{100}{section.5.6}
+\contentsline {chapter}{\numberline {6}Working with Data}{102}{chapter.6}
+\contentsline {section}{\numberline {6.1}Reading data into R}{102}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}Reading data with missing observations}{105}{subsection.6.1.1}
+\contentsline {section}{\numberline {6.2}Summarizing data frames}{107}{section.6.2}
+\contentsline {subsection}{\numberline {6.2.1}Column (and row) summaries}{107}{subsection.6.2.1}
+\contentsline {subsection}{\numberline {6.2.2}The \texttt {apply()} function}{110}{subsection.6.2.2}
+\contentsline {subsection}{\numberline {6.2.3}Saving typing using \texttt {with()}}{111}{subsection.6.2.3}
+\contentsline {section}{\numberline {6.3}Transforming a data frame}{111}{section.6.3}
+\contentsline {subsection}{\numberline {6.3.1}Adding variables}{112}{subsection.6.3.1}
+\contentsline {subsection}{\numberline {6.3.2}Removing variables}{113}{subsection.6.3.2}
+\contentsline {subsection}{\numberline {6.3.3}Transforming variables}{115}{subsection.6.3.3}
+\contentsline {subsection}{\numberline {6.3.4}Rearranging variables}{116}{subsection.6.3.4}
+\contentsline {section}{\numberline {6.4}Reshaping data}{117}{section.6.4}
+\contentsline {subsection}{\numberline {6.4.1}Tidyr}{117}{subsection.6.4.1}
+\contentsline {section}{\numberline {6.5}Manipulating data with \texttt {dplyr}}{121}{section.6.5}
+\contentsline {subsection}{\numberline {6.5.1}Improved data frames}{122}{subsection.6.5.1}
+\contentsline {subsection}{\numberline {6.5.2}Filtering data by row}{124}{subsection.6.5.2}
+\contentsline {subsection}{\numberline {6.5.3}Selecting variables by column}{127}{subsection.6.5.3}
+\contentsline {subsection}{\numberline {6.5.4}Pipes}{129}{subsection.6.5.4}
+\contentsline {subsection}{\numberline {6.5.5}Arranging data by row}{130}{subsection.6.5.5}
+\contentsline {subsection}{\numberline {6.5.6}Renaming variables}{132}{subsection.6.5.6}
+\contentsline {subsection}{\numberline {6.5.7}Data summaries and grouping}{133}{subsection.6.5.7}
+\contentsline {subsection}{\numberline {6.5.8}Creating new variables}{138}{subsection.6.5.8}
+\contentsline {chapter}{\numberline {7}Functions and Programming}{142}{chapter.7}
+\contentsline {section}{\numberline {7.1}R functions}{142}{section.7.1}
+\contentsline {subsection}{\numberline {7.1.1}Creating functions}{146}{subsection.7.1.1}
+\contentsline {section}{\numberline {7.2}Programming: Conditional Statements}{146}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}Comparison and logical operators}{148}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}If else statements}{149}{subsection.7.2.2}
+\contentsline {section}{\numberline {7.3}Computer Arithmetic}{152}{section.7.3}
+\contentsline {section}{\numberline {7.4}Loops}{153}{section.7.4}
+\contentsline {subsection}{\numberline {7.4.1}A repeat loop}{154}{subsection.7.4.1}
+\contentsline {subsection}{\numberline {7.4.2}A while loop}{155}{subsection.7.4.2}
+\contentsline {subsection}{\numberline {7.4.3}A for loop}{155}{subsection.7.4.3}
+\contentsline {section}{\numberline {7.5}Efficiency considerations}{156}{section.7.5}
+\contentsline {subsection}{\numberline {7.5.1}Growing objects}{156}{subsection.7.5.1}
+\contentsline {subsection}{\numberline {7.5.2}Vectorization}{158}{subsection.7.5.2}
+\contentsline {section}{\numberline {7.6}More on functions}{159}{section.7.6}
+\contentsline {subsection}{\numberline {7.6.1}Calling functions}{160}{subsection.7.6.1}
+\contentsline {subsection}{\numberline {7.6.2}The \texttt {...} argument}{160}{subsection.7.6.2}
+\contentsline {subsection}{\numberline {7.6.3}Lazy evaluation}{162}{subsection.7.6.3}
+\contentsline {chapter}{\numberline {8}Spatial data visualization and analysis}{164}{chapter.8}
+\contentsline {section}{\numberline {8.1}Overview}{164}{section.8.1}
+\contentsline {subsection}{\numberline {8.1.1}Some spatial data packages}{165}{subsection.8.1.1}
+\contentsline {section}{\numberline {8.2}Motivating data}{166}{section.8.2}
+\contentsline {section}{\numberline {8.3}Reading spatial data into R}{166}{section.8.3}
+\contentsline {section}{\numberline {8.4}Coordinate reference systems}{171}{section.8.4}
+\contentsline {section}{\numberline {8.5}Illustration using \texttt {ggmap}}{172}{section.8.5}
+\contentsline {section}{\numberline {8.6}Illustration using \texttt {leaflet}}{181}{section.8.6}
+\contentsline {section}{\numberline {8.7}Subsetting spatial data}{182}{section.8.7}
+\contentsline {subsection}{\numberline {8.7.1}Fetching and cropping data using \texttt {raster}}{184}{subsection.8.7.1}
+\contentsline {subsection}{\numberline {8.7.2}Logical, index, and name subsetting}{186}{subsection.8.7.2}
+\contentsline {subsection}{\numberline {8.7.3}Spatial subsetting and overlay}{187}{subsection.8.7.3}
+\contentsline {subsection}{\numberline {8.7.4}Spatial aggregation}{192}{subsection.8.7.4}
+\contentsline {section}{\numberline {8.8}Where to go from here}{194}{section.8.8}
+\contentsline {chapter}{\numberline {9}Shiny}{195}{chapter.9}
+\contentsline {section}{\numberline {9.1}Running a Simple Shiny App}{197}{section.9.1}
+\contentsline {section}{\numberline {9.2}Adding User Input}{199}{section.9.2}
+\contentsline {section}{\numberline {9.3}Adding Output}{200}{section.9.3}
+\contentsline {subsection}{\numberline {9.3.1}Interactive Server Logic}{200}{subsection.9.3.1}
+\contentsline {subsection}{\numberline {9.3.2}Interactive User Interface}{202}{subsection.9.3.2}
+\contentsline {section}{\numberline {9.4}More Advanced Shiny App: Michigan Campgrounds}{203}{section.9.4}
+\contentsline {subsection}{\numberline {9.4.1}Michigan Campgrounds UI}{204}{subsection.9.4.1}
+\contentsline {subsection}{\numberline {9.4.2}Michigan Campgrounds Server Logic}{204}{subsection.9.4.2}
+\contentsline {section}{\numberline {9.5}Adding Leaflet to Shiny}{205}{section.9.5}
+\contentsline {section}{\numberline {9.6}Why use Shiny?}{206}{section.9.6}
+\contentsline {chapter}{\numberline {10}Classification}{208}{chapter.10}
+\contentsline {section}{\numberline {10.1}Logistic regression}{208}{section.10.1}
+\contentsline {subsection}{\numberline {10.1.1}Adding predictors}{216}{subsection.10.1.1}
+\contentsline {subsection}{\numberline {10.1.2}More than two classes}{219}{subsection.10.1.2}
+\contentsline {section}{\numberline {10.2}Nearest neighbor methods}{224}{section.10.2}
+\contentsline {subsection}{\numberline {10.2.1}kNN and the diabetes data}{231}{subsection.10.2.1}
+\contentsline {subsection}{\numberline {10.2.2}kNN and the iris data}{232}{subsection.10.2.2}
+\contentsline {chapter}{\numberline {11}Text Data}{234}{chapter.11}
+\contentsline {section}{\numberline {11.1}Reading text data into R}{234}{section.11.1}
+\contentsline {section}{\numberline {11.2}The \texttt {paste} function}{238}{section.11.2}
+\contentsline {section}{\numberline {11.3}More string processing functions}{243}{section.11.3}
+\contentsline {chapter}{\numberline {12}Rcpp}{254}{chapter.12}
+\contentsline {section}{\numberline {12.1}Getting Started with Rcpp}{254}{section.12.1}
+\contentsline {subsection}{\numberline {12.1.1}Installation}{254}{subsection.12.1.1}
+\contentsline {subsection}{\numberline {12.1.2}The Simplest C++ Example}{255}{subsection.12.1.2}
+\contentsline {section}{\numberline {12.2}Using Rcpp}{255}{section.12.2}
+\contentsline {subsection}{\numberline {12.2.1}Exporting C++ Functions}{255}{subsection.12.2.1}
+\contentsline {subsection}{\numberline {12.2.2}Inline C++ Code}{257}{subsection.12.2.2}
+\contentsline {section}{\numberline {12.3}The Rcpp Interface}{257}{section.12.3}
+\contentsline {subsection}{\numberline {12.3.1}No input and scalar output}{258}{subsection.12.3.1}
+\contentsline {subsection}{\numberline {12.3.2}Scalar input and scalar output}{259}{subsection.12.3.2}
+\contentsline {subsection}{\numberline {12.3.3}Vector input and scalar output}{259}{subsection.12.3.3}
+\contentsline {subsection}{\numberline {12.3.4}Vector input and vector output}{261}{subsection.12.3.4}
+\contentsline {subsection}{\numberline {12.3.5}Matrix input and vector output}{262}{subsection.12.3.5}
+\contentsline {subsection}{\numberline {12.3.6}Matrix input and matrix output}{263}{subsection.12.3.6}
+\contentsline {chapter}{\numberline {13}Databases and R}{264}{chapter.13}
+\contentsline {section}{\numberline {13.1}SQL and Database Structure}{264}{section.13.1}
+\contentsline {subsection}{\numberline {13.1.1}SQL}{265}{subsection.13.1.1}
+\contentsline {subsubsection}{A Basic Query}{265}{section*.56}
+\contentsline {section}{\numberline {13.2}Difficulties of working with large data sets}{266}{section.13.2}
+\contentsline {section}{\numberline {13.3}Using dplyr to query the database}{267}{section.13.3}
+\contentsline {subsection}{\numberline {13.3.1}Example with RSQLite}{268}{subsection.13.3.1}
+\contentsline {subsection}{\numberline {13.3.2}dbplot}{271}{subsection.13.3.2}
+\contentsline {subsection}{\numberline {13.3.3}Using Google BigQuery}{273}{subsection.13.3.3}
+\contentsline {section}{\numberline {13.4}Changing records in the database}{279}{section.13.4}
+\contentsline {section}{\numberline {13.5}R Studio Connections Pane}{279}{section.13.5}
+\contentsline {section}{\numberline {13.6}Other options}{280}{section.13.6}
+\contentsline {chapter}{\numberline {14}Digital Signal Processing}{281}{chapter.14}
+\contentsline {section}{\numberline {14.1}Introduction to Digital Signal Processing}{281}{section.14.1}
+\contentsline {subsection}{\numberline {14.1.1}Sinusoidal Signals}{284}{subsection.14.1.1}
+\contentsline {section}{\numberline {14.2}Noise and Filters}{286}{section.14.2}
+\contentsline {section}{\numberline {14.3}Fourier Transforms and Spectrograms}{292}{section.14.3}
+\contentsline {section}{\numberline {14.4}Analyzing Audio Data with \texttt {warbleR}}{297}{section.14.4}

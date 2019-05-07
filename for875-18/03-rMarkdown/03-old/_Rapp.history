@@ -1,0 +1,4 @@
+load("/Users/melfi/Documents/STT301/Textbook/rmarkdown/.RData")
+history(max=1000)
+ls()
+history()

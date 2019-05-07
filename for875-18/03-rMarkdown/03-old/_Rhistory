@@ -1,0 +1,3 @@
+choose(10,4)
+getwd()
+setwd("~/Documents/STT301/Textbook/rmarkdown")

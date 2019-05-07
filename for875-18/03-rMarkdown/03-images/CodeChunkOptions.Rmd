@@ -1,0 +1,29 @@
+No options:
+```{r}
+x = 1:10
+x
+```
+
+echo=FALSE:
+```{r, echo=FALSE}
+x = 1:10
+x
+```
+
+comment=NA:
+```{r, comment=NA}
+x = 1:10
+x
+```
+comment='#', prompt=TRUE:
+```{r, comment='#', prompt=TRUE}
+x = 1:10
+x
+```
+
+echo=FALSE, fig.height=4, fig.width=4:
+
+```{r, echo=FALSE, fig.height=4, fig.width=4}
+y = 10:1
+plot(x,y)
+```

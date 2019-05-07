@@ -1,0 +1,1 @@
+install.packages(c("xtable", "knitr", "grid", "ggplot2", "ElemStatLearn", "cowplot", "gapminder", "tidyr", "VGAM", "leaflet", "rgdal", "downloader", "sp", "rgeos", "ggmap", "RColorBrewer", "shiny", "MASS", "class", "Rcpp", "microbenchmark", "VGAM","nycflights13"))

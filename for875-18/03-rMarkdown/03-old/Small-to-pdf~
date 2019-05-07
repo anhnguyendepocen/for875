@@ -1,0 +1,2 @@
+Rscript -e "require(knitr); require(markdown); knit('Small.rmd', 'Small.md')"
+pandoc Small.md -s -o Small.pdf

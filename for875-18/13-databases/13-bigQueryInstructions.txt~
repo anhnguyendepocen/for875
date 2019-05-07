@@ -1,0 +1,11 @@
+Steps to Open up a Google Cloud Platform for using Google BigQuery
+
+1. Go to https://console.cloud.google.com/. Log into a google account or create one (unfortunately you will need to have a google account to access bigquery). 
+2. Click on Select a project near the top left. Click on New Project. Name your project whatever you desire, set the location to No Location.
+3. Create the new project
+4. Wait a few seconds, then click on select a project and your new project should show up. 
+5. In the Project info box, make note of your Project ID as you will need this for working in R. 
+6. Click to the left of "Google Cloud Platform" to open up the side menu. Click on "APIs & Services", then "Dashboard" in the left menu
+7. Click on “Enable Apis and Services” at the top of the page, then search for “BigQuery API” and “Cloud storage”. Then enable these APIs. 
+
+You should now be all set to do all the queries we perform in Chapter 13. 

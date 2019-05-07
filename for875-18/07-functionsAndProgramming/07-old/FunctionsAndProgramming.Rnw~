@@ -1,0 +1,473 @@
+\chapter{Functions and Programming}\label{CHAPTER:FUNCTIONSANDPROGRAMMING}
+We have been working with a wide variety of R functions, from simple functions such as \Rfunc{mean()} and \Rfunc{sd()} to more complex functions such as \Rfunc{lm()} and \Rfunc{ggplot()}. Gaining a better understanding of existing functions and gaining the ability to write our own functions dramatically increase what we can do with R. And learning about R's programming capabilities is an important step in gaining facility with functions.
+
+\section{R functions}
+Data on the yield, in pounds per acre, of two types of corn seeds (regular and kiln dried) were collected. Each of 11 plots of land was split into two subplots, and one of the subplots was planted in regular corn while the other was planted in kiln dried corn. These data were analyzed in a famous paper of William Gosset. Here are the data.
+<<>>=
+u.corn = "http://www.stt.msu.edu/~melfi/STT301/data/corn.csv"
+corn = read.csv(u.corn, header=TRUE)
+corn
+@
+A paired t test, or a confidence interval for the mean difference, may be used to assess the difference in yield between the two varieties. Of course R has a function \Rfunc{t.test} which can perform a paired t test and compute a confidence interval, but we will perform the test without using that function. We will focus for now on testing the hypotheses $H_0\colon \mu_d = 0$ versus $H_a\colon \mu_d \neq 0$ and on a two-sided confidence interval for $\mu_d$. Here $\mu_d$ represents the population mean difference. 
+
+Recall that the paired $t$ statistic is defined by
+\[
+t = \frac{\overline d}{S_d/\sqrt{n}}
+\]
+where $\overline d$ is the mean of the differences, $S_d$ is the standard deviation of the differences, and $n$ is the sample size. The p-value is twice the area to the right of $|t_{\text{obs}}|$, where $t_{\text{obs}}$ is the observed $t$ statistic, and a confidence interval is given by
+\[
+\overline d \pm t^* (S_d/\sqrt{n}).
+\]
+Here $t^*$ is an appropriate quantile of a $t$ distribution with $n-1$ degrees of freedom.
+
+<<>>=
+dbar = mean(corn$kiln_dried - corn$regular)
+n = length(corn$regular)
+S_d = sd(corn$kiln_dried - corn$regular)
+t_obs = dbar/(S_d/sqrt(n))
+t_obs
+pval = 2*(1 - pt(abs(t_obs), n-1))
+pval
+margin = qt(0.975, n-1)*(S_d/sqrt(n))
+lcl = dbar - margin
+ucl = dbar + margin
+lcl
+ucl
+@
+With a few lines of R code we have calculated the t statistic, the p-value, and the confidence interval. Since paired t tests are pretty common, however, it would be helpful to automate this procedure. One obvious reason is to save time and effort, but another important reason is to avoid mistakes. It would be easy to make a mistake (e.g., using $n$ instead of $n-1$ as the degrees of freedom) when repeating the above computations.
+
+Here is a first basic function which automates the computation.
+
+<<>>=
+paired_t = function(x1, x2){
+n = length(x1)
+    dbar = mean(x1 - x2)
+    s_d = sd(x1 - x2)
+    tstat = dbar/(s_d/sqrt(n))
+    pval = 2*(1 - pt(abs(tstat), n-1))
+    margin = qt(0.975, n-1)*s_d/sqrt(n)
+    lcl = dbar - margin
+    ucl = dbar + margin
+    return(list(tstat = tstat, pval = pval, lcl=lcl, ucl=ucl))
+}
+@
+And here is the function in action
+<<>>=
+paired_t(x1 = corn$kiln_dried, x2 = corn$regular)
+@
+An explanation and comments on the function are in order.
+\begin{itemize}
+\item \verb+paired_t = function(x1, x2)+ assigns a function of two variables, \verb+x1+ and \verb+x2+, to an R object called \verb+paired_t+. 
+\item The \emph{compound expression} which makes up the body of the function is enclosed in curly braces \verb+{}+.
+\item \verb+return(list(tstat = tstat, pval = pval, lcl=lcl, ucl=ucl))+ indicates the object(s) returned by the function. In this case the function returns a list with three components. 
+\item The body of the function basically mimics the computations required to compute the t statistic, the p-value, and the confidence interval.
+\item Several objects such as \verb+n+ and \verb+dbar+ are created in the body of the function. These objects are NOT available outside the function. We will discuss this further when we cover environments and scope in R.
+\end{itemize}
+
+Our function has automated the basic calculations. But it is still somewhat limited in usefulness. For example, it only computes a 95\% confidence interval, while a user may want a different confidence level. And the function only performs a two-sided test, while a user may want a one-sided procedure.  We modify the function slightly to allow the user to specify the confidence level next.
+<<>>=
+paired_t = function(x1, x2, cl = 0.95){
+    n = length(x1)
+    dbar = mean(x1 - x2)
+    s_d = sd(x1 - x2)
+    tstat = dbar/(s_d/sqrt(n))
+    pval = 2*(1 - pt(abs(tstat), n-1))
+      pctile = 1 - (1 - cl)/2
+      margin = qt(pctile, n-1)*s_d/sqrt(n)
+    lcl = dbar - margin
+    ucl = dbar + margin
+    return(list(tstat = tstat, pval = pval, lcl = lcl, ucl=ucl))
+}
+@
+
+<<>>=
+paired_t(corn$kiln_dried, corn$regular)
+paired_t(corn$kiln_dried, corn$regular, cl = 0.99)
+@
+
+Two things to note. First, arguments do not have to be named. So
+\begin{verbatim}
+paired_t(corn$kiln_dried, corn$regular)
+\end{verbatim}
+and 
+\begin{verbatim}
+paired_t(x1 = corn$kiln_dried, x2 = corn$regular)
+\end{verbatim}
+are equivalent. But we need to be careful if we do not name arguments, and have to know the ordering of the arguments in the function declaration.
+
+ Second, in the declaration of the function, the third argument \verb+cl+ was given a default value of \verb+0.95+. If a user does not specify a value for \verb+cl+ it will silently be set to \verb+0.95+. But of course a user can override this, as we did in 
+\begin{verbatim}
+paired_t(corn$kiln_dried, corn$regular, cl = 0.99)
+\end{verbatim}
+
+\subsection{Creating functions}
+Creating very short functions at the command prompt is a reasonable strategy. For longer functions, one option is to write the function in a script window and then submit the whole function. Or a function can be written in any text editor, saved as a plain text file (possibly with a \verb+.r+ extension), and then read into R using the \verb+source()+ command.
+
+\section{Programming: Conditional Statements}
+The \verb+paired_t+ function is somewhat useful, but could be improved in several ways. For example, consider the following:
+<<>>=
+paired_t(1:5, 1:4)
+@
+The user specified data which had different numbers of observations in \verb+x1+ and \verb+x2+, which of course can't be data tested by a paired t test. Rather than stopping and letting the user know that this is a problem, the function continued and produced meaningless output.
+
+Also, the function as written only allows testing against a two-sided alternative hypothesis, and it would be good to allow one-sided alternatives.
+
+First we will address some checks on arguments specified by the user. For this we will use an \verb+if()+ function and a \verb+stop()+ function. 
+<<>>=
+paired_t = function(x1, x2, cl = 0.95){
+    if(length(x1) != length(x2)) {stop("The input vectors  must have the same length")}
+    n = length(x1)
+    dbar = mean(x1 - x2)
+    s_d = sd(x1 - x2)
+    tstat = dbar/(s_d/sqrt(n))
+    pval = 2*(1 - pt(abs(tstat), n-1))
+      pctile = 1 - (1 - cl)/2
+      margin = qt(pctile, n-1)*s_d/sqrt(n)
+    lcl = dbar - margin
+    ucl = dbar + margin
+    return(list(tstat = tstat, pval = pval, lcl = lcl, ucl=ucl))
+}
+paired_t(1:5, 1:4)
+@
+The argument to the \verb+if()+ function is evaluated. If the argument returns \verb+TRUE+ the ensuing code is executed. Otherwise, the ensuing code is skipped and the rest of the function is evaluated. If a \verb+stop()+ function is executed, the function is exited and the argument of \verb+stop()+ is printed. 
+
+To better understand and use \verb+if()+ statements, we need to understand comparison operators and logical operators. 
+\subsection{Comparison and logical operators}
+We have made use of some of the comparison operators in R. These include
+\begin{itemize}
+\item Equal: \verb+==+
+\item Not equal: \verb+!=+
+\item Greater than: \verb+>+
+\item Less than: \verb+<+
+\item Greater than or equal to: \verb+>=+
+\item Less than or equal to: \verb+<=+
+\end{itemize}
+Special care needs to be taken with the \verb+=+ and \verb+!=+ operators because of how numbers are represented on computers. More details will be provided below.
+
+There are also three logical operators, with two variants of the ``and'' operator and the ``or'' operator.
+\begin{itemize}
+\item and: Either  \verb+&+ or \verb+&&+
+\item or: Either \verb+|+ or \verb+||+
+\item not: \verb+!+
+\end{itemize}
+The ``double'' operators \verb+&&+ and \verb+||+ just examine the first element of the two vectors, whereas the ``single''  operators \verb+&+ and \verb+|+ compare element by element.
+<<>>=
+c(FALSE, TRUE, FALSE) || c(TRUE, FALSE, FALSE)
+c(FALSE, TRUE, FALSE) | c(TRUE, FALSE, FALSE)
+c(FALSE, TRUE, FALSE) && c(TRUE, TRUE, FALSE)
+c(FALSE, TRUE, FALSE) & c(TRUE, TRUE, FALSE)
+@
+
+We can use the logical operators to check whether a user-specified confidence level is between 0 and 1.
+
+<<>>=
+<<>>=
+paired_t = function(x1, x2, cl = 0.95){
+    if(length(x1) != length(x2)) {stop("The input vectors  must have the same length")}
+    if(cl <= 0 || cl >= 1) {stop("The confidence level must be between 0 and 1")}
+    n = length(x1)
+    dbar = mean(x1 - x2)
+    s_d = sd(x1 - x2)
+    tstat = dbar/(s_d/sqrt(n))
+    pval = 2*(1 - pt(abs(tstat), n-1))
+      pctile = 1 - (1 - cl)/2
+      margin = qt(pctile, n-1)*s_d/sqrt(n)
+    lcl = dbar - margin
+    ucl = dbar + margin
+    return(list(tstat = tstat, pval = pval, lcl = lcl, ucl=ucl))
+}
+paired_t(1:5, 2:6, cl=15)
+@
+\subsection{If else statements}
+The \verb+if()+ statement we have used so far has the form 
+\begin{verbatim}
+if (condition) {expression}
+\end{verbatim}
+Often we want to evaluate one expression if the condition is true, and evaluate a different expression if the condition is false. That is accomplished by the \verb+if else+ statement. Here we determine whether a number is positive, negative, or zero.
+<<>>=
+Sign = function(x){
+if(x < 0){print("the number is negative")} else
+if(x > 0){print("the number is positive")} else
+print("the number is zero")
+}
+Sign(3)
+Sign(-3)
+Sign(0)
+@
+Notice that the ``different expression'' for the first \verb+if+ statement was itself an \verb+if+ statement. 
+
+Next we modify the \verb+paired_t+ function to allow two-sided and one-sided alternatives.
+<<>>=
+paired_t = function
+    (x1, x2, cl = 0.95, alternative="not.equal"){
+    if(length(x1) != length(x2))
+     stop("The input vectors must be of the same length")
+    if(cl <= 0 || cl >= 1)
+    stop("The confidence level must be between 0 and 1")
+    n = length(x1)
+    dbar = mean(x1 - x2)
+    s_d = sd(x1 - x2)
+    tstat = dbar/(s_d/sqrt(n))
+    if(alternative == "not.equal"){
+    pval = 2*(1 - pt(abs(tstat), n-1))
+      pctile = 1 - (1 - cl)/2
+      margin = qt(pctile, n-1)*s_d/sqrt(n)
+    lcl = dbar - margin
+ucl = dbar + margin} else
+if(alternative == "greater"){
+pval = 1 - pt(tstat, n-1)
+  margin = qt(cl, n-1)*s_d/sqrt(n)
+lcl = dbar - margin
+ucl = Inf} else
+if(alternative == "less"){
+pval = pt(tstat, n-1)
+  margin = qt(cl, n-1)*s_d/sqrt(n)
+lcl = -Inf
+ucl = dbar + margin}
+return(list(tstat = tstat, pval = pval,
+       lcl=lcl, ucl=ucl))
+}
+paired_t(corn$kiln_dried, corn$regular)
+paired_t(corn$kiln_dried, corn$regular, alternative = "less")
+paired_t(corn$kiln_dried, corn$regular, alternative = "greater")
+@
+\section{Computer Arithmetic}
+Like most software, R does not perform exact arithmetic. Rather, R follows the IEEE 754 floating point standards. This can have profound effects on how computational algorithms are implemented, but is also important when considering things like comparisons. 
+
+Note first that computer arithmetic does not follow some of the rules of ordinary arithmetic. For example, it is not associative.
+<<>>=
+2^-30
+2^-30 + (2^30 - 2^30)
+(2^-30 + 2^30) - 2^30
+@
+Computer arithmetic is not exact.
+<<>>=
+1.5 - 1.4
+1.5 - 1.4 == 0.1
+(1.5 - 1.4) - 0.1
+@
+So for example an \verb+if+ statement that uses an equality test may not give the expected answer. 
+One way to avoid this problem is to test ``near equality'' using \Rfunc{all.equal()}. The function takes as arguments two objects to be compared, and a tolerance. If the objects are within the tolerance of each other, the function returns \verb+TRUE+. The tolerance has a default value of about $1.5\times 10^{-8}$, which works well in many cases.
+<<>>=
+all.equal((1.5 - 1.4), 0.1)
+@
+\section{Loops}
+Loops are an important component of any programming language, including R. Vectorized calculations and functions such as \Rfunc{apply()} make loops a bit less central to R than to many other languages, but an understanding of the three looping structures in R is still quite important.
+
+We will investigate loops in the context of computing what is sometimes called the ``machine epsilon.'' Because of the inexact representation of numbers in R (and other languages) sometimes R cannot distinguish between the numbers \verb+1+ and \verb|1 + x| for small values of \verb+x+. The smallest value of \verb+x+ such that \verb+1+ and \verb|1+x| are not declared equal is the machine epsilon. 
+<<>>=
+1 == 1+10^-4
+1 == 1 + 10^-50
+@
+Clearly the machine epsilon is somewhere between $10^{-4}$ and $10^{-50}$. How can we find its value exactly? Since floating point numbers use a binary representation, we know that the machine epsilon will be equal to $1/2^k$ for some value of $k$. So to find the machine epsilon, we can keep testing whether $1$ and $1+1/2^k$ are equal, until we find a value $k$ where the two are equal. Then the machine epsilon will be $1/2^{k-1}$, since it is the smallest value for which the two are NOT equal.
+<<>>=
+1 == 1+1/2
+1 == 1 + 1/2^2
+1 == 1 + 1/2^3
+@
+Testing by hand like this gets tedious quickly. A loop can automate the process. We will do this with the two R loop types, \verb+repeat+ and \verb+while+.
+
+\subsection{A repeat loop}
+A \verb+repeat+ loop just repeats a given expression over and over again until a \verb+break+ statement is encountered. 
+<<>>=
+k = 1
+repeat{
+    if(1 == 1+1/2^k)
+      {break} else
+      {k = k+1}
+}
+k
+1/2^(k-1)
+@
+This code initializes \verb+k+ at 1. The body of the loop initially checks whether $1$ and $1+1/2^k$ are equal. If they are equal, the \verb+break+ statement is executed and control is transferred outside the loop. If they are not equal, \verb+k+ is increased by 1, and we return to the beginning of the top of the body of the loop. 
+
+\subsection{A while loop}
+A \verb+while+ loop has the form 
+\begin{verbatim}
+while (condition) expression
+\end{verbatim}
+As long as the \verb+condition+ is \verb+TRUE+ the \verb+expression+ is evaluated. Once the \verb+condition+ is \verb+FALSE+ control is transferred outside the loop.
+<<>>=
+k = 1
+while(1 != 1+1/2^k){
+k = k+1 }
+k
+1/2^(k-1)
+@
+
+\subsection{A for loop}
+A \verb+for+ loop has the form
+\begin{verbatim}
+for (variable in vector) expression
+\end{verbatim}
+The \verb+for+ loop sets the \verb+variable+ equal to each element of the \verb+vector+ in succession, and evaluates the \verb+expression+ each time. Here are two different ways to use a \verb+for+ loop to calculate the sum of the elements in a vector.
+<<>>=
+x = 1:10
+S = 0
+for(i in 1:length(x)){S = S + x[i]}
+S
+S = 0
+for(value in x){S = S + value}
+S
+@
+In the first case we loop over the positions of the vector elements, while in the second case we loop over the elements themselves.
+\section{Efficiency considerations}
+In many contexts R and modern computers are fast enough that the user does not need to worry about writing efficient code. There are a few simple ways to write efficient code that are easy enough, and provide enough speed-up, that they are worth following as often as possible. The R function \Rfunc{system.time()} reports how long a set of R code takes to execute, and we will use this function to compare different ways to accomplish objectives in R.
+\subsection{Growing objects}
+Consider two ways to create a sequence of integers from 1 to n, implemented in functions \verb+f1+ and \verb+f2+. 
+\begin{enumerate}
+\item Start with a zero-length vector, and let it grow:
+<<>>=
+f1 = function(n){
+   x = numeric(0)
+   for(i in 1:n){
+     x = c(x,i)}
+   x}
+@
+\item Start with a vector of length $n$ and fill in the correct values:
+<<>>=
+f2 = function(n){
+   x = numeric(n)
+   for(i in 1:n){
+     x[i] = i}
+   x}
+@
+Here are the two functions in action, with $n = 100000$.
+<<efficiency1, cache = TRUE>>=
+n <- 100000
+system.time(f1(n))
+system.time(f2(n))
+@
+It is \emph{much} more efficient to start with a full-length vector and then fill in values.\footnote{Roughly speaking, the first option is slower because each time the vector is increased in size, R must resize the vector and re-allocated memory.} 
+
+Of course another way to create a vector of integers from 1 to n is to use \verb+1:n+. Let's see how fast this is.
+<<>>=
+system.time(1:n)
+n = 1000000
+system.time(1:n)      
+@
+For $n=100000$ this is so fast that the system time is very close to zero. Even when $n$ is 1000000 the time is very small. So another important lesson is to use built-in R functions whenever possible, since they have had substantial development focused on efficiency, correctness, etc.
+\end{enumerate}
+\subsection{Vectorization}
+Next consider calculating the sum of the squared entries in each column of a matrix. For example with the matrix $M$,
+\[
+M = \left(\begin{array}{ccc}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{array}\right),
+\]
+the sums would be $1^2 + 4^2 = 17$, $2^2 + 5^2 = 29$, and $3^2 + 6^2 = 45$. 
+One possibility is to have an outer loop which traverses the columns and an inner loop which traverses the rows within a column, squaring the entries and adding them together.
+<<>>=
+test_matrix = matrix(1:6, byrow=TRUE, nrow=2)
+test_matrix
+ss1 = function(M){
+    n = dim(M)[1]
+    m = dim(M)[2]
+    out = rep(0,m)
+    for(j in 1:m){
+      for(i in 1:n){
+        out[j] = out[j] + M[i,j]^2
+} }
+return(out)
+ }
+ss1(test_matrix)
+@
+Another possibility eliminates the inner loop, using the \verb+sum()+ function to compute the sum of the squared entries in the column directly. 
+<<>>=
+ss2 = function(M){
+        m = dim(M)[2]
+        out = numeric(m)
+        for(j in 1:m){
+          out[j] = sum(M[,j]^2)
+        }
+return(out) 
+}
+ss2(test_matrix)
+@
+A third possibility uses the \verb+colSums()+ function.
+<<>>=
+ss3 = function(M){
+   out = colSums(M^2)
+   return(out)
+   }
+ss3(test_matrix)
+@
+Here is a speed comparison, using a $1000\times 10000$ matrix.
+<<efficiency2, cache=TRUE>>=
+mm = matrix(1:10000000, byrow=TRUE, nrow=1000)
+system.time(ss1(mm))
+system.time(ss2(mm))
+system.time(ss3(mm))
+rm(mm)
+@
+\section{More on functions}
+Understanding functions deeply requires a careful study of the scoping rules of R, as well as a good understanding of environments in R. That's beyond the scope of this book, but we will briefly discuss some issues that are most salient. For a more in-depth treatment, see ``Advanced R'' by Hadley Wickham, especially the chapters on functions and environments. 
+\subsection{Calling functions}
+When using a function, the functions arguments can specified in three ways:
+\begin{itemize}
+\item By the full name of the argument.
+\item By the position of the argument.
+\item By a partial name of the argument. 
+\end{itemize}
+<<>>=
+tmp_function <- function(first.arg, second.arg, third.arg, fourth.arg){
+  return(c(first.arg, second.arg, third.arg, fourth.arg))
+}
+tmp_function(34, 15, third.arg = 11, fou = 99)
+@
+Positional matching of arguments is convenient, but should be used carefully, and probably limited to the first few, and most commonly used, arguments in a function. And partial matching has pitfalls also.
+<<>>=
+tmp_function <- function(first.arg, fourth.arg){
+return(c(first.arg, fourth.arg))
+}
+tmp_function(1, f=2)
+@
+A partially specified argument must unambiguously match exactly one argument. 
+\subsection{The \texttt{...} argument}
+In defining a function, a special argument denoted by \verb+...+ can be used. Sometimes this is called the ``ellipsis'' argument, sometimes the ``three dot'' argument, sometimes the ``dot dot dot'' argument, etc. The R language definition \url{https://cran.r-project.org/doc/manuals/r-release/R-lang.html} describes the argument in this way: 
+\begin{quotation}
+The special type of argument `...' can contain any number of supplied arguments. It is used for a variety of purposes. It allows you to write a function that takes an arbitrary number of arguments. It can be used to absorb some arguments into an intermediate function which can then be extracted by functions called subsequently.
+\end{quotation}
+Consider for example the \Rfunc{sum()} function. 
+<<>>=
+sum(1:5)
+sum(1:5, c(3,4,90))
+sum(1,2,3,c(3,4,90), 1:5)
+@
+Think about writing such a function. There is no way to predict in advance the number of arguments a user might specify. So the function is defined with \verb+...+ as the first argument:
+<<>>=
+sum
+@
+This is true of many commonly-used functions in R such as \Rfunc{c()} among others. 
+
+Next, consider a function which calls another function in its body. For example, suppose that a collaborator always supplies comma delimited files which have five lines of description, followed by a line containing variable names, followed by the data. You are tired of having to specify \verb+skip = 5+, \verb+header = TRUE+, and sep = "," to \verb+read.table()+ and want to create a function \verb+my.read()+ which uses these as defaults. 
+<<>>=
+my.read <- function(file, header=TRUE, sep = ",", skip = 5, ...){
+read.table(file = file, header = header, sep = sep, skip = skip, ...)
+}
+@
+The \verb+...+ in the definition of \verb+my.read()+ allows the user to specify other arguments, for example, \verb+stringsAsFactors = FALSE+. These will be passed on to the \verb+read.table()+ function. In fact, that is how \verb+read.csv()+ is defined.
+<<>>=
+read.csv
+@
+\subsection{Lazy evaluation}
+Arguments to R functions are not evaluated until they are needed, sometimes called \emph{lazy} evaluation. 
+<<>>=
+f <- function(a,b){
+print(a^2)
+print(a^3)
+print(a*b)
+}
+f(a=3, b=2)
+f(a=3)
+@
+The first call specified both of the arguments \verb+a+ and \verb+b+, and produced the expected output. In the second call the argument \verb+b+ was not specified. Since it was not needed until the third \verb+print+ statement, R happily executed the first two \verb+print+ statements, and only reported an error in the third statement, when \verb+b+ was needed to compute \verb+a*b+. 
+<<>>=
+f = function(a,b = a^3){
+return(a*b)
+}
+f(2)
+f(2,10)
+@
+In the first call, since \verb+b+ was not specified, it was computed as \verb+a^3+. In the second call, \verb+b+ was specified, and the specified value was used. 

@@ -1,0 +1,65 @@
+\begin{thebibliography}{9}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bivand et~al.(2013)Bivand, Pebesma, and Gomez-Rubio]{Bivand13}
+Roger~S. Bivand, Edzer Pebesma, and Virgilio Gomez-Rubio.
+\newblock \emph{Applied spatial data analysis with R, Second edition}.
+\newblock Springer, NY, 2013.
+
+\bibitem[Bryan()]{BryanCourseNotes}
+Jenny Bryan.
+\newblock Stat 545 topics.
+\newblock \url{http://stat545-ubc.github.io/topics.html}.
+\newblock Accessed: 2015-08-02.
+
+\bibitem[Chang(2013)]{ChangGraphicsCookbook}
+Winston Chang.
+\newblock \emph{R Graphics Cookbook}.
+\newblock O'Reilly Media, Inc., 2013.
+\newblock ISBN 1449316956, 9781449316952.
+
+\bibitem[Hastie et~al.(2009)Hastie, Tibshirani, and Friedman]{hastieESL}
+Trevor Hastie, Robert Tibshirani, and Jerome Friedman.
+\newblock \emph{The elements of statistical learning: data mining, inference
+  and prediction}.
+\newblock Springer, 2 edition, 2009.
+\newblock URL \url{http://www-stat.stanford.edu/~tibs/ElemStatLearn/}.
+
+\bibitem[James et~al.(2014)James, Witten, Hastie, and Tibshirani]{JamesEtAl}
+G.~James, D.~Witten, T.~Hastie, and R.~Tibshirani.
+\newblock \emph{An Introduction to Statistical Learning: with Applications in
+  R}.
+\newblock Springer Texts in Statistics. Springer New York, 2014.
+\newblock ISBN 9781461471370.
+\newblock URL \url{https://books.google.com/books?id=at1bmAEACAAJ}.
+
+\bibitem[Spector(2008)]{SpectorDataManipulation}
+Phil Spector.
+\newblock \emph{Data Manipulation With {R}}.
+\newblock Use R! 2008.
+\newblock ISBN 0-387-74730-3.
+
+\bibitem[Wegmann(2010)]{imageRaster}
+Wegmann.
+\newblock Raster vector tikz.png, 2010.
+\newblock URL
+  \url{https://commons.wikimedia.org/wiki/File:Raster_vector_tikz.png}.
+\newblock File: Raster\_vector\_tikz.png.
+
+\bibitem[Wickham()]{ggplot2-docs}
+Hadley Wickham.
+\newblock ggplot2 documentation.
+\newblock \url{http://docs.ggplot2.org}.
+\newblock Accessed: 2015-08-02.
+
+\bibitem[Wickham and Sievert(2016)]{WickhamGgplot2Book}
+Hadley Wickham and Carson Sievert.
+\newblock \emph{ggplot2: Elegant Graphics for Data Analysis}.
+\newblock Springer, Cham, 2nd edition, 2016.
+\newblock ISBN 9783319242750;331924275X.
+
+\end{thebibliography}

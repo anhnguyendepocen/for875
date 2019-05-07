@@ -1,0 +1,494 @@
+\chapter{Spatial data visualization and analysis}\label{CHAPTER:sp}
+
+\section{Overview}
+
+Recall that a data structure is a format for organizing and storing data. The structure is designed so that data can be accessed and worked with in specific ways. Statistical software and programming languages have methods (or functions) designed to operate on different kinds of data structures. 
+
+This chapter focuses on spatial data structures and some of the R functions that work with these data. Spatial data comprise values associated with locations, e.g., temperature at a given latitude, longitude, and perhaps elevation. Spatial data are typically organized into \textbf{vector} or \textbf{raster} data types. (See Figure \ref{FIG:raster}.)
+  
+\begin{itemize}
+  \item Vector data represent features such as discrete points, lines, and polygons. 
+  \item Raster data represent surfaces as a rectangular matrix of square cells or pixels. 
+\end{itemize}
+
+\begin{figure}[htbp]
+\includegraphics[width=5in]{08-spatialData/08-images/Raster_vector_tikz.png}
+\caption{Raster/vector comparison (\cite{imageRaster})}
+\label{FIG:raster}
+\end{figure}
+
+Whether or not we use a vector, raster, or a combination of the two depends on the type of problem that needs to be solved, the type of maps that need to be made, and the data source from which the data came. Both data structures have strengths and weaknesses in terms of functionality and representation. As you gain more experience working with spatial data, you will be able to determine which structure to use for a particular application.
+
+There is a large set of R packages available for working with spatial (and space-time) data. These packages are described in the \href{https://CRAN.R-project.org/view=Spatial}{CRAN Task View: Analysis of Spatial Data}. The CRAN task view attempts to organize the various packages into categories, e.g., \emph{Handling spatial data}, \emph{Reading and writing spatial data}, \emph{Visualization}, and \emph{Disease mapping and areal data analysis}, so users can quickly identify package options given their project needs. 
+
+Exploring the extent of the excellent spatial data tools available in R is beyond the scope of this book. Rather, we would point you to subject texts like \emph{Applied Spatial Data Analysis with R} by \cite{Bivand13} available for free via the MSU library system, and numerous online tutorials on pretty much any aspect of spatial data analysis with R. These tools make R a full-blown \href{https://en.wikipedia.org/wiki/Geographic\_information\_system}{Geographic Information System} (GIS) capable of spatial data manipulation and analysis on par with commercial GIS systems such as \href{http://www.esri.com/arcgis/about-arcgis}{ESRI's ArcGIS}. 
+
+\subsection{Some spatial data packages}
+
+This chapter will focus on a few R packages for manipulating and visualizing spatial data. Specifically we will touch on the following packages
+\begin{itemize}
+\item \verb+sp+: spatial data structures and methods 
+\item \verb+rgdal+: interface to the C/C\texttt{++} spatial data Geospatial Data Abstraction Library
+\item \verb+ggmap+: extends \verb+ggplot2+ language to handle spatial data
+\item \verb+leaflet+: generates dynamic online maps 
+\end{itemize}
+
+\section{Motivating data}
+We motivate the topics introduced in this chapter using some forestry data from the \href{https://www.nrs.fs.fed.us/ef/locations/me/penobscot}{Penobscot Experimental Forest} (PEF) located in Maine. The PEF is a long-term experimental forest that is used to understand the effects of silviculture (i.e., science of tending trees) treatments on forest growth and composition. The PEF is divided into non-overlapping management units that receive different harvesting treatments. Within each management unit is a series of observation point locations (called forest inventory plots) where forest variables have been measured. Ultimately, we want to summarize the inventory plots measurements by management unit and map the results. 
+
+\section{Reading spatial data into R}
+
+Spatial data come in a variety of file formats. Examples of popular vector file formats for points, lines, and polygons, include ESRI's \href{https://en.wikipedia.org/wiki/Shapefile}{shapefile} and open standard \href{https://en.wikipedia.org/wiki/GeoJSON}{GeoJSON}. Common raster file formats include \href{https://en.wikipedia.org/wiki/GeoTIFF}{GeoTIFF} and \href{https://en.wikipedia.org/wiki/NetCDF}{netCDF}\footnote{A longer list of spatial data file formats is available at \url{https://en.wikipedia.org/wiki/GIS_file_formats}.}.
+
+The \verb+rgdal+ function \verb+readOGR+ will read a large variety of vector data file formats (there is also a \verb+writeOGR()+ for writing vector data files). Raster data file formats can be read using the \verb+rgdal+ function \verb+readGDAL+ (yup, also a \verb+writeGDAL()+) or read functions in the \verb+raster+ package. All of these functions automatically cast the data into an appropriate R spatial data object (i.e., data structure), which are defined in the \verb+sp+ or \verb+raster+ packages. Table~\ref{tab:spatialObjs} provides an abbreviated list of these R spatial objects\footnote{A more complete list of the \texttt{sp} package's spatial data classes and methods is detailed in the package's vignette \url{https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf}.}. The \emph{Without attributes} column gives the \verb+sp+ package's spatial data object classes for points, lines, polygons, and raster pixels that do not have data associated with the spatial objects (i.e., without attributes in GIS speak). \verb+DataFrame+ is appended to the object class name once data, in the form of variables, are added to the spatial object.
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{lll}
+\hline
+ & Without attributes & With attributes\\ \hline
+Polygons & 	\verb+SpatialPolygons+ & 	\verb+SpatialPolygonsDataFrame+\\
+Points & 	\verb+SpatialPoints+ & 	\verb+SpatialPointsDataFrame+\\
+Lines & 	\verb+SpatialLines+ & 	\verb+SpatialLinesDataFrame+\\
+Raster & 	\verb+SpatialGrid+ & 	\verb+SpatialGridDataFrame+\\
+Raster & 	\verb+SpatialPixels+ & 	\verb+SpatialPixelsDataFrame+\\
+Raster & 	 & 	\verb+RasterLayer+\\
+Raster & 	 & 	\verb+RasterBrick+\\
+Raster & 	 & 	\verb+RasterStack+\\\hline
+\end{tabular}
+\caption{An abbreviated list of \texttt{sp} and \texttt{raster} data objects and associated classes for the fundamental spatial data types.}
+\label{tab:spatialObjs}
+\end{table}
+
+You can create your own spatial data objects in R. Below, for example, we create a \verb+SpatialPoints+ object consisting of four points. Then add some data to the points to make it a \verb+SpatialPointsDataFrame+.
+<<>>=
+library(sp)
+
+x <- c(3,2,5,6)
+y <- c(2,5,6,7)
+
+coords <- cbind(x, y)
+
+sp.pts <- SpatialPoints(coords)
+
+class(sp.pts)
+
+some.data <- data.frame(var.1 = c("a", "b", "c", "d"), var.2 = 1:4)
+
+sp.pts.df <- SpatialPointsDataFrame(sp.pts, some.data)
+
+class(sp.pts.df)
+@
+
+If, for example, you already have a data frame that includes the spatial coordinate columns and other variables, then you can promote it to a \verb+SpatialPointsDataFrame+ by indicating which columns contain point coordinates. You can extract or access the data frame associated with the spatial object using \verb+@data+. You can also access individual variables directly from the spatial object using \verb+$+ or by name or column number to the right of the comma in \verb+[,]+ (analogues to accessing variables in a data frame).
+
+<<>>=
+df <- data.frame(x = c(3,2,5,6), y=c(2,5,6,7), var.1 = c("a", "b", "c", "d"), var.2 = 1:4)
+class(df)
+
+#promote to a SpatialPointsDataFrame
+coordinates(df) <- ~x+y
+
+class(df)
+
+#access entire data frame
+df@data
+
+class(df@data)
+
+#access columns directly
+df$var.1
+
+df[,c("var.1","var.2")]
+
+df[,2]
+
+#get the bounding box
+bbox(df)
+@ 
+
+Here, the data frame \verb+df+ is promoted to a \verb+SpatialPointsDataFrame+ by indicating the column names that hold the longitude and latitude (i.e., \verb+x+ and \verb+y+ respectively) using the \verb+coordinates+ function. Here too, the \verb+@data+ is used to retrieve the data frame associated with the points. We also illustrate how variables can be accessed directly from the spatial object. The \verb+bbox+ function is used to return the bounding box that is defined by the spatial extent of the point coordinates. The other spatial objects noted in Table~\ref{tab:spatialObjs} can be created, and their data accessed, in a similar way\footnote{This cheatsheet written by Barry Rowlingson is a useful reference \url{www.maths.lancs.ac.uk/~rowlings/Teaching/UseR2012/cheatsheet.html}}. 
+
+More than often we find ourselves reading existing spatial data files into R. The code below uses the \verb+downloader+ package to download all of the PEF data we'll use in this chapter. The data are compressed in a single zip file, which is then extracted into the working directory using the \verb+unzip+ function. A look into the PEF directory using \verb+list.files+ shows nine files\footnote{The \texttt{list.files} function does not read data into R; it simply prints the contents of a directory.}. Those named ``MU-bounds.*'' comprise the shapefile that holds the PEF's management unit boundaries in the form of polygons. Like other spatial data file formats, shapefiles are made up of several different files (with different file extensions) that are linked together to form a spatial data object. The ``plots.csv'' file holds the spatial coordinates and other information about the PEF's forest inventory plots. The ``roads.*'' shapefile holds roads and trails in and around the PEF.
+
+<<tidy=FALSE>>=
+library(downloader)
+
+download("http://blue.for.msu.edu/FOR875/data/PEF.zip", 
+         destfile="./PEF.zip", mode="wb") 
+
+unzip("PEF.zip", exdir = ".")
+
+list.files("PEF")
+@
+
+Next we read the MU-bounds shapefile into R using \verb+readOGR()+\footnote{The authors of the \texttt{rgdal} library decided to have some information about the version of GDAL and other software specifics be printed when the library is loaded. Don't let it distract you.} and explore the resulting \verb+mu+ object. Notice that when we read a shapefile into R, we do not include a file extension with the shapefile name because a shapefile is always composed of multiple files.
+<<>>=
+library(rgdal)
+mu <- readOGR("PEF", "MU-bounds")
+@
+When called, the \verb+readOGR+ function provides a bit of information about the object being read in. Here, we see that it read the MU-bounds shapefile from PEF directory and the shapefile had 40 features (i.e., polygons) and 1 field (i.e., field is synonymous with column or variable in the data frame).
+
+You can think of the resulting \verb+mu+ object as a data frame where each row corresponds to a polygon and each column holds information about the polygon\footnote{Much of the actual spatial information is hidden from you in other parts of the data structure, but is available if you ask nicely for it (see subsequent sections).}.  More specifically, the \verb+mu+ object is a \verb+SpatialPolygonsDataFrame+.
+<<>>=
+class(mu)
+@
+
+As illustrated using the made-up point data in the example above, you can access the data frame associated with the polygons using \verb+@data+. 
+<<>>=
+class(mu@data)
+dim(mu@data)
+head(mu@data)
+@
+
+Above, a call to \verb+class()+ confirms we have accessed the data frame, \verb+dim()+ shows there are 40 rows (one row for each polygon) and one column, and \verb+head()+ shows the first six values of the column named \verb+mu_id+. The \verb+mu_id+ values are unique identifiers for each management unit polygon across the PEF.
+
+\section{Coordinate reference systems}
+One of the more challenging aspects of working with spatial data is getting used to the idea of a coordinate reference system. A \emph{coordinate reference system} (CRS) is a system that uses one or more numbers, or coordinates, to uniquely determine the position of a point or other geometric element (e.g., line, polygon, raster). For spatial data, there are two common coordinate systems:
+\begin{enumerate}
+\item Spherical coordinate system such as latitude-longitude, often referred to as a \emph{geographic coordinate system}.
+\item Projected coordinate system based on a map projection, which is a systematic transformation of the latitudes and longitudes that aims to minimize distortion that occurs from projecting maps of the earth's spherical surface onto a two-dimensional Cartesian coordinate plane. Projected coordinate systems are sometimes referred to as \emph{map projections}.
+\end{enumerate}
+There are numerous map projections\footnote{See partial list of map projections at \url{https://en.wikipedia.org/wiki/List\_of\_map\_projections}. See a humorous discussion of map projections at \url{http://brilliantmaps.com/xkcd/}.}. One of the more frustrating parts of working with spatial data is that it seems like each data source you find offers its data in a different map projection and hence you spend a great deal of time \emph{reprojecting} (i.e., transforming from one CRS to another) data into a common CRS such that they overlay correctly. Reprojecting is accomplished using the \verb+sp+ package's \verb+spTransform+ function as demonstrated in Section~\ref{sec:ggmap}.
+
+In R, a spatial object's CRS is accessed via the \verb+sp+ package \verb+proj4string+ function. The code below shows the current projection of \verb+mu+.
+<<>>=
+proj4string(mu)
+@ 
+The cryptic looking string returned by \verb+proj4string()+ is a set of directives understood by the \href{http://proj4.org/}{proj.4} C library, which is part of \verb+sp+, and used to map geographic longitude and latitude coordinates into the projected Cartesian coordinates. This CRS tells us the \verb+mu+ object is in \href{https://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system}{Universal Transverse Mercator (UTM)} zone 19 coordinate system.\footnote{If you start dealing with a lot of spatial data and reprojecting, \url{http://spatialreference.org} is an excellent resources for finding and specifying coordinate reference systems.}
+
+\section{Illustration using \texttt{ggmap}}\label{sec:ggmap}
+Let's begin by making a map of PEF management unit boundaries over top of a satellite image using the \verb+ggmap+ package. Given an address, location, or bounding box, the \verb+ggmap+ package's \verb+get_map+ function will query Google Maps, OpenStreetMap, Stamen Maps, or Naver Map servers for a user-specified map type. The \verb+get_map+ function requires the location or bounding box coordinates be in a geographic coordinate system (i.e., latitude-longitude). This means we need to reproject \verb+mu+ from UTM zone 19 to latitude-longitude geographic coordinates, which is defined by the \verb'"+proj=longlat +datum=WGS84"' proj.4 string. As seen below, the first argument in \verb+spTransform+ function is the spatial object to reproject and the second argument is a CRS object created by passing a proj.4 string into the \verb+CRS+ function.
+<<>>=
+mu <- spTransform(mu, CRS("+proj=longlat +datum=WGS84"))
+proj4string(mu)
+@ 
+
+Unfortunately, we cannot just feed the \verb+SpatialPolygonsDataFrame+ \verb+mu+ into \verb+ggplot+ (perhaps some day soon this will be possible). Rather, we need to first convert the \verb+SpatialPolygonsDataFrame+ into a specially formatted data frame using the \verb+fortify+ function that is part of the \verb+ggplot2+ package\footnote{\texttt{ggmap} depends on \texttt{ggplot2} so \texttt{ggplot2} will be automatically loaded when you call \texttt{library(ggmap)}.}. The \verb+fortify+ function will also need a unique identifier for each polygon specified using the \verb+region+ argument, which for \verb+mu+ is the \verb+mu_id+.
+
+<<>>=
+library(ggmap)
+mu.f <- fortify(mu, region="mu_id")
+head(mu.f)
+@ 
+Notice the \verb+id+ column in the fortified version of \verb+mu+ holds each polygon's \verb+mu_id+ value (this will be important later when we link data to the polygons).
+
+Next, we query the satellite imagery used to underlay the management units (we'll generally refer to this underlying map as the basemap).
+<<tidy=FALSE>>=
+mu.bbox <- bbox(mu)
+
+basemap <- get_map(location=mu.bbox, zoom = 14, maptype="satellite")
+
+ggmap(basemap) +
+    geom_polygon(data=mu.f, aes(x = long, y = lat, group=group), 
+                 fill=NA, size=0.2, color="orange")
+@ 
+
+Looks pretty good!\footnote{You can ignore the warning and messages.} Take a look at the \verb+get_map+ function manual page and try different options for \verb+maptype+ (e.g., \verb+maptype="terrain"+).
+
+Next we'll add the forest inventory plots to the map. Begin by reading in the PEF forest inventory plot data held in ``plots.csv''. Recall, foresters have measured forest variables at a set of locations (i.e., inventory plots) within each management unit. The following statement reads these data and displays the resulting data frame structure. 
+<<>>=
+plots <- read.csv("PEF/plots.csv", stringsAsFactors=FALSE)
+str(plots)
+@ 
+
+In \verb+plots+ each row is a forest inventory plot and columns are:
+\begin{enumerate}
+  \item \verb+mu_id+ identifies the management unit within which the plot is located
+  \item \verb+plot+ unique plot number within the management unit
+  \item \verb+easting+ longitude coordinate in UTM zone 19
+  \item \verb+northing+ latitude coordinate in UTM zone 19
+  \item \verb+biomass_mg_ha+ tree biomass in metric ton (per hectare basis)
+  \item \verb+stocking_stems_ha+ number of tree (per hectare basis)
+  \item \verb+diameter_cm+ average tree diameter measured 130 cm up the tree trunk
+  \item \verb+basal_area_m2_ha+ total cross-sectional area at 130 cm up the tree trunk (per hectare basis)
+\end{enumerate}
+
+There is nothing inherently spatial about this data structure---it is simply a data frame. We make \verb+plots+ into a spatial object by identifying which columns hold the coordinates. This is done below using the \verb+coordinates+ function, which promotes the \verb+plots+ data frame to a \verb+SpatialPointsDataFrame+. 
+<<tity=FALSE>>=
+coordinates(plots) <- ~easting+northing
+
+class(plots)
+@ 
+
+Although \verb+plots+ is now a \verb+SpatialPointsDataFrame+, it does not know to which CRS the coordinates belong; hence, the \verb+NA+ when \verb+proj4string(plots)+ is called below. As noted in the \verb+plots+ file description above, \verb+easting+ and \verb+northing+ are in UTM zone 19. This CRS is set using the second call to \verb+proj4string+ below.
+
+<<tidy=FALSE>>=
+proj4string(plots)
+
+proj4string(plots) <- CRS("+proj=utm +zone=19 +datum=NAD83 +units=m 
+                             +no_defs +ellps=GRS80 +towgs84=0,0,0")                   
+@ 
+
+Now let's reproject \verb+plots+ to share a common CRS with \verb+mu+
+<<>>=
+plots <- spTransform(plots, CRS("+proj=longlat +datum=WGS84"))
+@ 
+Note, because \verb+mu+ is already in the projection we want for \verb+plots+, we could have replaced second argument in the \verb+spTransform+ call above with \verb+proj4string(mu)+ and saved some typing.
+
+We're now ready to add the forest inventory plots to the existing basemap with management units. Specifically, let's map the \verb+biomass_mg_ha+ variable to show changes in biomass across the forest. No need to fortify \verb+plots+, as \verb+ggplot+ is happy to take \verb+geom_point+'s \verb+data+ argument as a data frame (although we do need to convert \verb+plots+ from a \verb+SpatialPointsDataFrame+ to a data frame using the \verb+as.data.frame+ function). Check out the \verb+scale_color_gradient+ function in your favorite \verb+ggplot2+ reference to understand how the color scale is set.
+<<tidy=FALSE>>=
+ggmap(basemap) +
+    geom_polygon(data=mu.f, aes(x = long, y = lat, group=group), 
+                 fill=NA, size=0.2, color="orange") +
+    geom_point(data=as.data.frame(plots), 
+               aes(x = easting, y = northing, color=biomass_mg_ha)) + 
+    scale_color_gradient(low="white", high="darkblue") +
+    labs(color = "Biomass (mg/ha)")
+@
+
+There is something subtle and easy to miss in the code above. Notice the \verb+aes+ function arguments in \verb+geom_points+ take geographic longitude and latitude, \verb+x+ and \verb+y+ respectively, from the \verb+points+ data frame (but recall \verb+easting+ and \verb+northing+ were in UTM zone 19). This works because we applied \verb+spTransform+ to reproject the \verb+points+ \verb+SpatialPointsDataFrame+ to geographic coordinates. \verb+sp+ then replaces the values in \verb+easting+ and \verb+northing+ columns with the reprojected coordinate values when converting a \verb+SpatialPointsDataFrame+ to a data frame via \verb+as.data.frame()+.
+
+Foresters use the inventory plot measurements to estimate forest variables within management units, e.g., the average or total management unit biomass. Next we'll make a plot with management unit polygons colored by average \verb+biomass_mg_ha+.
+<<tidy=FALSE>>=
+mu.bio <- plots@data %>% group_by(mu_id) %>% 
+    summarize(biomass_mu = mean(biomass_mg_ha))
+print(mu.bio)
+@ 
+Recall from Section~\ref{sec:dplyr} this one-liner can be read as ``get the data frame from \verb+plots+'s \verb+SpatialPointsDataFrame+ \emph{then} group by management unit \emph{then} make a new variable called \verb+biomass_mu+ that is the average of \verb+biomass_mg_ha+ and assign it to the \verb+mu.bio+ tibble.''
+
+The management unit specific \verb+biomass_mu+ can now be joined to the \verb+mu+ polygons using the common \verb+mu_id+ value. Remember when we created the fortified version of \verb+mu+ called \verb+mu.f+? The \verb+fortify+ function \verb+region+ argument was \verb+mu_id+ which is the \verb+id+ variable in the resulting \verb+mu.f+. This \verb+id+ variable in \verb+mu.f+ can be linked to the \verb+mu_id+ variable in \verb+mu.bio+ using \verb+dplyr+'s \verb+left_join+ function as illustrated below.  
+<<>>=
+head(mu.f, n=2)
+
+mu.f <- left_join(mu.f, mu.bio, by = c('id' = 'mu_id'))
+
+head(mu.f, n=2)
+@
+The calls to \verb+head()+ show the first few rows of \verb+mu.f+ pre- and post-join. After the join, \verb+mu.f+ includes \verb+biomass_mu+, which is used used below for \verb+geom_polygon+'s \verb+fill+ argument to color the polygons accordingly. 
+
+<<tidy=FALSE>>=
+ggmap(basemap) +
+    geom_polygon(data=mu.f, aes(x = long, y = lat, 
+                                group=group, fill=biomass_mu), 
+                 size=0.2, color="orange") +
+    scale_fill_gradient(low="white", high="darkblue", 
+                        na.value="transparent") +
+    labs(fill="Biomass (mg/ha)")
+@ 
+
+Let's add the roads and some more descriptive labels as a finishing touch. The roads data include a variable called \verb+type+ that identifies the road type. To color roads by type in the map, we need to join the \verb+roads+ data frame with the fortified roads \verb+roads.f+ using the common variable \verb+id+ as a road segment specific identifier. Then \verb+geom_path+'s \verb+color+ argument gets this \verb+type+ variable as a factor to create road-specific color. The default coloring of the roads blends in too much with the polygon colors, so we manually set the road colors using the \verb+scale_color_brewer+ function. The \verb+palette+ argument in this function accepts a set of key words, e.g., \verb+"Dark2"+, that specify sets of diverging colors chosen to make map object difference optimally distinct (see, the manual page for \verb+scale_color_brewer+, \url{http://colorbrewer2.org}, and blog \href{https://www.r-bloggers.com/r-using-rcolorbrewer-to-colour-your-figures-in-r}{here}.)\footnote{Install the \texttt{RColorBrewer} package and run \texttt{library(RColorBrewer); display.brewer.all()} to get a graphical list of available palettes.}.
+<<tidy=FALSE>>=
+roads <- readOGR("PEF", "roads")
+
+roads <- spTransform(roads, proj4string(mu))
+
+roads.f <- fortify(roads, region="id")
+roads.f <- left_join(roads.f, roads@data, by = c('id' = 'id'))
+
+ggmap(basemap) +
+    geom_polygon(data=mu.f, aes(x = long, y = lat, group=group, 
+                                fill=biomass_mu), 
+                 size=0.2, color="orange") +
+    geom_path(data=roads.f, aes(x = long, y = lat, 
+                                group=group, color=factor(type))) +
+    scale_fill_gradient(low="white", high="darkblue", 
+                        na.value="transparent") +
+    scale_color_brewer(palette="Dark2") +
+    labs(fill="Biomass (mg/ha)", color="Road type", xlab="Longitude", 
+         ylab="Latitude", title="PEF forest biomass")
+@ 
+The second, and more cryptic, of the two warnings from this code occurs because some of the roads extend beyond the range of the map axes and are removed (nothing to worry about).
+
+\section{Illustration using \texttt{leaflet}}\label{sec:leaflet}
+
+Leaflet is one of the most popular open-source JavaScript libraries for interactive maps. As noted on the official \href{https://rstudio.github.io/leaflet}{R leaflet website}, it's used by websites ranging from \emph{The New York Times} and \emph{The Washington Post} to GitHub and Flickr, as well as by GIS specialists like OpenStreetMap, Mapbox, and CartoDB.
+
+The \href{https://rstudio.github.io/leaflet}{R leaflet website} is an excellent resource to learn leaflet basics, and should serve as a reference to gain a better understanding of the topics we briefly explore below.
+
+You create a leaflet map using these basic steps:
+\begin{enumerate}
+  \item Create a map by calling \verb+leaflet()+
+  \item Add data layers to the map using layer functions such as, \verb+addTiles()+, \verb+addMarkers()+, \verb+addPolygons()+, \verb+addCircleMarkers()+, \verb+addPolylines()+, \verb+addRasterImage()+ and other \verb+add...+ functions
+  \item Repeat step 2 to add more layers to the map
+  \item Print the map to display it
+\end{enumerate}
+
+Here's a brief example.
+<<eval=FALSE, tidy=FALSE>>=
+library(leaflet)
+
+m <- leaflet() %>%
+      addTiles() %>%  # Add default OpenStreetMap map tiles
+      addMarkers(lng=-84.482004, lat=42.727516, 
+                 popup="<b>Here I am!</b>") # Add a clickable marker
+m  # Print the map
+@ 
+
+\begin{figure}[htbp]
+\includegraphics[width=6.5in]{08-spatialData/08-images/leaflet-here-i-am.png}
+\caption{\texttt{leaflet} interactive web map.}
+\label{FIG:leaflet}
+\end{figure}
+
+There are a couple things to note in the code. First, we use the pipe operator \verb+%>%+ just like in \verb+dplyr+ functions. Second, the \verb+popup+ argument in \verb+addMarkers()+ takes standard HTML and clicking on the marker makes the text popup. Third the resulting static map in Figure~\ref{FIG:leaflet} does not do justice to how incredibly fun, amazing, and addictive it is to create dynamic web maps (so run the code above in RStudio)!
+
+As seen in the \verb+leaflet()+ call above, the various \verb+add...+ functions can take longitude (i.e., \verb+lng+) and latitude (i.e., \verb+lat+). Alternatively, these functions can extract the necessary spatial information from \verb+sp+ objects, e.g., Table~\ref{tab:spatialObjs}, when passed to the data argument (which greatly simplifies life compared with map making using \verb+ggmap+).
+
+Given that a static PDF document like this does not lend itself to exploring the functionality of leaflet, we will talk more about leaflet's capabilities in the exercise at the end of this chapter.
+
+\section{Subsetting spatial data}
+
+You can imagine that we might want to subset spatial objects to map-specific points, lines, or polygons that meet some criteria, or perhaps extract values from polygons or raster surfaces at a set of points or geographic extent. These, and similar types, of operations are easy in R (as long as all spatial objects are in a common CRS). Recall from Section~\ref{SEC:SUBSETTING} how handy it is to subset data structures, e.g., vectors and data frames, using the \verb+[]+ operator and logical vectors? Well it's just as easy to subset spatial objects, thanks to the authors of \verb+sp+, \verb+raster+, and other spatial data packages.
+
+\subsection{Fetching and cropping data using \texttt{raster}}
+
+In order to motivate our exploration of spatial data subsetting and to illustrate some useful functionality of the \verb+raster+ package, let's download some elevation data for the PEF. The \verb+raster+ package has a rich set of functions for manipulating raster data as well as functions for downloading data from open source repositories. We'll focus on the package's \verb+getData+ function, which, given a location in geographic longitude and latitude or location name, will download data from \href{http://www.gadm.org/}{Global Administrative Boundaries} (GADM), \href{https://www2.jpl.nasa.gov/srtm/}{Shuttle Radar Topography Mission} (SRTM), \href{http://www.worldclim.org/}{Global Climate Data} (worldclim), and other sources commonly used in spatial data applications. Since we are subsetting and manipulating data, it will also be useful to load and use the \verb+dplyr+ package.
+
+Let's download SRTM surface elevation data for the PEF, check the resulting object's class and CRS, and display it using the \verb+raster+ package's \verb+image+ function along with the PEF forest inventory plots.
+
+<<tidy=FALSE, warnings=FALSE>>=
+library(raster)
+library(dplyr)
+
+pef.centroid <- as.data.frame(plots) %>% 
+    summarize(mu.x = mean(easting), mu.y = mean(northing))
+
+srtm <- getData("SRTM", lon = pef.centroid[1], lat = pef.centroid[2])
+
+class(srtm)
+
+proj4string(srtm)
+
+image(srtm)
+plot(plots, add = TRUE)
+@ 
+
+A few things to notice in the code above. First the \verb+getData+ function needs the longitude \verb+lon+ and latitude \verb+lat+ to identify which SRTM raster tile to return (SRTM data come in large raster tiles that cover the globe). As usual, look at the \verb+getData+ function documentation for a description of the arguments. To estimate the PEF's centroid coordinate, we averaged the forest inventory plots' latitude and longitude then assigned the result to \verb+pef.centroid+. Second, the \verb+srtm+ object result from \verb+getData()+ is a \verb+RasterLayer+, see Table~\ref{tab:spatialObjs}. Third, \verb+srtm+ is in longitude latitude geographic CRS (same as our other PEF data). Finally the image shows SRTM elevation along the coast of Maine, the PEF plots are those tiny specks of black in the northwest quadrant, and the white region of the image is the Atlantic Ocean. 
+
+Okay, this is a start, but it would be good to crop the SRTM image to the PEF's extent. This is done using \verb+raster+'s \verb+crop+ function. This function can use many different kinds of spatial objects in the second argument to calculate the extent at which to crop the object in the first argument. Here, I set \verb+mu+ as the second argument and save the resulting SRTM subset over the larger tile (the \verb+srtm+ object).
+
+<<>>=
+srtm <- crop(srtm, mu)
+
+image(srtm)
+plot(mu, add = TRUE)
+@
+
+The \verb+crop+ is in effect doing a spatial setting of the raster data. We'll return to the \verb+srtm+ data and explore different kinds of subsetting in the subsequent sections.
+
+\subsection{Logical, index, and name subsetting}
+As promised, we can subset spatial objects using the \verb+[]+ operator and a logical, index, or name vector. The key is that \verb+sp+ objects behave like data frames, see Section~\ref{SEC:DATAFRAMES}. A logical or index vector to the left of the comma in \verb+[,]+ accesses points, lines, polygons, or pixels. Similarly, a logical, index, or name vector to the right of the comma accesses variables.
+
+For example, say we want to map forest inventory plots with more than 10,000 stems per hectare, \verb+stems_ha+ (the \verb+min()+ was added below to double check that the subset worked correctly. 
+<<>>=
+min(plots$stems_ha)
+
+plots.10k <- plots[plots$stems_ha > 10000,]
+
+min(plots.10k$stems_ha)     
+@ 
+
+You can also add new variables to the spatial objects. 
+<<>>=
+plots$diameter_in <- plots$diameter_cm/2.54
+
+head(plots)
+@ 
+\subsection{Spatial subsetting and overlay}\label{SEC:SPSUBSET}
+A spatial overlay retrieves the indexes or variables from object $A$ using the location of object $B$. With some spatial objects this operation can be done using the \verb+[]+ operator. For example, say we want to select and map all management units in \verb+mu+, i.e., $A$, that contain plots with more than 10,000 stems per ha, i.e., $B$. 
+<<>>=
+mu.10k <- mu[plots.10k,]## A[B,]
+
+mu.10k.f <- fortify(mu.10k, region="mu_id")
+
+ggmap(basemap) +
+    geom_polygon(data=mu.10k.f, aes(x = long, y = lat, group=group), fill="transparent", size=0.2, color="orange") +
+    geom_point(data=as.data.frame(plots.10k), aes(x = easting, y = northing), color="white")
+@ 
+
+More generally, however, the \verb+over+ function offers consistent overlay operations for \verb+sp+ objects and can return either indexes or variables from object $A$ given locations from object $B$, i.e., \verb+over(B, A)+ or, equivalently, \verb+B%over%A+. The code below duplicates the result from the preceding example using \verb+over+.
+<<>>=
+mu.10k <- mu[mu$mu_id %in% unique(over(plots.10k, mu)$mu_id),]
+@ 
+Yes, this requires more code but \verb+over+ provides a more flexible and general purpose function for overlays on the variety of \verb+sp+ objects. Let's unpack this one-liner into its five steps.
+<<>>=
+i <- over(plots.10k, mu)
+ii <- i$mu_id
+iii <- unique(ii)
+iv <- mu$mu_id %in% iii
+v <- mu[iv,]
+@ 
+\begin{itemize}
+\item[$i$] The \verb+over+ function returns variables for \verb+mu+'s polygons that coincide with the $\Sexpr{nrow(plots.10k@data)}$ points in \verb+plots.10k+. No points fall outside the polygons and the polygons do not overlap, so $i$ should be a data frame with $\Sexpr{nrow(plots.10k@data)}$ rows. If polygons did overlap and a point fell within the overlap region, then variables for the coinciding polygons are returned.
+\item[$ii$] Select the unique \verb+mu+ identifier \verb+mu_id+ (this step is actually not necessary here because \verb+mu+ only has one variable).
+\item[$iii$] Because some management units contain multiple plots there will be repeat values of \verb+mu_id+ in \verb+ii+, so apply the \verb+unique+ function to get rid of duplicates.
+\item[$iv$] Use the \verb+%in%+ operator to create a logical vector that identifies which polygons should be in the final map.
+\item[$v$] Subset \verb+mu+ using the logical vector created in $iv$.
+\end{itemize}
+
+Now let's do something similar using the \verb+srtm+ elevation raster. Say we want to map elevation along trails, winter roads, and gravel roads across the PEF. We could subset \verb+srtm+ using the \verb+roads+ \verb+SpatialLinesDataFrame+; however, mapping the resulting pixel values along the road segments using \verb+ggmap+ requires a bit more massaging. So, to simplify things for this example, \verb+roads+ is first coerced into a \verb+SpatialPointsDataFrame+ called \verb+hikes.pts+ that is used to extract spatially coinciding \verb+srtm+ pixel values which themselves are coerced from \verb+raster+'s \verb+RasterLayer+ to \verb+sp+'s \verb+SpatialPixelsDataFrame+ called \verb+srtm.sp+ so that we can use the \verb+over+ function. We also choose a different basemap just for fun.
+<<tidy=FALSE, warnings=FALSE>>=
+hikes <- roads[roads$type %in% c("Trail", "Winter", "Gravel"),]
+ 
+hikes.pts <- as(hikes, "SpatialPointsDataFrame")
+srtm.sp <- as(srtm, "SpatialPixelsDataFrame")
+
+hikes.pts$srtm <- over(hikes.pts, srtm.sp)
+
+basemap <- get_map(location=mu.bbox,  zoom = 14, maptype="terrain")
+
+ggmap(basemap) +
+    geom_point(data=as.data.frame(hikes.pts), 
+               aes(x = coords.x1, y = coords.x2, color=srtm)) + 
+    scale_color_gradient(low="green", high="red") +
+    labs(color = "Hiking trail elevation\n(m above sea level)", 
+         xlab="Longitude", ylab="Latitude")
+@ 
+
+In the call to \verb+geom_point+ above, \verb+coords.x1+ \verb+coords.x2+ are the default names given to longitude and latitude, respectively, when \verb+sp+ coerces \verb+hikes+ to \verb+hikes.pts+. These points represent the vertices along line segments. The cryptic \verb+.doExtract+ warning just means that some vertices' points fell outside the \verb+srtm+ raster boundaries and were set to \verb+NA+ (hence the gray points on the map).
+
+Overlay operations involving lines and polygons over polygons require the \verb+rgeos+ package which provides an interface to the \href{https://trac.osgeo.org/geos/}{Geometry Engine - Open Source} (GEOS) C\texttt{++} library for topology operations on geometries. We'll leave it to you to explore these capabilities.
+
+\subsection{Spatial aggregation}\label{SEC:AGGREGATE}
+
+We have seen aggregation operations before when using the \verb+apply+ function and \verb+dplyr+'s \verb+summarize+ function. The \verb+summarize+ function is particularly powerful when combined with \verb+group_by()+, which can apply a function specified in \verb+summarize()+ to a variable partitioned using a grouping variable. The \verb+aggregate+ function in \verb+sp+ works in a similar manner, except groups are delineated by the spatial extent of a thematic variable. In fact, the work we did to create \verb+mu.bio+ using \verb+dplyr+ functions can be accomplished with \verb+aggregate()+. Using \verb+aggregate()+ will, however, require a slightly different approach for joining the derived average \verb+biomass_mg_ha+ to the fortified \verb+mu+. This is because the \verb+aggregate+ function will apply the user specified function to all variables in the input object, which, in our case, results in an \verb+NA+ for the linking variable \verb+mu_id+ as demonstrated below. 
+<<warning=FALSE>>=
+mu.ag <- aggregate(plots[,c("mu_id","biomass_mg_ha")], by=mu, FUN=mean)
+
+head(mu.ag@data, n=2)
+@ 
+With \verb+mu_id+ rendered useless, we do not have a variable that uniquely identifies each polygon for use in \verb+fortify+'s \verb+region+ argument; hence no way to subsequently join the unfortified and fortified versions of \verb+mu.bio.ag+. Here's the work around. If the \verb+region+ is not specified, \verb+fortify()+ uses an internal unique polygon ID that is part of the \verb+sp+ data object and accessed via \verb+row.names()+\footnote{With other data, there is a chance the row names differ from the unique polygon IDs. Therefore a more reliable approach to getting a unique ID is to use \texttt{sapply(slot(mu.ag, 'polygons'), function(x) slot(x, 'ID'))}, but replace \texttt{mu.ag} with your \texttt{SpatialPolygonsDataFrame}. Also, this approach will work with other \texttt{sp} objects in right column of Table~\ref{tab:spatialObjs}.} So, the trick is to add this unique polygon ID to the \verb+aggregate()+ output prior to calling \verb+fortify()+ as demonstrated below.
+
+<<>>=
+mu.ag$id <- row.names(mu.ag)
+
+mu.ag.f <- fortify(mu.ag)
+
+mu.ag.f <- left_join(mu.ag.f, mu.ag@data)
+
+ggmap(basemap) +
+    geom_polygon(data=mu.ag.f, aes(x = long, y = lat, 
+                                group=group, fill=biomass_mg_ha), 
+                 size=0.2, color="orange") +
+    scale_fill_gradient(low="white", high="darkblue", 
+                        na.value="transparent") +
+    labs(fill="Biomass (mg/ha)")
+@ 
+
+The \verb+aggregate()+ function will work with all \verb+sp+ objects. For example let's map the variance of pixel values in \verb+srtm.sp+ by management unit. Notice that \verb+aggregate()+ is happy to take a user-specified function for \verb+FUN+.
+<<tidy=FALSE>>=
+mu.srtm <- aggregate(srtm.sp, by=mu,
+                     FUN=function(x){sqrt(var(x))})
+
+mu.srtm$id <- row.names(mu.srtm)
+
+mu.srtm.f <- fortify(mu.srtm)
+
+mu.srtm.f <- left_join(mu.srtm.f, mu.srtm@data)
+
+ggmap(basemap) +
+    geom_polygon(data=mu.srtm.f, aes(x = long, y = lat, group=group, 
+                                     fill=srtm_23_04), 
+                 size=0.2, color="orange") +
+    scale_fill_gradient(low="green", high="red") +
+        labs(fill = "Elevation standard deviation\n(m above sea level)", 
+         xlab="Longitude", ylab="Latitude")
+@ 
+
+\section{Where to go from here}
+This chapter just scratches the surface of R's spatial data manipulation and visualization capabilities. The basic ideas we presented here should allow you to take a deeper look into \verb+sp+, \verb+rgdal+, \verb+rgeos+, \verb+ggmap+, \verb+leaflet+, and myriad of other excellent user-contributed R spatial data packages. A good place to start is with Edzer Pebesma's excellent vignette on the use of the map overlay and spatial aggregation, available \href{https://cran.r-project.org/web/packages/sp/vignettes/over.pdf}{here}, as well as \emph{Applied Spatial Data Analysis with R} by \cite{Bivand13}. 
+
+\begin{hw}
+{Learning objectives: practice loading and reprojecting spatial data; analyze spatial data; create leaflet maps to convey analysis results; interpret analysis results.}
+\end{hw}

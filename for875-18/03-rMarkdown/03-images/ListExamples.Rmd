@@ -1,0 +1,19 @@
+---
+output: pdf_document
+---
+An unordered list:
+
+* List item 1
+* List item 2
+    + Second level list item 1
+    + Second level list item 2
+        + Third level list item
+* List item 3
+
+An ordered list:
+
+1. List item 1
+2. List item 2
+    c. Sub list item 1
+    q. Sub list item 2
+17. List item 3

@@ -1,0 +1,285 @@
+%test
+%test2
+% !TEX TS-program = Knitr
+\documentclass[12pt,oneside]{book}
+\usepackage{url}
+\usepackage{natbib}
+
+%\setcounter{secnumdepth}{2}
+
+%\numberwithin{figure}[chapter]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%The stuff below is added by VM
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{fancyvrb}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usepackage{listings} 
+\usepackage{booktabs}
+\usepackage{multirow, bigdelim}
+
+
+%\usepackage{floatflt}
+%\usepackage{subfigure}
+\usepackage{enumerate}
+\usepackage{subcaption}
+
+%\usepackage[cp1252]{inputenc}
+%\usepackage[utf8x]{inputenc}
+
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb, amsthm}
+
+%% \theoremstyle{definition}
+%% \newtheorem{DD}[]{DEFINITION}
+
+%% \theoremstyle{definition}
+%% \newtheorem{DIY}[]{DIY}
+
+%% \theoremstyle{definition}
+%% \newtheorem{EXAMPLE}[]{EXAMPLE}
+
+%% \newenvironment{diy}
+%% {\noindent\begin{DIY}}
+%% {\hfill $\bigstar$ \end{DIY}}
+
+%% \newenvironment{exa}
+%% {\noindent\begin{EXAMPLE}}
+%% {\hfill $\bigstar$ \end{EXAMPLE}}
+
+%% \newenvironment{ddef}
+%% {\noindent\begin{DD}}
+%% {\hfill $\bigstar$ \end{DD}}
+
+%% \theoremstyle{definition}
+%% \newtheorem{exercise}[]{Exercise}
+
+%% \theoremstyle{definition}
+%% \newtheorem{task}[]{Task}
+
+%% \newenvironment{exer}
+%% {\noindent\begin{exercise}}
+%% {\hfill $\bigstar$ \end{exercise}}
+
+%%%%%%%%video box
+
+\usepackage{geometry} 
+\usepackage{tikz} 
+
+
+\definecolor{fblue}{RGB}{59,89,152}
+\definecolor{jgreen}{RGB}{0,168,107}
+\definecolor{dorange}{RGB}{194,30,86}
+
+\usepackage{newfloat}
+\usepackage{caption}
+\DeclareFloatingEnvironment[fileext=lvid,placement={!htb},name=Frame]{video}
+\DeclareFloatingEnvironment[fileext=lhw,placement={!htb},name=Frame]{exercise}
+\DeclareFloatingEnvironment[fileext=lex,placement={!htb},name=Frame]{example}
+\usepackage{hyperref}
+
+\newcommand{\be}{\begin{enumerate}}
+\newcommand{\ee}{\end{enumerate}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+
+
+\newenvironment{vid}[1]{
+  \begin{video}[htbp]
+    \captionsetup{textformat=empty,labelformat=empty}
+    \caption{#1}
+    \centering
+    \begin{tikzpicture}
+      \node[anchor=text,text width=\columnwidth-1.2cm, draw=fblue, rounded corners, line width=1pt, fill=fblue!10, inner sep=5mm] (big) {\\#1};
+      \node[draw=fblue, rounded corners, line width=.5pt, fill=fblue!40, anchor=west, xshift=5mm] (small) at (big.north west) {Video \thevideo};
+    \end{tikzpicture}
+  \end{video}
+}
+
+\newenvironment{hw}[1]{
+  \begin{exercise}[htbp]
+    \captionsetup{textformat=empty,labelformat=empty}
+    \caption{#1}
+    \centering
+    \begin{tikzpicture}
+      \node[anchor=text,text width=\columnwidth-1.2cm, draw=jgreen, rounded corners, line width=1pt, fill=jgreen!10, inner sep=5mm] (big) {\\#1};
+      \node[draw=jgreen, rounded corners, line width=.5pt, fill=jgreen!40, anchor=west, xshift=5mm] (small) at (big.north west) {Exercise \theexercise};
+    \end{tikzpicture}
+  \end{exercise}
+}
+
+\newenvironment{ex}[1]{
+  \begin{example}[htbp]
+    \captionsetup{textformat=empty,labelformat=empty}
+    \caption{#1}
+    \centering
+    \begin{tikzpicture}
+      \node[anchor=text,text width=\columnwidth-1.2cm, draw=dorange, rounded corners, line width=1pt, fill=dorange!10, inner sep=5mm] (big) {\\#1};
+      \node[draw=dorange, rounded corners, line width=.5pt, fill=dorange!40, anchor=west, xshift=5mm] (small) at (big.north west) {Additional example \theexample};
+    \end{tikzpicture}
+  \end{example}
+}
+
+%% \renewcommand\thevideo{\thechapter.\arabic{video}}
+%% \renewcommand\theexercise{\thechapter.\arabic{exercise}}
+%% \renewcommand\theexample{\thechapter.\arabic{example}}
+\renewcommand\thevideo{\arabic{video}}
+\renewcommand{\theexercise}{\arabic{exercise}}
+\renewcommand\theexample{\arabic{example}}
+
+\usepackage{chngcntr}
+\counterwithout{video}{chapter}
+\counterwithout{exercise}{chapter}
+\counterwithout{example}{chapter}
+%%%%%%%%
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=fblue,
+}
+ 
+\urlstyle{same}
+
+\setlength{\oddsidemargin}{0.5cm}
+\setlength{\evensidemargin}{0.5cm}
+\setlength{\textwidth}{15.5cm}
+\setlength{\topmargin}{-1cm}
+\setlength{\textheight}{22.5cm}
+
+\newcommand{\Rfunc}[1]{\texttt{#1}}
+\newcommand{\Rpackage}[1]{\texttt{#1}}
+\usepackage{calc}
+
+\usepackage{manfnt}
+
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{20pt}
+
+\setcounter{tocdepth}{5}
+
+%\usepackage[numbers]{natbib}
+%\usepackage{atbeginend}
+%\BeforeBegin{Soutput}{\vspace{-\baselineskip}}
+%\AfterEnd{Soutput}{\vspace{-\baselineskip}}
+%\BeforeBegin{Sinput}{\vspace{-\baselineskip}}
+%\AfterEnd{Sinput}{\vspace{-\baselineskip}}
+
+\title{R Programming for Data Sciences}
+\author{Andrew O. Finley, Vince Melfi, Jeffrey W. Doser}
+
+\begin{document}
+%\SweaveOpts{concordance=TRUE}
+%\input{chapterexample.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%The following fine-tune the graphics output
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\thispagestyle{empty}
+%\mbox{}\\[2.5in]
+
+%\frontmatter
+
+%\maketitle
+
+\maketitle
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\listofexercise
+
+\listofvideo
+
+%\listofexample
+
+\mainmatter
+<<echo=F>>=
+library(xtable)
+@
+
+<<echo=F>>=
+library(knitr)
+@
+
+<<echo=F>>=
+opts_chunk$set(comment=NA, tidy=TRUE, prompt=TRUE)
+options(formatR.arrow=TRUE)
+@
+
+<<echo=F>>=
+options(width=60)
+tidy.opts = list(width.cutoff = 60)
+@
+
+<<chapter1, child='01-data/01-data.Rnw'>>=
+@
+
+<<chapter2, child='02-introToR/02-introToR.Rnw'>>=
+@
+
+<<chapter3, child='03-rMarkdown/03-rMarkdown.Rnw'>>=
+@
+
+<<chapter4, child='04-dataStructures/04-dataStructures.Rnw'>>=
+@
+
+<<chapter5, child='05-graphics/05-graphics.Rnw'>>=
+@
+
+<<chapter6, child='06-workingWithData/06-workingWithData.Rnw'>>=
+@
+
+<<chapter7, child='07-functionsAndProgramming/07-functionsAndProgramming.Rnw'>>=
+@
+
+<<chapter8, child='08-spatialData/08-spatialData.Rnw'>>=
+@ 
+
+<<chapter9, child='09-shiny/09-shiny.Rnw'>>=
+@
+
+<<chapter10, child='10-classification/10-classification.Rnw'>>=
+@
+
+<<chapter11, child='11-textData/11-textData.Rnw'>>=
+@
+
+<<chapter12, child='12-rcpp/12-rcpp.Rnw'>>=
+@ 
+
+<<chapter13, child = '13-databases/13-databases.Rnw'>>=
+@
+
+<<chapter14, child = '14-signalProcessing/14-signalProcessing.Rnw'>>=
+@
+
+
+\nocite{*}
+
+\bibliographystyle{plainnat}
+\bibliography{text}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

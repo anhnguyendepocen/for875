@@ -1,0 +1,32 @@
+---
+output: pdf_document
+---
+# A first *level* ~~header~~
+
+## A second level header
+
+### A third level header
+
+Text subscripts and superscripts:
+
+x~2~ + y~2~
+
+10^3^ = 1000
+
+Mathematics examples:
+
+$x_a$
+
+$x^a$
+
+$\int_0^1 x^2 dx$
+
+$\frac{x}{y}$
+
+$\sqrt{x}$
+
+$\sqrt[n]{x}$
+
+$\sum_{k=1}^n$
+
+$\prod_{k=1}^n$

@@ -1,0 +1,33 @@
+---
+title: "R Markdown"
+author: "Andy Finley"
+date: "April 3, 2017"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+Basic formatting: 
+
+*italic* 
+
+**bold**
+
+~~strikethrough~~ 
+
+A code chunk:
+
+```{r}
+x <- 1:10
+y <- 10:1
+mean(x)
+sd(y)
+```
+
+Inline code:
+
+`r 5+5`
+
+Inline code not executed:
+
+`5+5`

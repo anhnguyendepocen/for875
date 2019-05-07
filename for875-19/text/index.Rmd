@@ -1,0 +1,26 @@
+--- 
+title: "R Programming for Data Sciences"
+author: "Andrew O. Finley, Vince Melfi, Jeffrey W. Doser"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+---
+
+# Course Description {-}
+
+This book serves as an introduction to programming in R and the use of associated open source tools. We address practical issues in documenting workflow, data management, and scientific computing. 
+
+```{r setup, include=FALSE}
+library(tidyr)
+library(knitr)
+options(
+  htmltools.dir.version = FALSE, formatR.indent = 2, width = 55, digits = 4,
+  formatR.arrow = TRUE
+)
+opts_chunk$set(comment=NA, tidy=TRUE, prompt=TRUE)
+```

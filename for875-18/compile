@@ -1,0 +1,11 @@
+Rscript -e "library(knitr); knit('FOR875-text.Rnw')"
+pdflatex FOR875-text.tex
+bibtex FOR875-text
+pdflatex FOR875-text.tex
+pdflatex FOR875-text.tex
+
+rm FOR875-text.R
+Rscript -e "library(knitr); purl('FOR875-text.Rnw')"
+
+tail -n +150 FOR875-text.R > tmp
+mv tmp FOR875-text.R

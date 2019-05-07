@@ -1,0 +1,17 @@
+base
+knitr
+xtable
+ElemStatLearn
+ggplot2
+gapminder
+tidyr
+dplyr
+bindrcpp
+sp
+downloader
+rgdal
+ggmap
+raster
+MASS
+VGAM
+class

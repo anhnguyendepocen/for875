@@ -1,0 +1,263 @@
+---
+title: "FOR/STT 875, Exercise 3"
+output: html_document
+---
+
+## Learning objectives
+  + create, subset, and manipulate vector contents and attributes
+  + summarize vector data using R `tables` and other functions
+  + generate frequency and timeseries graphics using vector data
+
+## Overview and deliverables
+Modify this R Markdown file by filling in the code needed to answer the questions. The Exercise 3 video provides some guidance for completing this exercise.
+
+## Submission instructions
+Upload your exercise_3.rmd and exercise_3.html files to the Exercise 3 D2L dropbox. 
+
+## Grading
+You will receive full credit if your R Markdown document: 1) compiles without error; 2) correctly answers the questions below; and 3) is neatly formatted. 
+
+## Getting started
+First we'll set code chunk options to be applied to the entire document, unless overridden by the options in an individual code chunk. Typically we would use `echo = FALSE` in this chunk, since we wouldn't want it seen in the final document, but here we display the chunk.
+
+```{r global_options}
+knitr::opts_chunk$set(comment = NA, tidy = TRUE)
+```
+
+## The data
+
+For this exercise we'll use some data that was recently highlighted in an April 30, 2017, Denver Post piece entilted [Home explosion reignites debate over drilling setbacks, but with a twist](http://www.denverpost.com/2017/04/30/firestone-home-explosion-drilling-setbacks/) by Christopher Osher and Bruce Finley (no relation). This artical pulled data from the [Colorado Oil & Gas Conservation Commission (COGCC)](http://cogcc.state.co.us/data2.html#/downloads) to generate [this map](http://www.denverpost.com/2017/05/01/oil-gas-wells-colorado-map/) of oil and gas wells across Colorado.
+
+I downloaded and cleaned up the COGCC data used to create the map. 
+
+Max_TVD Maximum Total Vertical Depth 
+
+Spud_Date spud is the process of beginning to drill a well in the oil and gas industry
+
+Facil_Stat Facility Status in COGIS Database (AB-Abandoned, AC-Active, AL-Abandoned Location, CL-Closed, CM-Commingled, DA-Dry and Abandoned, DG-Drilling, DM-Domestic Well, IJ-Injecting, PA-Plugged and Abandoned, PR-Producing, RC-Recompleted, SI-Shut In, TA-Temporarily Abandoned, WO-Waiting on Completion, XX-Permitted Location)
+
+Latitude
+
+Longitude
+
+
+As noted in the learning objectives, this exercise provides some practice with vectors. We'll read in three vectors, one that lists the teams who won the World Series, one that lists the teams who lost the World Series, and a third that gives the years the World Series was played. 
+
+```{r}
+con <- url("http://blue.for.msu.edu/STT301/data/WorldSeries.gz")
+load(con)
+close(con)
+rm(con)
+ls()
+```
+
+List the first 50 World Series winning teams.
+
+```{r}
+winners[1:50]
+```
+
+List the first 50 World Series losing teams.
+```{r}
+losers[1:50]
+```
+
+List the first 50 years that the World Series was played.
+
+```{r}
+years[1:50]
+```
+
+The `table` function builds a contingency table. For example,
+
+```{r}
+animals <- c("dog", "cat", "dog", "cat", "horse", "dog")
+table(animals)
+```
+
+Create a table which gives the number of times each team has won the World Series.
+
+```{r}
+table(winners)
+```
+
+By default the table is ordered alphabetically by the name of the team. It might be more useful to order by the number of World Series won. Apply the `sort` function to the table to achieve this, and save the resulting table as `winners_table`.
+
+```{r}
+winners_table <- sort(table(winners))
+winners_table
+```
+
+Which two teams have won the most World Series?
+
+Use the `[]` subsetting capabilities of R applied to `winners_table` to create a table called `top_winners` which contains the five teams which won the World Series most often. (There are several teams which are tied with five wins, and two of these will show up in the fourth and fifth positions. Don't worry about the fact that we should include the other teams too.)
+
+```{r}
+top_winners <- winners_table[(length(winners_table) - 4): length(winners_table)]
+top_winners
+```
+
+Draw a bar graph of the `top_winners` table using the `barplot` function.
+
+```{r}
+barplot(top_winners)
+```
+
+It's likely that the labels for some of the bars did not fit on the bar graph you drew. The argument `cex.names` allows you to increase (with values larger than 1) or decrease (with values less than 1) the size of the font. Experiment with `cex.names` to get the labels all to fit on the graph.
+
+```{r}
+barplot(top_winners, cex.names = 0.65)
+```
+
+Now create a table of the losing teams, and sort in decreasing order, by giving the `decreasing = TRUE` argument to `sort`.
+
+```{r}
+losing_table <- sort(table(losers), decreasing = TRUE)
+losing_table
+```
+
+Which two teams have lost the World Series most often?
+
+Create a bar graph of the five teams which have lost most often, again making sure the labels are all printed.
+
+```{r}
+barplot(losing_table[1:5], cex.names = 0.65)
+```
+
+Use R to find out how many years has the World Series been played.
+```{r}
+length(years)
+```
+
+Use R to list the most recent World Series winner. Do this in a way that does NOT require you to know how many World Series there have been.
+
+```{r}
+winners[length(winners)]
+```
+
+Use R to list the past eight World Series LOSING teams. Again, you shouldn't need to know how many World Series have been played.
+
+Find the type of each of the three vectors.
+```{r}
+losers[(length(losers)-7):length(losers)]
+losers[-(1:(length(losers)-8))]
+```
+
+The vectors listing the winning and losing teams would be more informative if the years of the wins and losses were included. We can give names to each vector element using the `names` function. For example:
+```{r}
+animals
+names(animals) <- c("Asta", "Felix", "Chopper", "Garfield", "Mr. Ed", "Lassie")
+animals
+```
+
+Use `names` to add the years of the World Series as names for both the `winners` and `losers` vectors, and list the first ten elements of each vector with the names included.
+```{r}
+names(winners) <- years
+names(losers) <-  years
+winners[1:10]
+losers[1:10]
+```
+
+Create a vector called `sorted_winners` which gives the winning teams sorted alphabetically. List the first thirty teams in this vector, and find (by inspection) the years when the Cleveland Indians won the World Series.
+
+```{r}
+sorted_winners <- sort(winners)
+sorted_winners[1:30]
+```
+
+###More advanced subsetting
+
+So far we have directly specified the elements of vectors that we want to extract, for example `winners[1]` or `losers[length(losers)]` or `winners[c(1,2,3,5)]`. More typically we want to extract elements that meet a condition, such as all the winners before 1950, or all the losers during years when the New York Yankees won the World Series. For this we use subsetting with logical vectors. This is formally discussed in Section 4.7 of the notes, but we will informally use it now.
+
+First some examples with very simple vectors, and then you'll use these ideas for the World Series vectors.
+
+```{r}
+set.seed(123) #Set the seed for reproducible random number generation
+x <- rbinom(10, 20, 0.9) #Generate 10 binomial(20, 0.9) values
+y <- rbinom(10, 20, 0.8) #Generate 10 binomial(20, 0.8) values
+x
+y
+x[x > 16] #Values of x which are larger than 16
+x[x == 18] #Values of x which are equal to 18
+length(x[x == 18]) #How many values of x are equal to 18?
+x[y < 15] #Values of x for which the corresponding values of y are less than 15
+x[x < y] #Values of x which are less than the correponding values of y
+x[x == 18] <- 0 #Replace 18 by 0 in x
+x
+```
+
+Now we use logical subsetting to learn about the World Series data. 
+First, use logical subsetting to count the number of World Series won by the Detroit Tigers, and also to count the number of World Series lost by the Detroit Tigers.
+
+```{r}
+length(winners[winners == "Detroit Tigers"])
+length(losers[losers == "Detroit Tigers"])
+```
+
+Next use logical subsetting to determine the years when the Baltimore Orioles won the World Series.
+
+```{r}
+years[winners == "Baltimore Orioles"]
+```
+
+Next use logical subsetting to determine the losing teams during the years when the St. Louis Cardianals won the World Series.
+
+```{r}
+losers[winners == "St. Louis Cardinals"]
+```
+
+We can combine conditions with the operators `&` and `|` which represent "and" and "or". Also `!` negates, so for example `!=` represents not equal to. Also `x %in% y` is useful:
+
+```{r}
+letters
+letters %in% c("a", "m", "q", "s")
+```
+Use these ideas to 
+
+a. Extract the years when either the Boston Red Sox or the Chicago White Sox won the World Series.
+b. Extract the years when the New York Yankees won the World Series and the New York Giants lost the World Series.
+c. Extract the winners during the years 1903, 1923, 1943, 1963, 1983.
+d. Count the number of years during which a team from Boston won the World Series. Be careful: There are three teams from Boston in the data set.
+
+```{r}
+#a
+years[winners %in% c("Boston Red Sox", "Chicago White Sox")]
+#b
+years[winners == "New York Yankees" & losers == "New York Giants"]
+#c
+winners[years %in% c(1903, 1923, 1943, 1963, 1983)]
+#d
+length(winners[winners %in% c("Boston Red Sox", "Boston Americans", "Boston Braves")])
+```
+
+###Another data set
+Data on the number, in thousands, of international airline passengers from 1949-1960 are built in to R. These are in the form of a time series, and we'll first convert these to a vector since that's the type of data structure we currently know how to work with.
+
+```{r}
+passengers <- as.vector(AirPassengers)
+passengers
+```
+
+Investigate these data using R functions such as `mean`, `max`, `min`, `summary`, `sd`, `length`, etc. 
+```{r}
+mean(passengers)
+summary(passengers)
+length(passengers)
+sd(passengers)
+```
+
+Draw a histogram of the number of passengers using the `hist` function.
+
+```{r}
+hist(passengers)
+```
+
+What do you notice?
+
+Draw a scatter plot of the number of passengers, in order, using the `plot` function. The main arguments to `plot` are `x` and `y`, vectors of x and y values. First draw the scatter plot with no further arguments, and then add the argument `type = "l"` which asks R to connect the points, which is probably more informative for data such as these.
+```{r}
+plot(1:length(passengers), passengers)
+plot(1:length(passengers), passengers, type = "l")
+```
+
+What do you notice from the scatter plots?

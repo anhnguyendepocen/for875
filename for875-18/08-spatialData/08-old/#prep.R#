@@ -1,0 +1,143 @@
+rm(list=ls())
+library(downloader)
+library(rgdal)
+library(ggmap)
+library(dplyr)
+library(raster)
+download("http://blue.for.msu.edu/FOR875/data/PEF.zip", 
+        destfile="./PEF.zip", mode="wb") 
+
+unzip("PEF.zip", exdir = ".")
+
+
+mu <- readOGR("PEF", "MU-bounds")
+plots <- read.csv("PEF/plots.csv")
+
+coordinates(plots) <- ~easting+northing
+proj4string(plots) <- proj4string(mu)
+roads <- readOGR("PEF", "roads")
+
+roads <- spTransform(roads, CRS("+proj=longlat +datum=WGS84"))
+plots <- spTransform(plots, CRS("+proj=longlat +datum=WGS84"))
+mu <- spTransform(mu, CRS("+proj=longlat +datum=WGS84"))
+
+pef.centroid <- as.data.frame(plots) %>% summarize(mu.x = mean(easting), mu.y = mean(northing))
+
+srtm <- getData("SRTM", lon = pef.centroid[1], lat = pef.centroid[2])
+
+srtm <- crop(srtm, mu)
+
+
+
+hikes <- roads[roads$type %in% c("Trail", "Winter", "Gravel"),]
+ 
+hikes.pts <- as(hikes, "SpatialPointsDataFrame")
+hikes.pts$srtm <- srtm[hikes.pts,]
+
+mu.bbox <- bbox(mu)
+basemap <- get_map(location=mu.bbox,  zoom = 14, maptype="terrain")
+
+ggmap(basemap) +
+    geom_point(data=as.data.frame(hikes.pts), 
+               aes(x = coords.x1, y = coords.x2, color=srtm)) + 
+    scale_color_gradient(low="green", high="red") +
+    labs(color = "Hiking trail elevation\n(m above sea level)", 
+         xlab="Longitude", ylab="Latitude")
+
+plots.10k <- plots[plots$stems_ha > 10000,]
+
+
+
+hikes <- roads[roads$type %in% c("Trail", "Winter", "Gravel"),]
+ 
+hikes.pts <- as(hikes, "SpatialPointsDataFrame")
+srtm.sp <- as(srtm, "SpatialPixelsDataFrame")
+
+hikes.pts$srtm <- over(hikes.pts, srtm.sp)
+
+basemap <- get_map(location=mu.bbox,  zoom = 14, maptype="terrain")
+
+ggmap(basemap) +
+    geom_point(data=as.data.frame(hikes.pts), 
+               aes(x = coords.x1, y = coords.x2, color=srtm)) + 
+    scale_color_gradient(low="green", high="red") +
+    labs(color = "Hiking trail elevation\n(m above sea level)", 
+         xlab="Longitude", ylab="Latitude")
+
+library(sp)
+mu.bio <- plots@data %>% group_by(mu_id) %>% summarize(biomass_mu = mean(biomass_mg_ha))
+
+a <- (x=srtm.sp, by=mu, FUN=mean)
+
+b <- fortify(a)
+
+ggmap(basemap) +
+    geom_polygon(data=b, aes(x = long, y = lat, group=group, 
+                                fill=srtm_23_02), 
+                 size=0.2, color="orange") +
+    scale_fill_gradient(low="white", high="darkblue", 
+                        na.value="transparent") +
+    scale_color_brewer(palette="Dark2") +
+    labs(fill="Biomass (mg/ha)", color="Road type", xlab="Longitude", 
+         ylab="Latitude", title="PEF forest biomass")
+
+library(raster)
+a <- aggregate(plots, mu, mean)
+class(a)
+plot(a)
+head(a, n=2)
+
+
+mu <- readOGR("PEF", "MU-bounds")
+
+mu <- spTransform(mu, CRS("+proj=longlat +datum=WGS84"))
+
+mu.srtm <- aggregate(srtm.sp, mu, mean)
+mu.srtm$id <- row.names(mu.srtm)
+
+mu.srtm.f <- fortify(mu.srtm)
+
+mu.srtm.f <- left_join(mu.srtm.f, mu.srtm@data)
+
+##sapply(slot(alaska.tract, "polygons"), function(x) slot(x, "ID"))
+
+
+mu.bbox <- bbox(mu)
+basemap <- get_map(location=mu.bbox, zoom = 14, maptype="terrain")
+
+ggmap(basemap) +
+    geom_polygon(data=mu.srtm.f, aes(x = long, y = lat, group=group, 
+                                     fill=srtm_23_04), 
+                 size=0.2, color="orange", alpha=0.75) +
+    scale_fill_gradient(low="green", high="red") +
+        labs(fill = "Average elevation\n(m above sea level)", 
+         xlab="Longitude", ylab="Latitude")
+mu.bio.ag <- aggregate(plots, mu, mean)
+
+
+
+
+
+
+
+
+mu.ag <- aggregate(plots, by=mu, FUN=mean)
+
+head(mu.ag@data, n=2)
+
+
+sapply(slot(mu.ag, "polygons"), function(x) slot(x, "ID"))
+
+mu.ag$id <- row.names(mu.ag)
+
+mu.ag.f <- fortify(mu.ag)
+
+mu.ag.f <- left_join(mu.ag.f, mu.ag@data)
+
+ggmap(basemap) +
+    geom_polygon(data=mu.ag.f, aes(x = long, y = lat, 
+                                group=group, fill=biomass_mg_ha), 
+                 size=0.2, color="orange") +
+    scale_fill_gradient(low="white", high="darkblue", 
+                        na.value="transparent") +
+    labs(fill="Biomass (mg/ha)")

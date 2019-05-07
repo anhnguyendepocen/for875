@@ -1,0 +1,44 @@
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces A spam email message\relax }}{3}{figure.caption.8}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces A non-spam email message\relax }}{4}{figure.caption.9}
+\contentsline {figure}{\numberline {1.3}{\ignorespaces A digitized version of a handwritten ``6''\relax }}{6}{figure.caption.10}
+\contentsline {figure}{\numberline {1.4}{\ignorespaces The first 25 handwritten numerals, digitized\relax }}{7}{figure.caption.11}
+\contentsline {figure}{\numberline {1.5}{\ignorespaces The first 25 numeral sevens, digitized\relax }}{8}{figure.caption.12}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces The RStudio IDE.\relax }}{13}{figure.caption.13}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces xkcd: Code Quality\relax }}{20}{figure.caption.14}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces A script window in RStudio.\relax }}{29}{figure.caption.16}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces R Markdown file which produces the output in Figure\nobreakspace {}\ref {FIG:RMD_OUT}.\relax }}{31}{figure.caption.17}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Output from the R Markdown file in Figure\nobreakspace {}\ref {FIG:RMD_IN}.\relax }}{31}{figure.caption.17}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces R Markdown file to produce unordered and ordered lists.\relax }}{33}{figure.caption.19}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Output from the R Markdown file in Figure\nobreakspace {}\ref {FIG:LISTS_RMD1}.\relax }}{33}{figure.caption.19}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces R Markdown which produces the output in Figure\nobreakspace {}\ref {FIG:HEADERS_RMD2}.\relax }}{34}{figure.caption.20}
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Output from the R Markdown file in Figure\nobreakspace {}\ref {FIG:HEADERS_RMD1}.\relax }}{34}{figure.caption.20}
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Other useful \LaTeX \ expressions and symbols available for use in R Markdown.\relax }}{35}{figure.caption.21}
+\contentsline {figure}{\numberline {3.9}{\ignorespaces R Markdown illustrating some of the options for code chunks.\relax }}{36}{figure.caption.23}
+\contentsline {figure}{\numberline {3.10}{\ignorespaces Output from the R Markdown in Figure\nobreakspace {}\ref {FIG:CODE_CHUNK_OPTIONS1}.\relax }}{37}{figure.caption.24}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {8.1}{\ignorespaces Raster/vector comparison (\cite {imageRaster})\relax }}{165}{figure.caption.37}
+\contentsline {figure}{\numberline {8.2}{\ignorespaces \texttt {leaflet} interactive web map.\relax }}{183}{figure.caption.39}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {9.1}{\ignorespaces Hello Shiny example app.\relax }}{196}{figure.caption.41}
+\contentsline {figure}{\numberline {9.2}{\ignorespaces Running a Shiny app locally.\relax }}{198}{figure.caption.42}
+\contentsline {figure}{\numberline {9.3}{\ignorespaces Your first Shiny app.\relax }}{199}{figure.caption.43}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {11.1}{\ignorespaces A spam email message\relax }}{235}{figure.caption.47}
+\contentsline {figure}{\numberline {11.2}{\ignorespaces The beginning of a plain text file from Project Gutenberg containing the novel \emph {Moby Dick}\relax }}{253}{figure.caption.48}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {14.1}{\ignorespaces Example of an analog signal: a simple sine curve\relax }}{282}{figure.caption.58}
+\contentsline {figure}{\numberline {14.2}{\ignorespaces Example of a discrete signal: a sine curve with some missing values\relax }}{283}{figure.caption.59}
+\contentsline {figure}{\numberline {14.3}{\ignorespaces Different available filters within the seewave package in R.\relax }}{294}{figure.caption.60}
+\contentsline {figure}{\numberline {14.4}{\ignorespaces Two cedar waxwings, possibly pondering whether or not Ross and Rachel will ever get back together (oh wait no that's me as I write this chapter between binge watching \emph {Friends}).\relax }}{298}{figure.caption.61}
+\contentsline {figure}{\numberline {14.5}{\ignorespaces Example spectrogram of Cedar Waxwing calls.\relax }}{303}{figure.caption.62}
+\contentsline {figure}{\numberline {14.6}{\ignorespaces Example output of autodetec function\relax }}{305}{figure.caption.63}

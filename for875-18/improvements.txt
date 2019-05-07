@@ -1,0 +1,52 @@
+Improvements suggested by members of the class:
+
+1. Make it so in the "Outline" section of a pdf it displays the chapter number as well as the chapter name. 
+2. Places where students struggled: 
+    - Confusion on using [] and [[]] for indexing lists. 
+    - Lists and vectors in general
+3. Typos
+    - Section 4.2 talking about the factors, listed wrong names for groups that would disappear. 
+    - Chapter one page 9: "Programming and writing functions in R"
+    - Maybe redownload some data when it's used in different chapters but already loaded from previous chapters? 
+      For example, chapter 4. 
+    - Chapter 5, page 100 should be ggsave() instead of ggplot()
+    - Chapter 11: at the bottom of page 248 it says "0=9A-Za-z says \any digit, any lower-case letter, and any upper-case letter."
+    - Exercise 9 solutions there is a typo in our solutions for the select() todo. Also right before 9.5 in teh equation we give
+    - Database exercise has typo in TODO asking to remove Barry Bonds. Should remove the three top players, not just Barry Bonds.
+    
+    
+4. Suggested things from exercises
+    - Make the videos easier for Chinese students to access? Another student said that the internet speed there for watching the videos is horrible. Don't know if we can do anything about that.
+    - Give example of work that you have published that includes R code to get an idea of how this stuff can be used in actual research. Kind of do that later in the more specific chapters, but she is suggesting we do it earlier on. 
+    - Having to answer why an answer is what it is like the floating point question above. To get me to think about the reasoning behind the answer rather than just regurgitate code. It might requiremore time spent on the homework but it would force the consideration of “why”
+    - Actual forestry example
+    - Potentially make it harder (received this on exercise 4)
+    - Sort of a summary table of concepts at the end of each chapter
+    - More examples
+    - Potentially limit when you can access future exercises. 
+    - Other student at exercisee 4 says material is at a good pace.
+    - Potentially make a list of commands/functions introduced at the end of each chapter, then maybe have an index for these functions as well
+    - Pace is good
+    - More examples
+    - More external resources
+    - Add more videos to help explain code.
+    - More Latex help
+    - Add some more additional exercises
+    - Course gets easier, should get harder (Ex 5)
+    - Leave out more in the exercises for students to research on their own to figure out how to do them
+    - Keep getting notes that the videos for international students are really difficult to watch.
+    - Want exercises where there isn't code that is step by step. Want to solve the whole problem
+    - Make things harder
+    - For exercise 6, a lot of kids didn't include the title, so maybe in the exercise you should implicitly say that. 
+    - Better documentation on how to use the plotting in an efficient way
+    - Don't introduce new topics in the text, instead reinforce topics discussed in the textbook
+    - Some students like how the TODO progress off of each other. Other's don't like that. Perahps will want to make a combo of exercises for the future. 
+    - Make assignments due at Midnight instead of 5 pm
+    - Some students like the fact that new materials are introduced in the exercises because it forces them to look for external resources to understand this stuff. Others hate it.
+    - More practical examples
+    - Make exercises longer, not necessarily harder but incorporate more into each exercise. 
+    - Include more "thinking" questions. Why should you do something this way, why do it another way. Make them understand why they are using a certain piece of code to solve a given problem. 
+    - Need to fix the databases exercise, or figure out exactly why certain things go wrong with the exercise when you quit the connection at certain points in time. 
+    - List of the most commonly used functions associated with a given chapter
+    - Videos for the optional chapters as well
+    
