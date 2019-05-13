@@ -281,12 +281,15 @@ ggplot(data = sin.data, aes(x = x, y = y)) + geom_line() +
 The `ggthemes` add-on package [https://github.com/jrnold/ggthemes] by Jeffrey Arnold provides a large selection of themes beyond the eight themes that come with `ggplot2`.
 
 
-\section{Saving graphics}
-We often want to export our graphics to use in an external document or share with colleagues. There are several ways to save graphics in a variety of file formats. The \verb+ggsave()+ function will allow you to save your most recent \verb+ggplot()+ to a variety of vector (e.g., ``eps'', ``ps'', ``pdf'', ``svg'') or raster (e.g., ``jpeg'', ``tiff'', ``png'', ``bmp'', ``wmf'') formats\footnote{Vector files comprise lines and curves known as paths, whereas raster files are comprised of pixels. Vector images are often preferred for publication quality graphics because they can be edited, scale well, and provide crisper detail.}. The subsequent call to \verb+ggsave()+ saves the \verb+sin.data+ plot to a pdf file called ``sin-plot.pdf''.
-<<prompt = FALSE, tidy=FALSE, eval=FALSE>>=
+## Saving Graphics
+
+We often want to export our graphics to use in an external document or share with colleagues. There are several ways to save graphics in a variety of file formats. The `ggsave()` function will allow you to save your most recent `ggplot()` to a variety of vector (e.g., "eps", "ps", "pdf", "svg") or raster (e.g., "jpeg", "tiff", "png", "bmp", "wmf") formats ^[Vector files comprise lines and curves known as paths, whereas raster files are comprised of pixels. Vector images are often preferred for publication quality graphics because they can be edited, scale well, and provide crisper detail.]. The subsequent call to `ggsave()` saves the `sin.data` plot to a pdf file called "sin-plot.pdf".
+
+```{r, prompt = FALSE, tidy=FALSE, eval=FALSE}
 ggplot(filename = "sin-plot.pdf", device="pdf")
-@ 
-The \verb+ggplot()+ function takes additional arguments to control scale, measurement units, and raster plot resolution, i.e., dots per inch (dpi). 
+```
+
+The `ggplot()` function takes additional arguments to control scale, measurement units, and raster plot resolution, i.e., dots per inch (dpi). 
 
 ## More Resources
 
