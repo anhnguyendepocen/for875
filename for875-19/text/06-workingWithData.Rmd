@@ -658,14 +658,6 @@ gm %>%
   print(n=20)
 ```
 
-## Homework
-
-**Exercise 7** Learning objectives: introduce `with()`, `tapply()`, and `cut()` functions; summarize data using the `table()` function with logical subsetting; practice using factor data types.
-
-**Exercise 8** Learning objectives: work with messy data; import data from an external spreadsheet; practice using functions in `tidyr` and `ggplot2`.}
-
-**Exercise 9** {Learning objectives: work with several key **dplyr** functions; manipulate data frames (actually tibbles); summarize and visualize data from large data files.}
-
 ## Practice Exercises
 
 1. In Section \@ref(sec:apply) we computed the standard deviation across all numeric columns using the following line of code:
@@ -675,3 +667,11 @@ apply(WeatherKLAN2014Full[,c(2:19, 21, 23)], 2, sd)
 ```
 
 Notice the output value of `NA` for the column `Max.Gust.SpeedMPH`. Why does this happen? Figure out a way to make the `apply()` function return a numeric value for this column. *Hint*: check out the `sd()` definition. 
+
+## Homework
+
+**Exercise 7** Learning objectives: introduce `with()`, `tapply()`, and `cut()` functions; summarize data using the `table()` function with logical subsetting; practice using factor data types.
+
+**Exercise 8** Learning objectives: work with messy data; import data from an external spreadsheet; practice using functions in `tidyr` and `ggplot2`.}
+
+**Exercise 9** {Learning objectives: work with several key **dplyr** functions; manipulate data frames (actually tibbles); summarize and visualize data from large data files.}
