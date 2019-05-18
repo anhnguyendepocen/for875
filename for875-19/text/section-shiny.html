@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Chapter 1 Shiny | /tmp/jeff/rmarkdown/e359035e554f5db6eaf58a82681efd78/09-shiny.utf8.md</title>
+  <meta name="description" content="">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Chapter 1 Shiny | /tmp/jeff/rmarkdown/e359035e554f5db6eaf58a82681efd78/09-shiny.utf8.md" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Shiny | /tmp/jeff/rmarkdown/e359035e554f5db6eaf58a82681efd78/09-shiny.utf8.md" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+
+<link rel="next" href="section-adding-user-input.html">
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="/home/jeff/Dropbox/teaching/for875/for875-19/text/libs/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="section-shiny.html"><a href="section-shiny.html"><i class="fa fa-check"></i><b>1</b> Shiny</a><ul>
+<li class="chapter" data-level="1.1" data-path="section-shiny.html"><a href="section-shiny.html#section-running-a-simple-shiny-app"><i class="fa fa-check"></i><b>1.1</b> Running a Simple Shiny App</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="section-adding-user-input.html"><a href="section-adding-user-input.html"><i class="fa fa-check"></i><b>2</b> Adding User Input</a><ul>
+<li class="chapter" data-level="2.1" data-path="section-adding-user-input.html"><a href="section-adding-user-input.html#section-adding-output"><i class="fa fa-check"></i><b>2.1</b> Adding Output</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<!--bookdown:title:end-->
+<!--bookdown:title:start-->
+<div id="section-shiny" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> Shiny</h1>
+<p><a href="https://shiny.rstudio.com/">Shiny</a> is a framework that turns R code and figures into interactive web applications. Let’s start out by looking at a built-in example Shiny app.</p>
+<p>In the bottom panel of the resulting Shiny app (Figure <a href="section-shiny.html#fig:hello">1.1</a>), we can see the R script that is essential to running any Shiny app: <code>app.R</code>. Take a minute to explore how the app works and how the script code is structured. The first part of the script (<code>ui &lt;-</code>) defines the app’s user interface (UI) using directives that partition the resulting web page and placement of input and output elements. The second part of the script defines a function called <code>server</code> with arguments <code>input</code> and <code>output</code>. This function provides the logic required to run the app (in this case, to draw the histogram of the Old Faithful Geyser Data). Third, <code>ui</code> and <code>server</code> are passed to a function called <code>shinyApp</code> which creates the application.<a href="section-adding-user-input.html#section-fn1" class="footnote-ref" id="section-fnref1"><sup>1</sup></a></p>
+<div class="figure"><span id="fig:hello"></span>
+<img src="/home/jeff/Dropbox/teaching/for875/for875-19/text/libs/../../for875-19/figures/hello_shiny.png" alt="Hello Shiny example app" width="958" />
+<p class="caption">
+Figure 1.1: Hello Shiny example app
+</p>
+</div>
+<p>All of the example code and data for the remainder of this chapter can be accessed using the following code.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(downloader)
+
+<span class="kw">download</span>(<span class="st">&quot;http://blue.for.msu.edu/FOR875/data/shiny_chapter_code.zip&quot;</span>, 
+         <span class="dt">destfile=</span><span class="st">&quot;./shiny_chapter_code.zip&quot;</span>, <span class="dt">mode=</span><span class="st">&quot;wb&quot;</span>)
+
+<span class="kw">unzip</span>(<span class="st">&quot;shiny_chapter_code.zip&quot;</span>, <span class="dt">exdir =</span> <span class="st">&quot;.&quot;</span>)</code></pre>
+<div id="section-running-a-simple-shiny-app" class="section level2">
+<h2><span class="header-section-number">1.1</span> Running a Simple Shiny App</h2>
+<p>Shiny apps allow users to interact with a data set. Let’s say we have access to a dummy data set <code>name_list.csv</code>. Begin by taking a quick look at what this CSV file contains.</p>
+<pre class="sourceCode r"><code class="sourceCode r">namesDF &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://blue.for.msu.edu/FOR875/data/name_list.csv&quot;</span>, 
+                    <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+<span class="kw">str</span>(namesDF)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    200 obs. of  4 variables:
+##  $ First: chr  &quot;Sarah&quot; &quot;Boris&quot; &quot;Jessica&quot; &quot;Diane&quot; ...
+##  $ Last : chr  &quot;Poole&quot; &quot;Dowd&quot; &quot;Wilkins&quot; &quot;Murray&quot; ...
+##  $ Age  : int  15 52 12 58 56 4 14 0 28 27 ...
+##  $ Sex  : chr  &quot;F&quot; &quot;M&quot; &quot;F&quot; &quot;F&quot; ...</code></pre>
+<p>Given the <code>namesDF</code> data, our goal over the next few sections is to develop a Shiny application that allows users to explore age distributions for males and females. We begin by defining a very basic Shiny application script upon which we can build the desired functionality. The script file that defines this basic application is called <code>app.R</code> and is provided in the code block below called “version 1”. Follow the subsequent steps to create and run this Shiny app (note these steps are already done for you in the “ShinyPractice” directory in “shiny_chapter_code.zip”, but you might want to do it yourself):</p>
+<ol style="list-style-type: decimal">
+<li>Create a new directory called “ShinyPractice”.</li>
+<li>In the “ShinyPractice” directory, create a blank R script called <code>app.R</code>.</li>
+<li>Copy the code in “app.R version 1” into <code>app.R</code>.</li>
+<li>Run the Shiny app from RStudio. There are two ways to do this: 1) use the RStudio button (See Figure <a href="section-shiny.html#fig:fig1">1.2</a>) or; 2) type the function <code>runApp()</code> in the RStudio console.</li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># app.R version 1</span>
+
+<span class="kw">library</span>(shiny)
+
+names.df &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://blue.for.msu.edu/FOR875/data/name_list.csv&quot;</span>)
+
+<span class="co"># Define UI</span>
+ui &lt;-<span class="st"> </span><span class="kw">fluidPage</span>(
+  
+  <span class="kw">titlePanel</span>(<span class="st">&quot;Random Names Analysis&quot;</span>),
+  
+  <span class="kw">sidebarLayout</span>(
+    
+    <span class="kw">sidebarPanel</span>(<span class="st">&quot;our inputs will be here&quot;</span>),
+    
+    <span class="kw">mainPanel</span>(<span class="st">&quot;our output will appear here&quot;</span>)
+  )
+)
+
+<span class="co"># Define server logic</span>
+server &lt;-<span class="st"> </span><span class="cf">function</span>(input, output) {}
+
+<span class="co"># Create Shiny app</span>
+<span class="kw">shinyApp</span>(<span class="dt">ui =</span> ui, <span class="dt">server =</span> server)</code></pre>
+<iframe data-deferred-src="appf60a9c9b723ed465d6e09f7e5c3c3d56/?w=&amp;__subapp__=1" width="100%" height="400" class="shiny-frame shiny-frame-deferred"></iframe>
+<div class="figure"><span id="fig:fig1"></span>
+<img src="/home/jeff/Dropbox/teaching/for875/for875-19/text/libs/../figures/RStudio_runApp.png" alt="Running a Shiny app locally" width="473" />
+<p class="caption">
+Figure 1.2: Running a Shiny app locally
+</p>
+</div>
+<p>If everything compiles correctly, you should get a window that looks like Figure <a href="section-shiny.html#fig:fig2">1.3</a>. There are a few things to notice. First, we read in the CSV file at the beginning of the <code>app.R</code> script so that these data can be accessed in subsquent development steps (although we don’t use it yet in this initial application). Second, our Shiny app is not interactive yet because there is no way for a user to input any data—the page is view-only. Third, the function <code>function(input,output) {}</code> in <code>app.R</code> does not include any code, reflecting that we are not yet using any user inputs or creating any outputs.</p>
+<pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">include_graphics</span>(<span class="st">&quot;../figures/appSimple.png&quot;</span>)</code></pre>
+<div class="figure"><span id="fig:fig2"></span>
+<img src="/home/jeff/Dropbox/teaching/for875/for875-19/text/libs/../figures/appSimple.png" alt="Your first Shiny app" width="481" />
+<p class="caption">
+Figure 1.3: Your first Shiny app
+</p>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="section-adding-user-input.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/%s",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+},
+"search": false
+});
+});
+</script>
+
+</body>
+
+</html>

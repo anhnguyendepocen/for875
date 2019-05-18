@@ -31,7 +31,7 @@ options(knitr.kable.NA = '')
 rows <- sample(1:dim(WorldBank)[1], size=10, replace=FALSE)
 ```
 
-The World Bank provides data related to the development of countries. A data set was constructed from the World Bank repository. The data set contains data on countries throughout the world for the years `r min(WorldBank$year)` through `r max(WorldBank$year)` and contains, among others, variables representing average life expectancy, fertility rate, and population. Table \@ref(tab:worldBank) contains the first five records and then 10 more randomly selected records for these variables in the data set.
+The World Bank provides data related to the development of countries. A data set was constructed from the World Bank repository. The data set contains data on countries throughout the world for the years ` min(WorldBank$year)` through ` max(WorldBank$year)` and contains, among others, variables representing average life expectancy, fertility rate, and population. Table \@ref(tab:worldBank) contains the first five records and then 10 more randomly selected records for these variables in the data set.
 
 ```{r worldBank, echo = F}
 knitr::kable(
@@ -41,7 +41,7 @@ knitr::kable(
 )
 ```
 
-Notice that many observations contain missing data for fertility rate and life expectancy. If all the variables were shown, we would see much more missing data.  This data set is also substantially larger than the baby crawling age data, with `r dim(WorldBank)[1]` rows and `r dim(WorldBank)[2]` columns of data in the full data set. (Each column represents one of the variables. Each row represents one country during one year).
+Notice that many observations contain missing data for fertility rate and life expectancy. If all the variables were shown, we would see much more missing data.  This data set is also substantially larger than the baby crawling age data, with ` dim(WorldBank)[1]` rows and ` dim(WorldBank)[2]` columns of data in the full data set. (Each column represents one of the variables. Each row represents one country during one year).
 
 ## Email Data
 It is estimated that in 2015, 90\% of the total 205 billion emails sent were spam.^[Radicati Group www.radicati.com] Spam filters use large amounts of data from emails to learn what distinguishes spam messages from non-spam (sometimes called "ham") messages. Below we include one spam message followed by a ham message.^[These messages both come from the large collection of spam and ham messages at http://spamassassin.apache.org.]
