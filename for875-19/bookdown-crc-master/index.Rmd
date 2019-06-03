@@ -10,7 +10,7 @@ colorlinks: yes
 always_allow_html: yes
 lot: yes
 lof: yes
-site: bookdown::bookdown_site
+site: bookdown::bookdown_site 
 graphics: yes
 header-includes:
   - \usepackage{color}
@@ -30,5 +30,5 @@ options(
   htmltools.dir.version = FALSE, formatR.indent = 2, width = 55, digits = 4,
   formatR.arrow = TRUE
 )
-opts_chunk$set(comment=NA, tidy=TRUE, prompt=TRUE, eval = FALSE)
+opts_chunk$set(comment=NA, tidy=TRUE, prompt=TRUE, eval = TRUE)
 ```

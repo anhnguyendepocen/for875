@@ -24,14 +24,14 @@
 <meta name="author" content="Andrew O. Finley, Vince Melfi, Jeffrey W. Doser" />
 
 
-<meta name="date" content="2019-05-18" />
+<meta name="date" content="2019-05-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="sp.html">
+<link rel="prev" href="digial-signal-processing.html">
 
 <script src="libs/jquery/jquery.min.js"></script>
 <link href="libs/gitbook/css/style.css" rel="stylesheet" />
@@ -47,6 +47,14 @@
 
 
 
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<link href="libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet/leaflet.js"></script>
+<link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -126,11 +134,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Book Example</a></li>
-
-<li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Course Description</a></li>
-<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="1" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>1</b> Data</a><ul>
+<li class="chapter" data-level="1.1" data-path="data.html"><a href="data.html#baby-crawling-data"><i class="fa fa-check"></i><b>1.1</b> Baby Crawling Data</a></li>
+<li class="chapter" data-level="1.2" data-path="data.html"><a href="data.html#world-bank-data"><i class="fa fa-check"></i><b>1.2</b> World Bank Data</a></li>
+<li class="chapter" data-level="1.3" data-path="data.html"><a href="data.html#email-data"><i class="fa fa-check"></i><b>1.3</b> Email Data</a></li>
+<li class="chapter" data-level="1.4" data-path="data.html"><a href="data.html#handwritten-digit-recognition"><i class="fa fa-check"></i><b>1.4</b> Handwritten Digit Recognition</a></li>
+<li class="chapter" data-level="1.5" data-path="data.html"><a href="data.html#looking-forward"><i class="fa fa-check"></i><b>1.5</b> Looking Forward</a></li>
+<li class="chapter" data-level="1.6" data-path="data.html"><a href="data.html#how-to-learn-the-most-important-section-in-this-book"><i class="fa fa-check"></i><b>1.6</b> How to learn (The most important section in this book!)</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="introduction-to-r-and-rstudio.html"><a href="introduction-to-r-and-rstudio.html"><i class="fa fa-check"></i><b>2</b> Introduction to R and RStudio</a><ul>
 <li class="chapter" data-level="2.1" data-path="introduction-to-r-and-rstudio.html"><a href="introduction-to-r-and-rstudio.html#obtaining-and-installing-r"><i class="fa fa-check"></i><b>2.1</b> Obtaining and Installing R</a></li>
 <li class="chapter" data-level="2.2" data-path="introduction-to-r-and-rstudio.html"><a href="introduction-to-r-and-rstudio.html#obtaining-and-installing-rstudio"><i class="fa fa-check"></i><b>2.2</b> Obtaining and Installing RStudio</a></li>
@@ -276,10 +288,88 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8.8" data-path="sp.html"><a href="sp.html#where-to-go-from-here"><i class="fa fa-check"></i><b>8.8</b> Where to go from here</a></li>
 </ul></li>
+<li class="chapter" data-level="9" data-path="shiny.html"><a href="shiny.html"><i class="fa fa-check"></i><b>9</b> Shiny</a><ul>
+<li class="chapter" data-level="9.1" data-path="shiny.html"><a href="shiny.html#running-a-simple-shiny-app"><i class="fa fa-check"></i><b>9.1</b> Running a Simple Shiny App</a></li>
+<li class="chapter" data-level="9.2" data-path="shiny.html"><a href="shiny.html#adding-user-input"><i class="fa fa-check"></i><b>9.2</b> Adding User Input</a></li>
+<li class="chapter" data-level="9.3" data-path="shiny.html"><a href="shiny.html#adding-output"><i class="fa fa-check"></i><b>9.3</b> Adding Output</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="shiny.html"><a href="shiny.html#interactive-server-logic"><i class="fa fa-check"></i><b>9.3.1</b> Interactive Server Logic</a></li>
+<li class="chapter" data-level="9.3.2" data-path="shiny.html"><a href="shiny.html#interactive-user-interface"><i class="fa fa-check"></i><b>9.3.2</b> Interactive User Interface</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="shiny.html"><a href="shiny.html#more-advanced-shiny-app-michigan-campgrounds"><i class="fa fa-check"></i><b>9.4</b> More Advanced Shiny App: Michigan Campgrounds</a><ul>
+<li class="chapter" data-level="9.4.1" data-path="shiny.html"><a href="shiny.html#michigan-campgrounds-ui"><i class="fa fa-check"></i><b>9.4.1</b> Michigan Campgrounds UI</a></li>
+<li class="chapter" data-level="9.4.2" data-path="shiny.html"><a href="shiny.html#michigan-campgrounds-server-logic"><i class="fa fa-check"></i><b>9.4.2</b> Michigan Campgrounds Server Logic</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="shiny.html"><a href="shiny.html#adding-leaflet-to-shiny"><i class="fa fa-check"></i><b>9.5</b> Adding Leaflet to Shiny</a></li>
+<li class="chapter" data-level="9.6" data-path="shiny.html"><a href="shiny.html#why-use-shiny"><i class="fa fa-check"></i><b>9.6</b> Why use Shiny?</a></li>
+<li class="chapter" data-level="9.7" data-path="shiny.html"><a href="shiny.html#homework-5"><i class="fa fa-check"></i><b>9.7</b> Homework</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>10</b> Classification</a><ul>
+<li class="chapter" data-level="10.1" data-path="classification.html"><a href="classification.html#logistic-regression"><i class="fa fa-check"></i><b>10.1</b> Logistic Regression</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="classification.html"><a href="classification.html#adding-predictors"><i class="fa fa-check"></i><b>10.1.1</b> Adding Predictors</a></li>
+<li class="chapter" data-level="10.1.2" data-path="classification.html"><a href="classification.html#more-than-two-classes"><i class="fa fa-check"></i><b>10.1.2</b> More than Two Classes</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="classification.html"><a href="classification.html#nearest-neighbor-methods"><i class="fa fa-check"></i><b>10.2</b> Nearest Neighbor Methods</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="classification.html"><a href="classification.html#knn-and-the-diabetes-data"><i class="fa fa-check"></i><b>10.2.1</b> kNN and the Diabetes Data</a></li>
+<li class="chapter" data-level="10.2.2" data-path="classification.html"><a href="classification.html#knn-and-the-iris-data"><i class="fa fa-check"></i><b>10.2.2</b> kNN and the iris Data</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="classification.html"><a href="classification.html#homework-6"><i class="fa fa-check"></i><b>10.3</b> Homework</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="xml.html"><a href="xml.html"><i class="fa fa-check"></i><b>11</b> Text Data</a><ul>
+<li class="chapter" data-level="11.1" data-path="xml.html"><a href="xml.html#reading-text-data-into-r"><i class="fa fa-check"></i><b>11.1</b> Reading Text Data into R</a></li>
+<li class="chapter" data-level="11.2" data-path="xml.html"><a href="xml.html#the-paste-function"><i class="fa fa-check"></i><b>11.2</b> The <code>paste</code> Function</a></li>
+<li class="chapter" data-level="11.3" data-path="xml.html"><a href="xml.html#more-string-processing-functions"><i class="fa fa-check"></i><b>11.3</b> More String Processing Functions</a><ul>
+<li class="chapter" data-level="11.3.1" data-path="xml.html"><a href="xml.html#tolower-and-toupper"><i class="fa fa-check"></i><b>11.3.1</b> <code>tolower</code> and <code>toupper</code></a></li>
+<li class="chapter" data-level="11.3.2" data-path="xml.html"><a href="xml.html#nchar-and-strsplit"><i class="fa fa-check"></i><b>11.3.2</b> <code>nchar</code> and <code>strsplit</code></a></li>
+<li class="chapter" data-level="11.3.3" data-path="xml.html"><a href="xml.html#nchar-again"><i class="fa fa-check"></i><b>11.3.3</b> <code>nchar</code> Again</a></li>
+<li class="chapter" data-level="11.3.4" data-path="xml.html"><a href="xml.html#substr-and-strtrim"><i class="fa fa-check"></i><b>11.3.4</b> <code>substr</code> and <code>strtrim</code></a></li>
+<li class="chapter" data-level="11.3.5" data-path="xml.html"><a href="xml.html#grep-and-related-functions"><i class="fa fa-check"></i><b>11.3.5</b> <code>grep</code> and Related Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="xml.html"><a href="xml.html#homework-7"><i class="fa fa-check"></i><b>11.4</b> Homework</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="rcpp.html"><a href="rcpp.html"><i class="fa fa-check"></i><b>12</b> Rcpp</a><ul>
+<li class="chapter" data-level="12.1" data-path="rcpp.html"><a href="rcpp.html#getting-started-with-rcpp"><i class="fa fa-check"></i><b>12.1</b> Getting Started with Rcpp</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="rcpp.html"><a href="rcpp.html#installation"><i class="fa fa-check"></i><b>12.1.1</b> Installation</a></li>
+<li class="chapter" data-level="12.1.2" data-path="rcpp.html"><a href="rcpp.html#the-simplest-c-example"><i class="fa fa-check"></i><b>12.1.2</b> The Simplest C++ Example</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="rcpp.html"><a href="rcpp.html#using-rcpp"><i class="fa fa-check"></i><b>12.2</b> Using Rcpp</a><ul>
+<li class="chapter" data-level="12.2.1" data-path="rcpp.html"><a href="rcpp.html#exporting-c-functions"><i class="fa fa-check"></i><b>12.2.1</b> Exporting C++ Functions</a></li>
+<li class="chapter" data-level="12.2.2" data-path="rcpp.html"><a href="rcpp.html#inline-c-code"><i class="fa fa-check"></i><b>12.2.2</b> Inline C++ Code</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="rcpp.html"><a href="rcpp.html#the-rcpp-interface"><i class="fa fa-check"></i><b>12.3</b> The Rcpp Interface</a></li>
+<li class="chapter" data-level="12.4" data-path="rcpp.html"><a href="rcpp.html#no-input-and-scalar-output"><i class="fa fa-check"></i><b>12.4</b> No input and scalar output</a><ul>
+<li class="chapter" data-level="12.4.1" data-path="rcpp.html"><a href="rcpp.html#scalar-input-and-scalar-output"><i class="fa fa-check"></i><b>12.4.1</b> Scalar input and scalar output</a></li>
+<li class="chapter" data-level="12.4.2" data-path="rcpp.html"><a href="rcpp.html#vector-input-and-scalar-output"><i class="fa fa-check"></i><b>12.4.2</b> Vector input and scalar output</a></li>
+<li class="chapter" data-level="12.4.3" data-path="rcpp.html"><a href="rcpp.html#vector-input-and-vector-output"><i class="fa fa-check"></i><b>12.4.3</b> Vector input and vector output</a></li>
+<li class="chapter" data-level="12.4.4" data-path="rcpp.html"><a href="rcpp.html#matrix-input-and-vector-output"><i class="fa fa-check"></i><b>12.4.4</b> Matrix input and vector output</a></li>
+<li class="chapter" data-level="12.4.5" data-path="rcpp.html"><a href="rcpp.html#matrix-input-and-matrix-output"><i class="fa fa-check"></i><b>12.4.5</b> Matrix input and matrix output</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5" data-path="rcpp.html"><a href="rcpp.html#homework-8"><i class="fa fa-check"></i><b>12.5</b> Homework</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="databases-and-r.html"><a href="databases-and-r.html"><i class="fa fa-check"></i><b>13</b> Databases and R</a><ul>
+<li class="chapter" data-level="13.1" data-path="databases-and-r.html"><a href="databases-and-r.html#sql-and-database-structure"><i class="fa fa-check"></i><b>13.1</b> SQL and Database Structure</a><ul>
+<li class="chapter" data-level="13.1.1" data-path="databases-and-r.html"><a href="databases-and-r.html#sql"><i class="fa fa-check"></i><b>13.1.1</b> SQL</a></li>
+</ul></li>
+<li class="chapter" data-level="13.2" data-path="databases-and-r.html"><a href="databases-and-r.html#difficulties-of-working-with-large-datasets"><i class="fa fa-check"></i><b>13.2</b> Difficulties of Working with Large Datasets</a></li>
+<li class="chapter" data-level="13.3" data-path="databases-and-r.html"><a href="databases-and-r.html#using-dplyr-to-query-the-database"><i class="fa fa-check"></i><b>13.3</b> Using <code>dplyr</code> to Query the Database</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="databases-and-r.html"><a href="databases-and-r.html#example-with-rsqlite"><i class="fa fa-check"></i><b>13.3.1</b> Example with RSQLite</a></li>
+<li class="chapter" data-level="13.3.2" data-path="databases-and-r.html"><a href="databases-and-r.html#dbplot"><i class="fa fa-check"></i><b>13.3.2</b> <code>dbplot</code></a></li>
+<li class="chapter" data-level="13.3.3" data-path="databases-and-r.html"><a href="databases-and-r.html#using-google-bigquery"><i class="fa fa-check"></i><b>13.3.3</b> Using Google BigQuery</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="databases-and-r.html"><a href="databases-and-r.html#changing-records-in-the-database"><i class="fa fa-check"></i><b>13.4</b> Changing Records in the Database</a></li>
+<li class="chapter" data-level="13.5" data-path="databases-and-r.html"><a href="databases-and-r.html#r-studio-connections-pane"><i class="fa fa-check"></i><b>13.5</b> R Studio Connections Pane</a></li>
+<li class="chapter" data-level="13.6" data-path="databases-and-r.html"><a href="databases-and-r.html#other-options"><i class="fa fa-check"></i><b>13.6</b> Other Options</a></li>
+<li class="chapter" data-level="13.7" data-path="databases-and-r.html"><a href="databases-and-r.html#homework-9"><i class="fa fa-check"></i><b>13.7</b> Homework</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="digial-signal-processing.html"><a href="digial-signal-processing.html"><i class="fa fa-check"></i><b>14</b> Digial Signal Processing</a><ul>
+<li class="chapter" data-level="14.1" data-path="digial-signal-processing.html"><a href="digial-signal-processing.html#introduction-to-digital-signal-processing"><i class="fa fa-check"></i><b>14.1</b> Introduction to Digital Signal Processing</a><ul>
+<li class="chapter" data-level="14.1.1" data-path="digial-signal-processing.html"><a href="digial-signal-processing.html#sinusoidal-signals"><i class="fa fa-check"></i><b>14.1.1</b> Sinusoidal Signals</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="digial-signal-processing.html"><a href="digial-signal-processing.html#noise-and-filters"><i class="fa fa-check"></i><b>14.2</b> Noise and Filters</a></li>
+<li class="chapter" data-level="14.3" data-path="digial-signal-processing.html"><a href="digial-signal-processing.html#fourier-transforms-and-spectrograms"><i class="fa fa-check"></i><b>14.3</b> Fourier Transforms and Spectrograms</a></li>
+<li class="chapter" data-level="14.4" data-path="digial-signal-processing.html"><a href="digial-signal-processing.html#analyzing-audio-data-with-warbler"><i class="fa fa-check"></i><b>14.4</b> Analyzing Audio Data with <code>warbleR</code></a></li>
+<li class="chapter" data-level="14.5" data-path="digial-signal-processing.html"><a href="digial-signal-processing.html#homework-10"><i class="fa fa-check"></i><b>14.5</b> Homework</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
-<li class="divider"></li>
-<li><a href="https://bookdown.org" target="blank">Published with bookdown</a></li>
-
 </ul>
 
       </nav>
@@ -305,7 +395,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Bivand, Roger S., Edzer Pebesma, and Virgilio Gomez-Rubio. 2013. <em>Applied Spatial Data Analysis with R, Second Edition</em>. Springer, NY.</p>
 </div>
 <div>
+<p>Hastie, Trevor, Robert Tibshirani, and Jerome Friedman. 2009. <em>The Elements of Statistical Learning: Data Mining, Inference and Prediction</em>. 2nd ed. Springer. <a href="http://www-stat.stanford.edu/~tibs/ElemStatLearn/">http://www-stat.stanford.edu/~tibs/ElemStatLearn/</a>.</p>
+</div>
+<div>
+<p>James, G., D. Witten, T. Hastie, and R. Tibshirani. 2014. <em>An Introduction to Statistical Learning: With Applications in R</em>. Springer Texts in Statistics. Springer New York. <a href="https://books.google.com/books?id=at1bmAEACAAJ">https://books.google.com/books?id=at1bmAEACAAJ</a>.</p>
+</div>
+<div>
 <p>Spector, Phil. 2008. <em>Data Manipulation with R</em>. Use R! pub-sv:adr: pub-sv.</p>
+</div>
+<div>
+<p>Wegmann. 2010. “Raster Vector Tikz.png.” 2010. <a href="https://commons.wikimedia.org/wiki/File:Raster_vector_tikz.png">https://commons.wikimedia.org/wiki/File:Raster_vector_tikz.png</a>.</p>
 </div>
 <div>
 <p>Wickham, Hadley, and Carson Sievert. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. 2nd ed. Cham: Springer.</p>
@@ -359,12 +458,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </section>
 
           </div>
         </div>
       </div>
-<a href="sp.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="digial-signal-processing.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>
@@ -395,14 +511,14 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/yihui/bookdown-crc/edit/master/16-references.Rmd",
-"text": "Edit"
+"link": null,
+"text": null
 },
 "history": {
 "link": null,
 "text": null
 },
-"download": ["bookdown.pdf", "bookdown.epub"],
+"download": ["bookdown.pdf"],
 "toc": {
 "collapse": "none"
 }

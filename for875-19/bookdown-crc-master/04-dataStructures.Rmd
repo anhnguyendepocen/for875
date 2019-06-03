@@ -64,7 +64,7 @@ bp
 typeof(bp)
 ```
 
-It may be surprising to see that the variable `weight` is of `double` type, even though its values all are integers. By default R creates a double type vector when numeric values are given via the `+c()` function. 
+It may be surprising to see that the variable `weight` is of `double` type, even though its values all are integers. By default R creates a double type vector when numeric values are given via the `c()` function. 
 
 When it makes sense, it is possible to convert vectors to a different type. Consider the following examples.
 
@@ -141,6 +141,34 @@ Note that mixing zero and other nonzero subscripts is allowed, but mixing negati
 
 What about the (usual) case where we don't know the positions of the elements we want? For example possibly we want the weights of all females in the data. Later we will learn how to subset using logical indices, which is a very powerful way to access desired elements of a vector.
 
+## Practice Exercise
+
+A bad programming technique that often plagues beginners is a technique called *hardcoding*. Consider the following simple vector containing data on the number of tree species found at diffrent sites.
+
+```{r}
+tree.sp <- c(10, 13, 15, 8, 2, 9, 10, 20, 9, 11)
+```
+
+Suppose we are interested in the second to last value of the data set. One way to do this is to first determine the length of vector using the `length()` function, then taking that value and subtracting 1.
+
+```{r}
+num.sites <- length(tree.sp)
+num.sites
+tree.sp[10 - 1]
+```
+
+This is an example of *hardcoding*. But what if we attempt to use the same code on a second vector of tree species data that has a different number of sites?
+
+```{r, error = TRUE}
+tree.sp <- c(8, 4, 3, 2, 19, 3)
+num.sites <- length(tree.sp)
+num.sites
+tree.sp[10 - 1]
+```
+
+That's clearly not what we want. Fix this code so we can always extract the second to last value in the vector, regardless of the length of the vector. 
+
+
 ## Factors
 
 Categorical variables such as `gender` can be represented as character vectors. In many cases this simple representation is sufficient. Consider, however, two other categorical variables, one representing age via categories `youth`, `young adult`, `middle age`, `senior`, and another representing income via categories `lower`, `middle`, and `upper`. Suppose that for the small health data set, all the people are either middle aged or senior citizens. If we just represented the variable via a character vector, there would be no way to know that there are two other categories, representing youth and senior citizens, which happen not to be present in the data set. And for the income variable, the character vector representation does not explicitly indicate that there is an ordering of the levels.
@@ -213,6 +241,22 @@ mean(c(1,2,3,NA,5), na.rm=TRUE)
 ```
 
 As this example shows, the default behavior for the `mean()` function is to return `NA`. If removal of the missing values and then computing the mean is desired, the argument `na.rm` is set to `TRUE`. Different R functions have different default behaviors, and there are other possible actions. Consulting the help for a function provides the details.
+
+### Practice Exercise
+
+Collecting data is often a messy process resulting in multiple errors in the data. Consider the following small vector representing the weights of 10 adults in pounds.
+
+```{r}
+my.weights <- c(150, 138, 289, 239, 12, 103, 310, 200, 218, 178)
+```
+
+As far as I know, it's not possible for an adult to weigh 12 pounds, so that is most likely an error. Change this value to NA, and then find the standard deviation of the weights after removing the NA value. 
+
+```{r, include = FALSE, eval = FALSE}
+# Answer
+my.weights[my.weights == 12] <- NA
+sd(my.weights, na.rm = TRUE)
+```
 
 ### Infinity and NaN
 
@@ -301,7 +345,7 @@ mpgHpLinMod$coefficients
 mpgHpLinMod$residuals
 ```
 
-The `lm` function returns a list (which in the code above has been assigned to the object `mpgHpLinMod`).^[The `mode` function returns the type or storage mode of an object.] One component of the list is the length ` length(mpgHpLinMod$coefficients)` vector of coefficients, while another component is the length ` length(mpgHpLinMod$residuals)` vector of residuals. The code also illustrates that named components of a list can be accessed using the dollar sign notation, as with data frames.
+The `lm` function returns a list (which in the code above has been assigned to the object `mpgHpLinMod`).^[The `mode` function returns the type or storage mode of an object.] One component of the list is the length `r length(mpgHpLinMod$coefficients)` vector of coefficients, while another component is the length `r length(mpgHpLinMod$residuals)` vector of residuals. The code also illustrates that named components of a list can be accessed using the dollar sign notation, as with data frames.
 
 The `list` function is used to create lists.
 
@@ -363,7 +407,7 @@ Consider the lines of R code one by one.
 
 + `weight` instructs R to display the values in the vector `weight`.
 + `weight > 200` instructs R to check whether each value in `weight` is greater than 200, and to return `TRUE` if so, and `FALSE` otherwise.
-+The next line, `gender[weight > 200]`, does two things. First, inside the square brackets, it does the same thing as the second line, namely, returning `TRUE` or `FALSE` depending on whether a value of `weight` is or is not greater than 200. Second, each element of `gender` is matched with the corresponding `TRUE` or `FALSE` value, and is returned if and only if the corresponding value is `TRUE`. For example the first value of `gender` is ` gender[1]`. Since the first `TRUE` or `FALSE` value is `FALSE`, the first value of `gender` is not returned. Only the third and fifth values of `gender`, both of which happen to be `male`, are returned. Briefly, this line returns the genders of those people whose weight is over 200 pounds.
++ The next line, `gender[weight > 200]`, does two things. First, inside the square brackets, it does the same thing as the second line, namely, returning `TRUE` or `FALSE` depending on whether a value of `weight` is or is not greater than 200. Second, each element of `gender` is matched with the corresponding `TRUE` or `FALSE` value, and is returned if and only if the corresponding value is `TRUE`. For example the first value of `gender` is ` gender[1]`. Since the first `TRUE` or `FALSE` value is `FALSE`, the first value of `gender` is not returned. Only the third and fifth values of `gender`, both of which happen to be `male`, are returned. Briefly, this line returns the genders of those people whose weight is over 200 pounds.
 + The fourth line of code, `weight[weight > 200]`, again begins by returning `TRUE` or `FALSE` depending on whether elements of `weight` are larger than 200. Then those elements of `weight` corresponding to `TRUE` values, are returned. So this line returns the weights of those people whose weights are more than 200 pounds.
 + The fifth line returns `TRUE` or `FALSE` depending on whether elements of `gender` are equal to `female` or not.
 + The sixth line returns the weights of those whose gender is `female`.
@@ -485,7 +529,17 @@ rep(c(1,2,4), times = 3)
 rep(c("a", "b", "c"), times = c(3, 2, 7))
 ```
 
-## Practice Exercises
+### Practice Exercise
+
+Often when using R you will want to simulate data from a specific probability distribution (i.e. normal/Gaussian, bionmial, Poisson). R has a vast suite of functions for working with statistical distributions. To generate values from a statistical distribution, the function has a name beginning with an "r" followed by some abbreviation of the probability distribution. For example to simulate from the three distributions mentioned above, we can use the functions `rnorm()`, `rbinom`, and `rpois`. 
+
+Use the `rnorm()` function to generate 10,000 values from the standard normal distribution (the normal distribution with mean = 0 and variance = 1). Consult the help page for `rnorm()` if you need to. Save this vector of variables to a vector named `sim.vals`. Then use the `hist()` function to draw a histogram of the simulated data. Does the data look like it follows a normal distribution?
+
+```{r, include = FALSE, eval = FALSE}
+# Answer
+sim.vals <- rnorm(10000)
+hist(sim.vals)
+```
 
 ## Homework
 

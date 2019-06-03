@@ -66,226 +66,106 @@ But with a script file, especially a script file with a few well-chosen comments
 
 An example of a script window (with some R code already typed in) is shown in Figure \@ref(fig:script). From the script window the user can, among other things, save the script (either using the `File` menu or the icon near the top left of the window) and run one or more lines of code from the window (using the `run` icon in the window, or by copying and pasting into the console window). In addition, there is a `Source on Save` checkbox. If this is checked, the R code in the script window is automatically read into R and executed when the script file is saved.
 
-```{r script, fig.cap = "A script window in RStudio"}
+```{r script, out.width = '100%', fig.cap = "A script window in RStudio", echo = FALSE}
 knitr::include_graphics("../figures/ScriptWindow.PNG")
 ```
 
 ## R Markdown
 
-People typically work on data with a larger purpose in mind. Possibly the purpose is to understand a biological system more clearly. Possibly the purpose is to refine a system that recommends movies to users in an online streaming movie service. Possibly the purpose is to complete a homework assignment and demonstrate to the instructor an understanding of an aspect of data analysis. Whatever the purpose, a key aspect is communicating with the desired audience, for example, fellow researchers or an instructor. 
+People typically work on data with a larger purpose in mind. Possibly the purpose is to understand a biological system more clearly. Possibly the purpose is to refine a system that recommends movies to users in an online streaming movie service. Possibly the purpose is to complete a homework assignment and demonstrate to the instructor an understanding of an aspect of data analysis. Whatever the purpose, a key aspect is communicating with the desired audience.
 
-One possibility, which is somewhat effective, is to write a document using software such as Microsoft Word^[Or possibly LaTeX if the document is more technical] and to include R output such as computations and graphics by cutting and pasting into the main document. One drawback to this approach is similar to what makes script files so useful: If the document must be revised it may be hard to unearth the R code that created graphics or analyses.^[Organizing the R code using script files and keeping all the work organized in a well-thought-out directory structure can help here, but this requires a level of forethought and organization that most people do not possess$\ldots$including myself.] A more subtle but possibly more important drawback is that the reader of the document will not know precisely how analyses were done, or how graphics were created. And over time even the author(s) of the paper will forget the details. A verbal description in a "methods" section of a paper can help here, but typically these do not provide all the details of the analysis, but rather might state something like, "All analyses were carried out using R version 3.6.0."
+One possibility, which is somewhat effective, is to write a document using software such as Microsoft Word ^[Or possibly LaTeX if the document is more technical] and to include R output such as computations and graphics by cutting and pasting into the main document. One drawback to this approach is similar to what makes script files so useful: If the document must be revised it may be hard to unearth the R code that created graphics or analyses, to revise these.^[Organizing the R code using script files and keeping all the work organized in a well-thought-out directory structure can help here, but this requires a level of forethought and organization that most people do not possess $\ldots$ including myself.] A more subtle but possibly more important drawback is that the reader of the document will not know precisely how analyses were done, or how graphics were created. Over time even the author(s) of the paper will forget the details. A verbal description in a "methods" section of a paper can help here, but typically these do not provide all the details of the analysis, but rather might state something like, "All analyses were carried out using R version 3.3.1."
 
 RStudio's website provides an excellent overview of R Markdown capabilities for reproducible research. At minimum, follow the `Get Started` link at http://rmarkdown.rstudio.com/ and watch the introduction video.
 
-Among other things, R Markdown provides a way to include R code that reads in data, creates graphics, or performs analyses. This is performed in a single document which is processed to create a research paper, homework assignment, or other written product. The R Markdown file is a plain text file containing text the author wants to have shown in the final document, simple commands to indicate how the text should be formatted (i.e. boldface, italic, or a bulleted list), and R code which creates output (including graphics) on the fly. Perhaps the simplest way to get started is to see an R Markdown file and the resulting document that is produced after the R Markdown document is processed.  Below we code that would comprise a very simple R Markdown file, and Figure \@ref(fig:rmdOut) shows the resulting output. In this case the output created is an HTML file, but there are other possible output formats such as Microsoft Word or PDF.
+Among other things, R Markdown provides a way to include R code that read in data, create graphics, or perform analyses, all in a single document that is processed to create a research paper, homework assignment, or other written product. The R Markdown file is a plain text file containing text the author wants to show in the final document, simple commands to indicate how the text should be formatted (for example boldface, italic, or a bulleted list), and R code that creates output (including graphics) on the fly. Perhaps the simplest way to get started is to see an R Markdown file and the resulting document that is produced after the R Markdown document is processed. In Figure \@ref(fig:rmark) we show the input and output of an example R Markdown document. In this case the output created is an HTML file, but there are other possible output formats, such as Microsoft Word or PDF.
 
-```
----
-title: "R Markdown"
-author: "Andy Finley"
-date: "April 3, 2017"
-output: html_document
----
-
-Basic formatting:
-
-*italic*
-
-**bold**
-
-~~strikethrough~~
-
+```{r rmark, echo = FALSE, fig.align = "center", fig.cap = "Example R Markdown Input and Output", out.width = '100%'}
+knitr::include_graphics("../figures/rmarkdownInputOutput.png")
 ```
 
-A code chunk:
+At the top of the input R Markdown file are some lines with `---` at the top and the bottom. These lines are not needed, but give a convenient way to specify the title, author, and date of the article that are then typeset prominently at the top of the output document. For now, don't be concerned with the lines following `output:`. These can be omitted (or included as shown).
 
-````
-```{r}`r ''`
-x <- 1:10
-y <- 10:1
-mean(x)
-sd(y)
-```
-````
-Inline code:
+Next are a few lines showing some of the ways that font effects such as italics, boldface, and strikethrough can be achieved. For example, an asterisk before and after text sets the text in *italics*, and two asterisks before and after text sets the text in **boldface**. 
 
-`` `r
-5+5` ``
+More important for our purposes is the ability to include R code in the R Markdown file, which will be executed with the output appearing in the output document. Bits of R code included this way are called *code chunks*. The beginning of a code chunk is indicated with three backticks and an "r" in curly braces: ` ```{r}`. The end of a code chunk is indicated with three backticks ` ``` `. For example, the R Markdown file in Figure \@ref(fig:rmark) has one code chunk:
 
-Inline code not executed:
-
-`` `5+5` ``
-
-```{r rmdOut, echo = FALSE, fig.cap = "Output from the above R Markdown code"}
-knitr::include_graphics("../figures/Small-2.png")
-```
-
-At the top of the input R Markdown file are some lines with `---` at the top and bottom. These lines are not needed, but give a convenient way to specify the title, author, and date of the article that are then typeset prominently at the top of the output document. For now, don't be concerned with the lines following `output:`. These can be omitted (or included as shown).
-
-Next are a few lines showing some of the ways that font effects such as italics, boldface, and strikethrough can be achieved. For example, an asterisk before and after text sets the text in *italics*, and two asterisks before and after text sets the text in *boldface*. 
-
-More important for our purposes is the ability to include R code in the R Markdown file, which will be executed with the output appearing in the output document. Bits of R code included this way are called *code chunks*. The beginning of a code chunk is indicated with three backticks and an "r" in curly braces: `` ```{r} ``. The end of a code chunk is indicated with three backticks: `` ``` ``. For example, the R Markdown file described above has one code chunk:
-
-````
-```{r}`r ''`
-x <- 1:10
-y <- 10:1
+````r
+`r ''````{r}
+x = 1:10
+y = 10:1
 mean(x)
 sd(y)
 ```
 ````
 
-In this code chunk two vectors `x` and `y` are created, and the mean  of `x` and the standard deviation of `y` are computed. In the output in Figure \@ref(fig:rmdOut) the R code is reproduced, and the output of the two lines of code asking for the mean and standard deviation is shown.
+In this code chunk two vectors `x` and `y` are created, and the mean of `x` and the standard deviation of `y` are computed. In the output in Figure \@ref(fig:rmark) the R code is reproduced, and the output of the two lines of code asking for the mean and standard deviation is shown. 
 
-### Creating and Processing R Markdown Documents
+### Creating and processing R Markdown documents
 
-RStudio has features which facilitate creating and processing R Markdown documents. Choose `File > New File > R  Markdown...`. In the ensuing dialog box make sure that `Document` is highlighted on the left, enter the title and author (if desired), and choose the Default Output Format (HTML is good to begin). Then click OK. A document will appear in the upper left of the RStudio window. It is an R Markdown document, and the title and author you chose will show up, delimited by `---` at the top of the document. A generic body of the document will also be included. 
+RStudio has features which facilitate creating and processing R Markdown documents. Choose `File > New File > R  Markdown...`. In the ensuing dialog box, make sure that `Document` is highlighted on the left, enter the title and author (if desired), and choose the Default Output Format (HTML is good to begin). Then click OK. A document will appear in the upper left of the RStudio window. It is an R Markdown document, and the title and author you chose will show up, delimited by `---` at the top of the document. A generic body of the document will also be included. 
 
-For now just keep this generic document as is. To process it to create the HTML output, click the `Knit HTML` button at the top of the R Markdown window. You'll be prompted to choose a filename for the R Markdown file. Use `.Rmd` as the extension for this file. Once you've saved the file, RStudio will process the file, create the HTML output, and open this output in a new window. The HTML output file will also be saved to your working directory. This file can be shared with others, who can open it using a web browser such as Chrome or Firefox. 
+For now just keep this generic document as is. To process it to create the HTML output, click the `Knit HTML` button at the top of the R Markdown window^[If you hover your mouse over this Knit button after a couple seconds it should display a keyboard shortcut for you to do this if you don't like pushing buttons]. You'll be prompted to choose a filename for the R Markdown file. Make sure that you use `.Rmd` as the extension for this file. Once you've successfully saved the file, RStudio will process the file, create the HTML output, and open this output in a new window. The HTML output file will also be saved to your working directory. This file can be shared with others, who can open it using a web browser such as Chrome or Firefox. 
 
-There are many options which allow customization of R Markdown documents. Some of these affect formatting of text in the document, while others affect how R code is evaluated and displayed. The RStudio web site contains a useful summary of many R Markdown options at www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf. A different, but mind-numbingly busy, cheatsheet is at www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf. Some of the more commonly used R Markdown options are described next.
+There are many options which allow customization of R Markdown documents. Some of these affect formatting of text in the document, while others affect how R code is evaluated and displayed. The RStudio web site contains a useful summary of many R Markdown options at https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf. A different, but mind-numbingly busy, cheatsheet is at https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf. Some of the more commonly used R Markdown options are described next.
 
-#### Text: Lists and Headers
+### Text: Lists and Headers
+Unordered (sometimes called bulleted) lists and ordered lists are easy in R Markdown. Figure \@ref(fig:lists) illustrates the creation of unordered and ordered lists.
 
-Unordered (sometimes called bulleted) lists and ordered lists are easy in R Markdown. Below we illustrate the creation of unordered and ordered lists.
+```{r lists, echo = FALSE, fig.align = "center", fig.cap = "Producing Lists in R Markdown", out.width = '100%'}
+knitr::include_graphics("../figures/listsPic.png")
+```
 
 + For an unordered list, either an asterisk, a plus sign, or a minus sign may precede list items. Use a space after these symbols before including the list text. To have second-level items (sub-lists) indent four spaces before indicating the list item. This can also be done for third-level items. 
-+ For an ordered list use a numeral followed by a period and a space (1. or 2. or 3. or ...) to indicate a numbered list, and use a letter followed by a period and a space (a. or b. or c. or ...) to indicate a lettered list. The same four space convention is used to designate sub lists. 
-+ For an ordered list, the first list item will be labeled with the number or letter that you specify, but subsequent list items will be numbered sequentially. This will become clear through the following example. Consider the R Markdown input below and the subsequent output in Figure \@ref(fig:listOut): 
 
-```
-An unordered list:
++ For an ordered list use a numeral followed by a period and a space (1. or 2. or 3. or ...) to indicate a numbered list, and use a letter followed by a period and a space (a. or b. or c. or ...) to indicate a lettered list. The same four space convention used in unordered lists is used to designate ordered sub lists. 
 
-* List item 1
-* List item 2
-    + Second level list item 1
-    + Second level list item 2
-        + Third level list item
-* List item 3
++ For an ordered list, the first list item will be labeled with the number or letter that you specify, but subsequent list items will be numbered sequentially. The example in Figure \@ref(fig:lists) will make this more clear. In those examples notice that for the ordered list, although the first-level numbers given in the R Markdown file are 1, 2, and 17, the numbers printed in the output are 1, 2, and 3. Similarly the letters given in the R Markdown file are c and q, but the output file prints c and d. 
 
-An ordered list:
+R Markdown does not give substantial control over font size. Different "header" levels are available that provide different font sizes. Put one or more hash marks in front of text to specify different header levels. Other font choices such as subscripts and superscripts are possible, by surrounding the text either by tildes or carets. More sophisticated mathematical displays are also possible, and are surrounded by dollar signs. The actual mathematical expressions are specified using a language called LaTeX  See Figures \@ref(fig:headers) and \@ref(fig:latex) for examples. 
 
-1. List item 1
-2. List item 2
-    c. Sub list item 1
-    q. Sub list item 2
-17. List item 3
-```
-```{r listOut, fig.cap = "R Markdown List Output"}
-knitr::include_graphics("../figures/ListExamples.pdf")
+```{r headers, echo = FALSE, fig.align = "center", fig.cap = "Headers and Some LaTeX in R Markdown", out.width = '100%'}
+knitr::include_graphics("../figures/headersAndLatex.png")
 ```
 
-In those examples notice that for the ordered list, although the first-level numbers given in the R Markdown code are 1, 2, and 17, the numbers printed in the output are 1, 2, and 3. Similarly the letters given in the R Markdown code are c and q, but the output file prints c and d. 
-
-R Markdown does not give substantial control over font size. Different "header" levels, which provide different font sizes, are available. Put one or more hash marks (#) in front of text to specify different header levels. Other font choices such as subscripts and superscripts are possible, by surrounding the text either by tildes or carets, respectively. More sophisticated mathematical displays are also possible, and are surrounded by dollar signs. The actual mathematical expressions are specified using a language called LaTeX.  See the examples below for further information for working with headers in R Markdown and LaTeX commands.
-
-```
-# A first *level* ~~header~~
-
-## A second level header
-
-### A third level header
-
-Text subscripts and superscripts:
-
-x~2~ + y~2~
-
-10^3^ = 1000
-
-Mathematics examples:
-
-$x_a$
-
-$x^a$
-
-$\int_0^1 x^2 dx$
-
-$\frac{x}{y}$
-
-$\sqrt{x}$
-
-$\sqrt[n]{x}$
-
-$\sum_{k=1}^n$
-
-$\prod_{k=1}^n$
+```{r latex, echo = FALSE, fig.align = "center", fig.cap = "Other useful LaTeX symbols and expressions in R Markdown", out.width = '100%'}
+knitr::include_graphics("../figures/latex.png")
 ```
 
-```{r headerOut, echo = FALSE, fig.cap = "More R Markdown Output"}
-knitr::include_graphics("../figures/headers.pdf")
-```
+### Code Chunks
 
-```{r latexOut, echo = FALSE, fig.cap = "Other useful LaTeX expressions and symboles available for use in R Markdown"}
-knitr::include_graphics("../figures/latexExpressions.png")
-```
+R Markdown provides a large number of options to vary the behavior of code chunks. In some contexts it is useful to display the output but not the R code leading to the output. In some contexts it is useful to display the R prompt, while in others it is not. Maybe we want to change the size of figures created by graphics commands. And so on. A large number of code chunk options are described in http://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf. 
 
-#### Code Chunks
+Code chunk options are specified in the curly braces near the beginning of a code chunk. Below are a few of the more commonly used options are described.  The use of these options is illustrated in Figure \@ref(fig:chunk).
 
-R Markdown provides a large number of options to vary the behavior of code chunks. In some contexts it is useful to display the output but not the R code leading to the output. In some contexts it is useful to display the R prompt and in others it is not. Perhaps it is useful to configure the size of figures created by graphics. And so on. These code chunk options and many more are described in www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf. 
+1. `echo=FALSE` specifies that the R code itself should not be printed, but any output of the R code should be printed in the resulting document. 
 
-Code chunk options are specified in the curly braces near the beginning of a code chunk. For example the option `echo=FALSE` would be specified via `` ```{r, echo=FALSE} ``. Below are descriptions of a few of the more commonly used options. The use of these options is illustrated in Figures~\ref{FIG:CODE_CHUNK_OPTIONS1} and~\ref{FIG:CODE_CHUNK_OPTIONS2}.
-
-1. `echo=FALSE` specifies that the R code should not be printed (but any output of the R code should be printed) in the resulting document. 
 2. `include=FALSE` specifies that neither the R code nor the output should be printed. However, the objects created by the code chunk will be available for use in later code chunks. 
-3. `eval=FALSE` specifies that the R code should not be evaluated. 
-The code will be printed unless, for example, `echo=FALSE` is also given as an option.
+
+3. `eval=FALSE` specifies that the R code should not be evaluated. The code will be printed unless, for example, `echo=FALSE` is also given as an option.
+
 4. `error=FALSE` and `warning=FALSE` specify that, respectively, error messages and warning messages generated by the R code should not be printed. 
-5. The `comment` option allows a specified character string to be prepended to each line of results. By default this is set to `comment = '##'` which explains the two hash marks preceding results in Figure \@ref(fig:rmdOut) for example. Setting `comment = NA` presents output without any character string prepended. That is done in most code chunks in this book.
-6. `prompt=TRUE` specifies that R prompt `>` will be prepended to each line of R code shown in the document. `prompt = FALSE` specifies that command prompts should not be included.
 
-7. `fig.height` and `fig.width` specify the height and width of figures generated by R code. These are specified in inches, so for example `fig.height=4` specifies a four inch high figure.
+5. The `comment` option allows a specified character string to be prepended to each line of results. By default this is set to `comment = '##'` which explains the two hash marks preceding the results in Figure \@ref(fig:rmark). Setting `comment = NA` presents output without any character string prepended. That is done in most code chunks in this book.
 
-The below R Markdown input and \@ref(fig:codeOptions) (printed output) give examples of the use of code chunk options.
+6. `prompt=TRUE` specifies that the R prompt `>` will be prepended to each line of R code shown in the document. `prompt = FALSE` specifies that command prompts should not be included.
 
+7. `fig.height` and `fig.width` specify the height and width of figures generated by R code. These are specified in inches. For example, `fig.height=4` specifies a four inch high figure.
+
+Figures \@ref(fig:chunk) gives examples of the use of code chunk options.
+
+
+```{r chunk, echo = FALSE, fig.align = "center", fig.cap = "Output of Example R Markdown", fig.show = 'hold', out.width = '50%'}
+knitr::include_graphics(c("../figures/chunks1.png", "../figures/chunks2.png"))
 ```
 
-No options:
 
-```{r}`r ''`
-x <- 1:10
-x
-```
-
-echo=FALSE:
-```{r, echo = FALSE}`r ''`
-x <- 1:10
-x
-```
-
-comment=NA:
-```{r, comment = NA}`r ''`
-x <- 1:10
-x
-```
-comment='#', prompt=TRUE:
-```{r, comment = '#', prompt = TRUE}`r ''`
-x <- 1:10
-x
-```
-
-echo=FALSE, fig.height=4, fig.width=4:
-
-```{r, echo = FALSE, fig.height = 4, fig.width = 4}`r ''`
-y <- 10:1
-plot(x,y)
-```
-
-```
-
-```{r codeOptions, echo = FALSE, fig.cap = "Output of Example R Code Chunk Options"}
-knitr::include_graphics("../figures/CodeChunkOptions.pdf")
-```
-
-### Output Formats other than HTML
-
-It is possible to use R Markdown to produce documents in formats other than HTML, including Word and PDF documents, among others. Next to the `Knit HTML` button is a down arrow. Click on this and choose `Knit Word` to produce a Microsoft word output document. Although there is also a `Knit PDF` button, PDF output requires additional software called TeX in addition to RStudio.^[It isn't particularly hard to install TeX  software. For a Microsoft Windows system, MiKTeX is convenient, and is available from miktex.org. For a Mac system, MacTeX is available from www.tug.org/mactex/.] 
+### Output formats other than HTML
+It is possible to use R Markdown to produce documents in formats other than HTML, including Word and PDF documents. Next to the `Knit HTML` button is a down arrow. Click on this and choose `Knit Word` to produce a Microsoft word output document. Although there is also a `Knit PDF` button, PDF output requires additional software called TeX in addition to RStudio.^[It isn't particularly hard to install TeX software. For a Microsoft Windows system, MiKTeX is convenient and is available from https://miktex.org. For a Mac system, MacTeX is available from https://www.tug.org/mactex/] 
 
 ### LaTeX, `knitr`, and `bookdown`
 
 While basic R Markdown provides substantial flexibility and power, it lacks features such as cross-referencing, fine control over fonts, etc. If this is desired, a variant of R Markdown called `knitr`, which has very similar syntax to R Markdown for code chunks, can be used in conjunction with the typesetting system LaTeX to produce documents. Another option is to use the R package `bookdown` which uses R Markdown syntax and some additional features to allow for writing more technical documents. In fact this book was initially created using `knitr` and LaTeX, but the simplicity of markdown syntax and the additional intricacies provided by the `bookdown` package convinced us to write the book in R Markdown using `bookdown`. For simpler tasks, basic R Markdown is plenty sufficient, and very easy to use.
-
-## Practice Exercises
 
 ## Homework 
 

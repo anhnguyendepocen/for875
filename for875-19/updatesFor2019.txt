@@ -1,0 +1,6 @@
+1. Add small exercises at the end of important sections. 
+2. At the same time as the above, go through and make edits on the chapters.
+2. Convert the envr2018 workshop stuff into a chapter
+3. Make the databases chapter more accessible. Get rid of the google stuff, find a different example that can be used without having to make an account. 
+4. Maybe add in a chapter for base plotting as opposed to ggplot.
+5. Add some more Fourier to the signal processing chapter. 
