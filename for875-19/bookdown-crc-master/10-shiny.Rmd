@@ -1,21 +1,21 @@
-# Shiny
+# Shiny: Interactive Web Apps in R
 
 [Shiny](https://shiny.rstudio.com/) is a framework that turns R code and figures into interactive web applications. Let's start out by looking at a built-in example Shiny app. 
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, eval = FALSE}
 library(shiny)
 runExample("01_hello")
 ```
 
-In the bottom panel of the resulting Shiny app (Figure \@ref(fig:hello)), we can see the R script that is essential to running any Shiny app: `app.R`. Take a minute to explore how the app works and how the script code is structured. The first part of the script (`ui <-`) defines the app's user interface (UI) using directives that partition the resulting web page and placement of input and output elements. The second part of the script defines a function called `server` with arguments `input` and `output`. This function provides the logic required to run the app (in this case, to draw the histogram of the Old Faithful Geyser Data). Third, `ui` and `server` are passed to a function called `shinyApp` which creates the application.^[Since 2014, Shiny has supported single-file applications (one file called app.R that contains UI and server components), but in other resources, you may see two separate source files, `server.R` and `ui.R`, that correspond to those two components. We will use the updated one-file system here, but keep in mind that older resources you find on the internet using the Shiny package may employ the two-file approach. Ultimately, the code inside these files is almost identical to that within the single `app.R` file. See [here](https://shiny.rstudio.com/articles/app-formats.html) for more information.]
+In the bottom panel of the resulting Shiny app (Figure \@ref(fig:hello)), we can see the R script that is essential to running any Shiny app: `app.R`. Take a minute to explore how the app works and how the script code is structured. The first part of the script (`ui <-`) defines the app's user interface (UI) using directives that partition the resulting web page and placement of input and output elements. The second part of the script defines a function called `server` with arguments `input` and `output`. This function provides the logic required to run the app (in this case, to draw the histogram of the Old Faithful Geyser Data). Third, `ui` and `server` are passed to a function called `shinyApp` which creates the application.^[Since 2014, Shiny has supported single-file applications (one file called app.R that contains UI and server components), but in other resources, you may see two separate source files, `server.R` and `ui.R`, that correspond to those two components. We will use the updated one-file system here, but keep in mind that older resources you find on the internet using the Shiny package may employ the two-file approach. Ultimately, the code inside these files is almost identical to that within the single `app.R` file. See https://shiny.rstudio.com/articles/app-formats.html for more information.]
 
-```{r hello, fig.cap = "Hello Shiny example app", echo = FALSE}
+```{r hello, fig.cap = "Hello Shiny example app", echo = FALSE, out.width = '100%'}
 knitr::include_graphics("../../for875-19/figures/hello_shiny.png")
 ```
 
 All of the example code and data for the remainder of this chapter can be accessed using the following code.
 
-```{r, prompt=FALSE}
+```{r, prompt=FALSE, eval = FALSE}
 library(downloader)
 
 download("http://blue.for.msu.edu/FOR875/data/shiny_chapter_code.zip", 
@@ -41,7 +41,7 @@ Given the `namesDF` data, our goal over the next few sections is to develop a Sh
 3. Copy the code in "app.R version 1" into `app.R`.
 4. Run the Shiny app from RStudio. There are two ways to do this: 1) use the RStudio button (See Figure \@ref(fig:fig1)) or; 2) type the function `runApp()` in the RStudio console.
 
-```{r, prompt=FALSE}
+```{r, prompt=FALSE, eval = FALSE}
 # app.R version 1
 
 library(shiny)
@@ -69,13 +69,13 @@ shinyApp(ui = ui, server = server)
 ```
 
 
-```{r fig1, fig.cap = "Running a Shiny app locally", echo = FALSE}
+```{r fig1, fig.cap = "Running a Shiny app locally", echo = FALSE, out.width = '100%'}
 knitr::include_graphics("../figures/RStudio_runApp.png")
 ```
 
 If everything compiles correctly, you should get a window that looks like Figure \@ref(fig:fig2). There are a few things to notice. First, we read in the CSV file at the beginning of the `app.R` script so that these data can be accessed in subsquent development steps (although we don't use it yet in this initial application). Second, our Shiny app is not interactive yet because there is no way for a user to input any data---the page is view-only. Third, the function `function(input,output) {}` in `app.R` does not include any code, reflecting that we are not yet using any user inputs or creating any outputs. 
 
-```{r fig2, fig.cap = "Your first Shiny app"}
+```{r fig2, fig.cap = "Your first Shiny app", echo = FALSE, out.width = '100%'}
 knitr::include_graphics("../figures/appSimple.png")
 ```
 
@@ -87,7 +87,7 @@ Building on the "version 1" code, we add a dropdown menu to the script's UI port
 
 Look at the structure of the `choices` argument in `selectInput`. It's a vector of options in the form `"name" = "value"` where the `name` is what the user sees, and the `value` is what is returned to the server logic function of the `app.R` file.
 
-```{r, prompt=FALSE, eval=F}
+```{r, prompt=FALSE, eval = FALSE}
 # app.R version 2
 
 library(shiny)
@@ -127,7 +127,7 @@ Server logic is defined by two arguments: `input` and `output`. These objects ar
 
 Reactive portions of our `app.R` script's server logic are inside the server function. We create reactive outputs using Shiny's functions like `renderPlot`.^[Every reactive output function's name in Shiny is of the form `render*`.] Obviously, `renderPlot` renders the contents of the function into a plot object; this is then stored in the `output` list wherever we assign it (in this case, `output$histogram`). Notice the contents of the `renderPlot` function are contained not only by regular parentheses, but also by curly brackets (just one more piece of syntax to keep track of).
 
-```{r, prompt=FALSE}
+```{r, prompt=FALSE, eval = FALSE}
 # app.R version 3
 
 library(shiny)
@@ -179,7 +179,7 @@ Update your `app.R` server logic function to match the code above. Rerun the app
 
 Now we update the UI part of `app.R` to make the app interactive. In the "version 4" code below, the `plotOutput("histogram")` function in `ui` accesses the `histogram` component of the `output` list and plots it in the main panel. Copy the code below and rerun the application. You have now created your first Shiny app!
 
-```{r, prompt=FALSE,eval=F}
+```{r, prompt=FALSE, eval = FALSE}
 # app.R version 4
 
 library(shiny)
@@ -229,7 +229,7 @@ shinyApp(ui = ui, server = server)
 
 The Michigan Department of Natural Resources (DNR) has made substantial investments in open-sourcing its data via the [Michigan DNR's open data](http://gis-midnr.opendata.arcgis.com/datasets/) initiative. We'll use some of these data to motivate our next Shiny application. Specifically we'll work with the DNR State Park Campgrounds data available [here](http://blue.for.msu.edu/FOR875/data/Michigan_State_Park_Campgrounds.csv) as a CSV file.
 
-```{r}
+```{r, eval = TRUE}
 u <- "http://blue.for.msu.edu/FOR875/data/Michigan_State_Park_Campgrounds.csv"
 sites <- read.csv(u, stringsAsFactors = F)
 str(sites)
@@ -275,7 +275,7 @@ Note that both of these functions contain identical subsetting of the `sites` da
 
 This repeated code can be avoided using Shiny's reactive expressions. These expressions will update in value whenever the widget input values change. See [here](https://shiny.rstudio.com/tutorial/written-tutorial/lesson6/) for more information. The use of reactive expressions is beyond the scope of this chapter, but it is an important concept to be familiar with if you plan to regularly create Shiny applications. 
 
-```{r, eval=FALSE,prompt=FALSE, tidy = FALSE}
+```{r, prompt=FALSE, tidy = FALSE, eval = FALSE}
 sites1 <- subset(sites, 
                   TOTAL_SITE >= input$rangeNum[1] &  
                   TOTAL_SITE <= input$rangeNum[2] &  
@@ -293,7 +293,7 @@ In the `addCircleMarkers` function, you can see that we used the `mapply` functi
 
 }
 
-```{r, eval=FALSE,prompt=FALSE}
+```{r, prompt=FALSE, eval = FALSE}
 # renderLeaflet function from app.R
 
 output$plot1 <- renderLeaflet({

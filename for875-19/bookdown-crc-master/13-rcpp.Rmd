@@ -1,6 +1,5 @@
 # Rcpp
 
-
 R is an interpreted language. The code interpretor runs each line of a script individually instead of compiling the entire file at once as in a compiled language like C++. This means R can be slower than compiled languages when completing some tasks. In this chapter, we show how to improve the performance of our R scripts by rewriting functions in C++^[You do not need prior C++ experience to complete this chapter and corresponding exercises, but we are hoping you learn a little C++ syntax along the way!]. Although R has an API for developers to move between R data structures and data structures in lower-level languages (C++, C, FORTRAN, etc.), an alternative is to use `Rcpp`. According to the [official Rcpp website](http://www.rcpp.org/), "Rcpp provides a powerful API on top of R, permitting direct interchange of rich R objects between R and C++." It is a higher-level approach than using the aforementioned API directly. C++ functions can address gaps in R's abilities including
 
 + Vectorizing loops whose subsequent iterations depend on previous iterations.
@@ -261,7 +260,7 @@ This function introduces only a few new concepts:
 + We create a new numeric vector of length n with a constructor: `NumericVector out(n)`. This and similar vector and matrix constrictors initialize the elements with zeros. Another useful way of making a vector is to copy an existing one: `NumericVector zs = clone(ys)`.
 + C++ uses `pow()`, not `^`, for exponentiation.
 
-Note that because the R version is fully vectorized, it's already going to be fast. On my computer, it takes around 8 ms with a 1 million element y vector. The C++ function is twice as fast, $\sim$4 ms, but assuming it took you 10 minutes to write the C++ function, you'd need to run it $\sim$150,000 times to make rewriting worthwhile :-) The reason why the C++ function is faster is subtle, and relates to memory management. The R version needs to create an intermediate vector the same length as `y(x - ys)`, and allocating memory is an expensive operation. The C++ function avoids this overhead because it uses an intermediate scalar.
+Note that because the R version is fully vectorized, it's already going to be fast. On my computer, it takes around 8 ms with a 1 million element y vector. The C++ function is twice as fast, $\sim$ 4 ms, but assuming it took you 10 minutes to write the C++ function, you'd need to run it $\sim$ 150,000 times to make rewriting worthwhile :-) The reason why the C++ function is faster is subtle, and relates to memory management. The R version needs to create an intermediate vector the same length as `y(x - ys)`, and allocating memory is an expensive operation. The C++ function avoids this overhead because it uses an intermediate scalar.
 
 ### Matrix input and vector output
 

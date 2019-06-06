@@ -7,9 +7,11 @@ Classification methods are both extremely useful and an active area of research 
 ## Logistic Regression
 
 Logistic regression is widely used to relate a categorical response variable to one or more (continuous or categorical) predictors. Initially we will consider the simplest case where the response $Y$ has only two possible values (we'll assume the values are $0$ and $1$) and where there is only one continuous predictor $X$. We would like to predict the value of $Y$ based on the value of the predictor $X$. Let $p(X) = P(Y = 1 | X)$.^[For those not familiar with probability notation, the right side of this equation reads as "The probability that Y = 1 given we know the value of X")]. We will model $p(X)$ with the *logistic function*, which takes values between $0$ and $1$, which is of course appropriate for modeling a probability:
+
 \[
 p(X) = \frac{e^{\beta_0 + \beta_1 X}}{1 + e^{\beta_0 + \beta_1 X}}.
 \]
+
 A graph of this function when $\beta_0=0$ and $\beta_1 = 1$ shows the characteristic shape.
 
 ```{r, tidy = FALSE}
@@ -35,9 +37,11 @@ head(Pima.tr)
 ```
 
 We will begin with `glu` as a predictor, and of course `type` as the response. So we want to find the values $\beta_0$ and $\beta_1$ which provide the best fit for the model
+
 \[
 P(\text{yes} | \text{glu}) = \frac{e^{\beta_0 + \beta_1 (\text{glu})}}{1 + e^{\beta_0 + \beta_1 (\text{glu})}}
 \]
+
 Usually maximum likelihood methods are used to fit the model. 
 
 In R we will use the function `glm` to fit logistic regression models. The `glm` function fits a wide variety of models. To  specify the logistic regression model we specify `family = binomial` as an argument to `glm`. We also must specify the predictor and response variables via the model formula, which in our case will be `diabetes ~ glu` to indicate that `diabetes` (i.e., `type` recoded) is the response and `glu` is the predictor; also we specify the data frame, which in our case is `Pima.tr`.
@@ -53,9 +57,8 @@ beta1.lr.1
 ```
 
 
-
-The coefficients $\beta_0$ and $\beta_1$ are approximately $\beta_0 =$ `round(coef(diabetes.lr1)[1], 3)` and 
-$\beta_1 = $ `round(coef(diabetes.lr1)[2], 3)`. So for example we can estimate the probability that a woman in this population whose glucose level is 150 would be diabetic as
+The coefficients $\beta_0$ and $\beta_1$ are approximately `r round(coef(diabetes.lr1)[1], 3)` and 
+`r round(coef(diabetes.lr1)[2], 3)`, respectively. So for example we can estimate the probability that a woman in this population whose glucose level is 150 would be diabetic as
 
 ```{r}
 exp(-5.504 + 0.038*150)/(1 + exp(-5.504 + 0.038*150))
@@ -107,9 +110,11 @@ The table (sometimes called a *confusion matrix*) has the predictions of the mod
 ### Adding Predictors
 
 If we have $p$ predictors $X = (X_1, \dots, X_p)$, the logistic model becomes
+
 \[
 p(X) = p(X) = \frac{e^{\beta_0 + \beta_1 X + \dots + \beta_p X_p}}{1 + e^{\beta_0 + \beta_1 X + \dots + \beta_p X_p}}.
 \]
+
 Although there is a lot more notation to keep track of, the basic ideas are the same as they were for the one predictor model. We will next see how adding `bmi`, the body mass index, affects predictions of diabetes.
 
 ```{r}
@@ -135,13 +140,17 @@ length(diabetes.predict.2[diabetes.predict.2 == Pima.te$type])/
 Adding `bmi` as a predictor did not improve the predictions by very much!
 
 Let $x_1$ and $x_2$ represent glucose and bmi levels. We classify a subject as "diabetic" if the fitted $p(X)$ is greater than $0.5$, i.e., if the fitted probability of diabetes is greater than the fitted probability of not diabetes. The boundary for our decision is where these two fitted probabilities are equal, i.e., where
+
 \[
 \frac{P(Y = 1 | (x_1, x_2))}{P(Y = 0 | (x_1, x_2))} = \frac{P(Y = 1 | (x_1, x_2))}{1 - P(Y = 1 | (x_1, x_2))}  = 1.
 \]
+
 Writing these out in terms of the logistic regression model, taking logarithms, and performing some algebra leads to the following (linear!) decision boundary:
+
 \[
 x_2 = -\frac{\beta_0}{\beta_2} - \frac{\beta_1}{\beta_2} x_1.
 \]
+
 The diabetes training data along with the decision boundary are plotted below.
 
 ```{r, tidy = FALSE}
@@ -310,6 +319,25 @@ table(knn_Pima, Pima.te[,8])
 
 At least in terms of the confusion matrix, kNN with $k=15$ performed about as well as logistic regression for these data. 
 
+## Practice Exercise
+
+Produce a figure that displays how the number of false positives produced from the kNN classifier for the diabetes data set changes for all integer values of $k$ from 1 to 40. Use this graph to justify whether or not $k = 15$ was a valid choice for the number of neighbors.
+
+```{r, echo = FALSE, eval = FALSE}
+falsePositives <- rep(0, 40)
+for (i in 1:length(falsePositives)) {
+  knn_Pima <- knn(Pima.tr[,c(2,5)], Pima.te[,c(2,5)], Pima.tr[,8], k = i, prob=TRUE)
+  falsePositives[i] <- table(knn_Pima, Pima.te[,8])[2, 1]
+}
+# Using graphics
+plot(falsePositives, pch = 19, las = 1, xlab = "k", ylab = "# of False Positives")
+# Using ggplot2
+dat <- data.frame(k = 1:40, falsePositives)
+ggplot(data = dat, aes(x = k, y = falsePositives)) + 
+  geom_point() + 
+  labs(y = "# of False Positives")
+```
+
 ### kNN and the iris Data
 
 Now kNN is used to classify the iris data. As before we use petal length and width as predictors. The scales of the two predictors are not particularly different, so we won't standardize the predictors. Unsurprisingly kNN does well in classifying the test set for a wide variety of $k$ values.
@@ -327,5 +355,6 @@ table(knn_iris, iris.test[,5])
 ```
 
 ## Homework
+
 **Exercise Classification** Learning objectives: explore the logistic regression classification method; apply the kNN classification method; create confusion matrices to compare classification methods; plot classified data.
 

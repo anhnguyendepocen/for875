@@ -185,99 +185,99 @@ employees %>%
   theme_classic()
 ```
 
-### Using Google BigQuery
+<!-- ### Using Google BigQuery -->
 
-For a second example, we will utilize a database from Google BigQuery, Google's fully managed low cost analytics data warehouse. The package `bigrquery` provides an R interface to Google BigQuery. If not already installed, install the package with our usual method. 
+<!-- For a second example, we will utilize a database from Google BigQuery, Google's fully managed low cost analytics data warehouse. The package `bigrquery` provides an R interface to Google BigQuery. If not already installed, install the package with our usual method.  -->
 
-To follow along yourself with this example, you will have to create a Google Cloud Platform account that you can easily link with an existing google email. If you don't desire to do this, then you can simply follow along in the textbook (but we always suggest running the code yourself and trying out different examples). For creating the account, follow the instructions at this [Google Cloud Guide](https://blog.openbridge.com/the-missing-guide-to-setting-up-google-cloud-service-accounts-for-google-bigquery-6301e509b232). Note that we are using a FREE trial, and Google requires the input of a credit card number solely to ensure you are not a robot (or at least that's what they say!). You will not be charged unless you upgrade to a paid account. This is a 12-month free trial where you have \$300, 1 TB of queries, and 10 GB of storage to experiment with the cloud platform. No charges will be made unless you specifically ask for them.
+<!-- To follow along yourself with this example, you will have to create a Google Cloud Platform account that you can easily link with an existing google email. If you don't desire to do this, then you can simply follow along in the textbook (but we always suggest running the code yourself and trying out different examples). For creating the account, follow the instructions at this [Google Cloud Guide](https://blog.openbridge.com/the-missing-guide-to-setting-up-google-cloud-service-accounts-for-google-bigquery-6301e509b232). Note that we are using a FREE trial, and Google requires the input of a credit card number solely to ensure you are not a robot (or at least that's what they say!). You will not be charged unless you upgrade to a paid account. This is a 12-month free trial where you have \$300, 1 TB of queries, and 10 GB of storage to experiment with the cloud platform. No charges will be made unless you specifically ask for them. -->
 
-We will use data from a great set of sample tables that BigQuery provides to its users. First we will look at the `shakespeare` table that contains a word index of the different works of Shakespeare. Thus, given the data in the table, let's use `bigrquery`, `DBI`, and `dplyr` to determine the ten words that appear most often in Shakespeare's works. 
+<!-- We will use data from a great set of sample tables that BigQuery provides to its users. First we will look at the `shakespeare` table that contains a word index of the different works of Shakespeare. Thus, given the data in the table, let's use `bigrquery`, `DBI`, and `dplyr` to determine the ten words that appear most often in Shakespeare's works.  -->
 
-```{r, echo = FALSE}
-path = "/home/jeffdoser/.httr-oauth"
-options(httr_oauth_cache = path)
-```
+<!-- ```{r, echo = FALSE} -->
+<!-- path = "/home/jeffdoser/.httr-oauth" -->
+<!-- options(httr_oauth_cache = path) -->
+<!-- ``` -->
 
-```{r, tidy = FALSE}
-library(bigrquery)
-library(DBI)
-library(dplyr)
-billing <- "for875-databases"
-con <- dbConnect(
-  bigquery(),
-  project = "publicdata",
-  dataset = "samples",
-  billing = billing
-)
-shakespeare <- con %>%
-  tbl("shakespeare")
-shakespeare %>% 
-  group_by(word) %>% 
-  summarise(n = sum(word_count, na.rm = TRUE)) %>% 
-  arrange(desc(n)) %>% 
-  head(10)
-```
+<!-- ```{r, tidy = FALSE} -->
+<!-- library(bigrquery) -->
+<!-- library(DBI) -->
+<!-- library(dplyr) -->
+<!-- billing <- "for875-databases" -->
+<!-- con <- dbConnect( -->
+<!--   bigquery(), -->
+<!--   project = "publicdata", -->
+<!--   dataset = "samples", -->
+<!--   billing = billing -->
+<!-- ) -->
+<!-- shakespeare <- con %>% -->
+<!--   tbl("shakespeare") -->
+<!-- shakespeare %>%  -->
+<!--   group_by(word) %>%  -->
+<!--   summarise(n = sum(word_count, na.rm = TRUE)) %>%  -->
+<!--   arrange(desc(n)) %>%  -->
+<!--   head(10) -->
+<!-- ``` -->
 
-First we load the neceessary packages. We then provide the name of our project to the `billing` variable. In order to connect to this yourself, use your project ID here that should be visible in the Google Cloud Platform. The `con` variable establishes the connection to the database and the data that we want to look at. Notice the difference in connecting to the Google BigQuery database, which is stored remotely on Google's servers, as compared to the previous example when connecting to a SQLite database stored on your computer's hard drive. This example is much more realistic of the connections you would make when accessing external databases.  The `bigquery()` statement tells DBI we will be working with a database from Google BigQuery. The project and dataset options tell DBI what database to look for inside of the Google BigQuery framework. We then supply the name of our project to the `billing` option to tell BigQuery what account to "bill" (but of course you will not actually be charged anything).
+<!-- First we load the neceessary packages. We then provide the name of our project to the `billing` variable. In order to connect to this yourself, use your project ID here that should be visible in the Google Cloud Platform. The `con` variable establishes the connection to the database and the data that we want to look at. Notice the difference in connecting to the Google BigQuery database, which is stored remotely on Google's servers, as compared to the previous example when connecting to a SQLite database stored on your computer's hard drive. This example is much more realistic of the connections you would make when accessing external databases.  The `bigquery()` statement tells DBI we will be working with a database from Google BigQuery. The project and dataset options tell DBI what database to look for inside of the Google BigQuery framework. We then supply the name of our project to the `billing` option to tell BigQuery what account to "bill" (but of course you will not actually be charged anything). -->
 
-From here we can establish a connection to a specific table by using the `tbl()` function as shown above. We can then use `dplyr` like we did previously to group the data by words, determine the count of each word, and then order it in decreasing order to obtain the top ten words in Shakespeare's works. Notice that when you run this code you may obtain a message in red describing the total amount of bytes billed. This is how Google manages how much its users are querying and using its data. Right now, since we are just playing around, it is unlikely you would go above the free limit (1 TB of queries/ 10 GB of storage). 
+<!-- From here we can establish a connection to a specific table by using the `tbl()` function as shown above. We can then use `dplyr` like we did previously to group the data by words, determine the count of each word, and then order it in decreasing order to obtain the top ten words in Shakespeare's works. Notice that when you run this code you may obtain a message in red describing the total amount of bytes billed. This is how Google manages how much its users are querying and using its data. Right now, since we are just playing around, it is unlikely you would go above the free limit (1 TB of queries/ 10 GB of storage).  -->
 
-This code again displays the benefits of the "lazy evaluation" that R employs. The `con` variable and `shakespeare` variable do not store the database or the specific table in R itself, instead they serve as references to the database where the specific data they are referencing is contained. Only when the `dplyr` query is written and called using the `collect()` function is any data from the database actually brought into R. R waits till the last possible second (i.e. is lazy) to perform any computations. 
+<!-- This code again displays the benefits of the "lazy evaluation" that R employs. The `con` variable and `shakespeare` variable do not store the database or the specific table in R itself, instead they serve as references to the database where the specific data they are referencing is contained. Only when the `dplyr` query is written and called using the `collect()` function is any data from the database actually brought into R. R waits till the last possible second (i.e. is lazy) to perform any computations.  -->
 
-A second table in the `publicdata` project on Google BigQuery contains weather data from NOAA ranging from the years 1929 to 2010. Let's first make a connection to this table and explore its structure. 
+<!-- A second table in the `publicdata` project on Google BigQuery contains weather data from NOAA ranging from the years 1929 to 2010. Let's first make a connection to this table and explore its structure.  -->
 
-```{r, tidy = FALSE}
-weather <- con %>% 
-  tbl("gsod")
-dbListFields(con, "gsod")
-weather %>% 
-  dplyr::select(thunder, mean_wind_speed) %>% 
-  head(10)
-```
+<!-- ```{r, tidy = FALSE} -->
+<!-- weather <- con %>%  -->
+<!--   tbl("gsod") -->
+<!-- dbListFields(con, "gsod") -->
+<!-- weather %>%  -->
+<!--   dplyr::select(thunder, mean_wind_speed) %>%  -->
+<!--   head(10) -->
+<!-- ``` -->
 
-First we establish a connection to the weather table. We then use the `dbListFields()` function from the `DBI` package to display the fields in the table. We then view the first 10 records in the table. We see that there are 31 different variables on information for the weather on a given day from 1929 to 2010. Let's say we are interested in determining the total number of days where the `mean_temp > 60` and `mean_wind_speed > 10`.
+<!-- First we establish a connection to the weather table. We then use the `dbListFields()` function from the `DBI` package to display the fields in the table. We then view the first 10 records in the table. We see that there are 31 different variables on information for the weather on a given day from 1929 to 2010. Let's say we are interested in determining the total number of days where the `mean_temp > 60` and `mean_wind_speed > 10`. -->
 
-```{r, tidy = FALSE}
-weather %>% 
-  dplyr::filter(mean_temp > 60 & mean_wind_speed > 10) %>% 
-  summarize(count = n())
-```
+<!-- ```{r, tidy = FALSE} -->
+<!-- weather %>%  -->
+<!--   dplyr::filter(mean_temp > 60 & mean_wind_speed > 10) %>%  -->
+<!--   summarize(count = n()) -->
+<!-- ``` -->
 
-Further, suppose we are interested in determining how the average wind speed has changed from 1929 to 2010. We can use `dbplot` to plot the data. 
+<!-- Further, suppose we are interested in determining how the average wind speed has changed from 1929 to 2010. We can use `dbplot` to plot the data.  -->
 
-```{r, tidy = FALSE}
-weather %>% 
-  dbplot_line(year, average_wind_speed = mean(mean_wind_speed, na.rm = TRUE))
-```
+<!-- ```{r, tidy = FALSE} -->
+<!-- weather %>%  -->
+<!--   dbplot_line(year, average_wind_speed = mean(mean_wind_speed, na.rm = TRUE)) -->
+<!-- ``` -->
 
-Upon first glance at this plot, a naive student might think ``Wow! Wind speeds have decreased dramatically since the 1930s'', and just accept this as true since that is what the graph shows. But since we are all data analysts at heart (otherwise you wouldn't be taking this course!), we want to explore this further. We might ask why the wind was so high in the late 1920s and early 1930s? An average wind speed of above 12 miles per hour seems pretty high. Let's explore the entries for all years in the 1930s and 1920s. 
+<!-- Upon first glance at this plot, a naive student might think ``Wow! Wind speeds have decreased dramatically since the 1930s'', and just accept this as true since that is what the graph shows. But since we are all data analysts at heart (otherwise you wouldn't be taking this course!), we want to explore this further. We might ask why the wind was so high in the late 1920s and early 1930s? An average wind speed of above 12 miles per hour seems pretty high. Let's explore the entries for all years in the 1930s and 1920s.  -->
 
-```{r, tidy = FALSE}
-weather %>%
-  dplyr::select(year, mean_wind_speed) %>% 
-  dplyr::filter(year < 1940 & !is.na(mean_wind_speed)) %>% 
-  dbplot_histogram(mean_wind_speed)
-```
+<!-- ```{r, tidy = FALSE} -->
+<!-- weather %>% -->
+<!--   dplyr::select(year, mean_wind_speed) %>%  -->
+<!--   dplyr::filter(year < 1940 & !is.na(mean_wind_speed)) %>%  -->
+<!--   dbplot_histogram(mean_wind_speed) -->
+<!-- ``` -->
 
-Well that's interesting. Just from looking at the distribution of the average wind speeds for all years lower than 1940 it looks like most records have wind speeds lower than 10. We have to keep in mind that we may not have the same number of entries for each year. Let's see how many records there are with a mean wind speed for each year before 1940. 
+<!-- Well that's interesting. Just from looking at the distribution of the average wind speeds for all years lower than 1940 it looks like most records have wind speeds lower than 10. We have to keep in mind that we may not have the same number of entries for each year. Let's see how many records there are with a mean wind speed for each year before 1940.  -->
 
-```{r, tidy = FALSE}
-weather %>% 
-  dplyr::filter(year < 1940 & !is.na(mean_wind_speed)) %>% 
-  group_by(year) %>% 
-  summarize(count = n())
-```
+<!-- ```{r, tidy = FALSE} -->
+<!-- weather %>%  -->
+<!--   dplyr::filter(year < 1940 & !is.na(mean_wind_speed)) %>%  -->
+<!--   group_by(year) %>%  -->
+<!--   summarize(count = n()) -->
+<!-- ``` -->
 
-Interesting! We see that there are only 2037 records from 1929, while there are 65623 records from 1939. This could explain the pattern we saw in the previous histogram. Let's look at the histogram for 1929 only to help confirm this conjecture.
+<!-- Interesting! We see that there are only 2037 records from 1929, while there are 65623 records from 1939. This could explain the pattern we saw in the previous histogram. Let's look at the histogram for 1929 only to help confirm this conjecture. -->
 
-```{r, tidy = FALSE}
-weather %>%
-  dplyr::select(year, mean_wind_speed) %>% 
-  dplyr::filter(year == 1929 & !is.na(mean_wind_speed)) %>% 
-  dbplot_histogram(mean_wind_speed)
-```
+<!-- ```{r, tidy = FALSE} -->
+<!-- weather %>% -->
+<!--   dplyr::select(year, mean_wind_speed) %>%  -->
+<!--   dplyr::filter(year == 1929 & !is.na(mean_wind_speed)) %>%  -->
+<!--   dbplot_histogram(mean_wind_speed) -->
+<!-- ``` -->
 
-Just from looking at this graph, we can see that the `mean_wind_speed` is closer to 12, which is what we found in the original line plot as well. Was the wind in 1929 really that much stronger than it is now? Maybe. Or we could be experiencing something known as `sampling bias` in which the 2037 records from 1929 are not a valid random representation of all the wind speeds occurring in 1929. Determining whether sampling bias is causing the pattern we see requires further investigation, which we leave to you if you so desire.
+<!-- Just from looking at this graph, we can see that the `mean_wind_speed` is closer to 12, which is what we found in the original line plot as well. Was the wind in 1929 really that much stronger than it is now? Maybe. Or we could be experiencing something known as `sampling bias` in which the 2037 records from 1929 are not a valid random representation of all the wind speeds occurring in 1929. Determining whether sampling bias is causing the pattern we see requires further investigation, which we leave to you if you so desire. -->
 
 
 ## Changing Records in the Database

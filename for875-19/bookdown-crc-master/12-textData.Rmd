@@ -153,7 +153,7 @@ paste(c("one", "two", "three", "four", "five"),
       c("six", "seven", "eight", "nine", "ten"), collapse = " ")
 ```
 
-In the example above by default `paste` created a vector with five elements, each containing one input string from the first input vector and one from the second vector, pasted together.  When a non `NULL` argument was specified for `collapse`, the vector created had one element, with the pasted strings separated by that argument.^[There is a somewhat subtle difference among the examples. If all the arguments are length one vectors, then `paste` by default returns a length one vector. But if one or more of the arguments have length greater than one, the default behavior of paste is to return a vector of length greater than one. The `collapse}\` argument changes this behavior.]
+In the example above by default `paste` created a vector with five elements, each containing one input string from the first input vector and one from the second vector, pasted together.  When a non `NULL` argument was specified for `collapse`, the vector created had one element, with the pasted strings separated by that argument.^[There is a somewhat subtle difference among the examples. If all the arguments are length one vectors, then `paste` by default returns a length one vector. But if one or more of the arguments have length greater than one, the default behavior of paste is to return a vector of length greater than one. The `collapse` argument changes this behavior.]
 
 Also don't forget that R "recycles" values from vectors if two or more different length vectors are provided as input.
 
@@ -221,6 +221,7 @@ If we are interested in frequencies of words in *Moby Dick*, converting all the 
 ```{r}
 moby_dick <- tolower(moby_dick)
 ```
+
 
 ### `nchar` and `strsplit`
 
@@ -326,6 +327,18 @@ moby_dick2 <- unlist(strsplit(moby_dick, split = " ", fixed = TRUE))
 
 Then the second step of selecting the non-blank words would not have been necessary. But regular expressions will be essential going forward, so it was worthwhile using regular expressions even if they do not provide the most efficient method.)
 
+### Practice Exercise
+
+Use `strsplit()` and regular expressions to split the following strings into their respective words (i.e. write a regular expression that will match the `-` and `.` character). Your output should be a vector (not a list).
+
+```{r}
+strings <- c("Once-upon", "a.time", "there", "was-a", "man.named", "Bob")
+```
+
+```{r, echo = FALSE}
+unlist(strsplit(strings, split = '[-|.]'))
+```
+
 ### `nchar` Again
 
 Now that the vector `moby_dick` contains each word in the novel as a separate element, it is relatively easy to do some basic analyses. For example the `nchar` function can give us a count of the number of characters in each element of the vector, i.e., can give us the number of letters in each word in the novel.
@@ -344,6 +357,16 @@ ggplot(data = data.frame(nwords = moby_dick_nchar), aes(x = nwords)) +
 moby_dick_word_table <- table(moby_dick)
 moby_dick_word_table <- sort(moby_dick_word_table, decreasing = TRUE)
 moby_dick_word_table[1:50]
+```
+
+### Practice Exercise
+
+The goal of this exercise is to generate a wordcloud image of the 50 most frqeuent words in *Moby Dick* that we identifid above. To do this, we need the `wordcloud` package (you may also need to install the package `tm`). Look at the R documentation for the `wordcloud` function included in the `wordcloud` package and create a wordcloud image of the most popular 500 words in the novel. Here is what mine looks like
+
+```{r, echo = FALSE, message = FALSE}
+library(wordcloud)
+md.data.frame <- as.data.frame(moby_dick_word_table)
+wordcloud(md.data.frame$moby_dick, md.data.frame$Freq, max.words = 500, colors = rainbow(20), random.color = TRUE)
 ```
 
 ### `substr` and `strtrim`

@@ -348,9 +348,3 @@ For additional help, we find that the help pages for most `graphics` functions a
 ### Practice Exercise
 
 Go to the help page for the `par()` function (use `help(par)` or `?par()`). Look at the plethora of different arguments that you can use to specialize your plot just the way you like it. List 5 arguments that we didn't use in this chapter, describe what they do, then use them in a graph using the `iris` data set (you can use any of the variables in the data set and produce any type of graph you like). 
-
-## Homework
-
-**Exercise 6b** Learning objectives: practice using `graphics` functions; summarize variables using graphics.
-
-

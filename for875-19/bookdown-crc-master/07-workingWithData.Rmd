@@ -404,7 +404,7 @@ data.birds
 ```
 "RecordingInfo" that contains the site where data was collected, as well as the year, month, and date the data was recorded. The data are coded as follows: `site-year-month-day`. Write a line of code that will extract the desired data from the `data.birds` data frame into separate columns named `site`, `year`, `month` and `day`. 
 
-## Manipulating Data with `dplyr` #{dplyr}
+## Manipulating Data with `dplyr` {#dplyr}
 
 Much of the effort (a figure of 80% is sometimes suggested) in data analysis is spent cleaning the data and getting it ready for analysis. Having effective tools for this task can save substantial time and effort. The R package `dplyr` written by Hadley Wickham is designed, in Hadley's words, to be "a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges." Casting data analysis tasks in terms of "grammar" should be familiar from our work with the `ggplot2` package, which was also authored by Hadley. Functions provided by `dplyr` do in fact capture key data analysis actions (i.e., verbs). These functions include
 
@@ -420,18 +420,22 @@ This somewhat long section on `dplyr` adapts the nice introduction by Jenny Brya
 
 ### Improved Data Frames
 
-The `dplyr` package provides two functions that offer improvements on data frames. First, `data_frame()` is a trimmed down version of the `data.frame()` function that is somewhat more user friendly, and won't be discussed here. Second, `tbl_df()` creates a tibble^[Reminds me of [The Trouble with Tribbles](https://en.wikipedia.org/wiki/The_Trouble_with_Tribbles)]. A tibble has two advantages over a data frame. First, when printing, it only prints the first ten rows and the columns that fit on the page, as well as some additional information about the table's dimension, data type of variables, and non-printed columns. Second, recall that subsetting a data frame can sometimes return a vector rather than a data frame (if only one row or column is the result of the subset), a tibble does not have this behavior. Here is an example using the `religionWide` data frame.^[The text printed immediately after `library(dplyr)` means the `stats` and `base` packages, which are automatically loaded when you start R, have functions with the same name as functions in `dplyr`. So, for example, if you call the `filter()` or `lag()` functions, R will use `library(dplyr)`'s functions. Use the `::` operator to explicity identify which packages' function you want to use, e.g., if you want `stats`'s `lag()` then call `stats::lag()`.]
+The `dplyr` package provides a couple functions that offer improvements on data frames. First, `tibble` creates a tibble from a series of vectors^[Reminds me of [The Trouble with Tribbles](https://en.wikipedia.org/wiki/The_Trouble_with_Tribbles)]. A tibble has two advantages over a data frame. First, when printing, it only prints the first ten rows and the columns that fit on the page, as well as some additional information about the table's dimension, data type of variables, and non-printed columns. Second, recall that subsetting a data frame can sometimes return a vector rather than a data frame (if only one row or column is the result of the subset), a tibble does not have this behavior. Second, we can use the `as_tibble()` function to convert an existing data frame or list into a tibble. Here is an example using the `religionWide` data frame.^[The text printed immediately after `library(dplyr)` means the `stats` and `base` packages, which are automatically loaded when you start R, have functions with the same name as functions in `dplyr`. So, for example, if you call the `filter()` or `lag()` functions, R will use `library(dplyr)`'s functions. Use the `::` operator to explicity identify which packages' function you want to use, e.g., if you want `stats`'s `lag()` then call `stats::lag()`.]
 
 ```{r}
 library(dplyr)
 head(religionWide)
 religionWide[,1]
-religionWideTbl <- tbl_df(religionWide)
+religionWideTbl <- as_tibble(religionWide)
 head(religionWideTbl)
 religionWideTbl[,1]
 ```
 
-As seen above, note that once the data frame is reduced to one dimension by subsetting to one column, it is no longer a data frame and has been *simplified* to a vector. This might not seem like a big deal; however, it can be very frustrating and potentially break your code when you expect an object to behave like a data frame and it doesn't because it's now a vector. Alternatively, once we convert `religionWide` to a `tbl_df` via the `tbl_df()` function the object remains a data frame even when subsetting down to one dimension (there is no automatic simplification). Converting data frames using `tbl_df()` is not required for using `dplyr` but is convenient. Also, it is important to note that `tbl_df` is simply a wrapper around a data frame that provides some additional behaviors. The newly formed `tbl_df` object will still behave like a data frame (because it technically still is a data frame) but will have some added niceties (some of which are illustrated below).
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library(dplyr)
+```
+
+As seen above, note that once the data frame is reduced to one dimension by subsetting to one column, it is no longer a data frame and has been *simplified* to a vector. This might not seem like a big deal; however, it can be very frustrating and potentially break your code when you expect an object to behave like a data frame and it doesn't because it's now a vector. Alternatively, once we convert `religionWide` to a `tibble` via the `as_tibble()` function the object remains a data frame even when subsetting down to one dimension (there is no automatic simplification). Converting data frames using `as_tibble()` is not required for using `dplyr` but is convenient. Also, it is important to note that `tibble` is simply a wrapper around a data frame that provides some additional behaviors. The newly formed `tibble` object will still behave like a data frame (because it technically still is a data frame) but will have some added niceties (some of which are illustrated below).
 
 ### Filtering Data by Row
 
@@ -440,7 +444,7 @@ Recall the `gapminder` data. These data are available in tab-separated format in
 ```{r}
 u.gm <- "http://blue.for.msu.edu/FOR875/data/gapminder.tsv"
 gm <- read.delim(u.gm)
-gm <- tbl_df(gm)
+gm <- as_tibble(gm)
 str(gm)
 head(gm)
 ```
@@ -459,7 +463,7 @@ filter(gm, pop > 300000000)
 filter(gm, pop > 300000000 & year == 2007)
 ```
 
-Notice the full results are not printed. For example, when we asked for the data for Brazil and Mexico, only the first ten rows were printed. This is an effect of using the `tbl_df()` function. Of course if we wanted to analyze the results (as we will below) the full set of data would be available. 
+Notice the full results are not printed. For example, when we asked for the data for Brazil and Mexico, only the first ten rows were printed. This is an effect of using the `as_tibble()` function. Of course if we wanted to analyze the results (as we will below) the full set of data would be available. 
 
 ### Selecting variables by column
 
@@ -550,7 +554,7 @@ For analyzing data in R, the order shouldn't matter. But for presentation to hum
 
 It is worth your while to get comfortable with using pipes. Here is some hard-to-read code. Convert it into more easier to read code by using pipes. 
 
-```{r, eval = FAlSE}
+```{r, eval = FALSE}
 arrange(select(filter(gm, country == "Afghanistan"), c("year", "lifeExp")), desc = lifeExp)
 ```
 
@@ -646,7 +650,7 @@ desc(c(2,3,1,5,6,-4))
 desc(c("a", "c", "b", "w", "e"))
 ```
 
-We now use this to extract the maximum life expectancy. Recall that `|` represents "or". Also by default only the first few rows of a `tbl_df` object will be printed. To see all the rows we pipe the output to `print(n = 24)` to ask for all 24 rows to be printed.
+We now use this to extract the maximum life expectancy. Recall that `|` represents "or". Also by default only the first few rows of a `tibble` object will be printed. To see all the rows we pipe the output to `print(n = 24)` to ask for all 24 rows to be printed.
 
 ```{r, tidy = FALSE}
 gm %>% 

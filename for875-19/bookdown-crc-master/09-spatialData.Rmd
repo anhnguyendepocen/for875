@@ -31,7 +31,7 @@ This chapter will focus on a few R packages for manipulating and visualizing spa
 
 ## Motivating Data
 
-We motivate the topics introduced in this chapter using some forestry data from the [Penobscot Experimental Forest](https://www.nrs.fs.fed.us/ef/locations/me/penobscot}{Penobscot Experimental Forest) (PEF) located in Maine (which you've previously seen throughout the course). The PEF is a long-term experimental forest that is used to understand the effects of silviculture (i.e., science of tending trees) treatments on forest growth and composition. The PEF is divided into non-overlapping management units that receive different harvesting treatments. Within each management unit is a series of observation point locations (called forest inventory plots) where forest variables have been measured. Ultimately, we want to summarize the inventory plots measurements by management unit and map the results. 
+We motivate the topics introduced in this chapter using some forestry data from the [Penobscot Experimental Forest](https://www.nrs.fs.fed.us/ef/locations/me/penobscot}{Penobscot Experimental Forest) (PEF) located in Maine. The PEF is a long-term experimental forest that is used to understand the effects of silviculture (i.e., science of tending trees) treatments on forest growth and composition. The PEF is divided into non-overlapping management units that receive different harvesting treatments. Within each management unit is a series of observation point locations (called forest inventory plots) where forest variables have been measured. Ultimately, we want to summarize the inventory plots measurements by management unit and map the results. 
 
 ## Reading Spatial Data into R
 
@@ -105,7 +105,7 @@ df[,2]
 bbox(df)
 ```
 
-Here, the data frame `df` is promoted to a `SpatialPointsDataFrame` by indicating the column names that hold the longitude and latitude (i.e., `x` and `y` respectively) using the `coordinates` function. Here too, the `@data` is used to retrieve the data frame associated with the points. We also illustrate how variables can be accessed directly from the spatial object. The `bbox` function is used to return the bounding box that is defined by the spatial extent of the point coordinates. The other spatial objects noted in Table \@ref(tab:spatialObjs) can be created, and their data accessed, in a similar way^[This cheatsheet(www.maths.lancs.ac.uk/~rowlings/Teaching/UseR2012/cheatsheet.html) written by Barry Rowlingson is a useful reference www.maths.lancs.ac.uk/~rowlings/Teaching/UseR2012/cheatsheet.html]. 
+Here, the data frame `df` is promoted to a `SpatialPointsDataFrame` by indicating the column names that hold the longitude and latitude (i.e., `x` and `y` respectively) using the `coordinates` function. Here too, the `@data` is used to retrieve the data frame associated with the points. We also illustrate how variables can be accessed directly from the spatial object. The `bbox` function is used to return the bounding box that is defined by the spatial extent of the point coordinates. The other spatial objects noted in Table \@ref(tab:spatialObjs) can be created, and their data accessed, in a similar way^[This cheatsheet http://www.maths.lancs.ac.uk/~rowlings/Teaching/UseR2012/cheatsheet.html written by Barry Rowlingson is a useful reference http://www.maths.lancs.ac.uk/~rowlings/Teaching/UseR2012/cheatsheet.html]. 
 
 More than often we find ourselves reading existing spatial data files into R. The code below uses the `downloader` package to download all of the PEF data we'll use in this chapter. The data are compressed in a single zip file, which is then extracted into the working directory using the `unzip` function. A look into the PEF directory using `list.files` shows nine files^[The `list.files` function does not read data into R; it simply prints the contents of a directory.]. Those named `MU-bounds.*` comprise the shapefile that holds the PEF's management unit boundaries in the form of polygons. Like other spatial data file formats, shapefiles are made up of several different files (with different file extensions) that are linked together to form a spatial data object. The `plots.csv` file holds the spatial coordinates and other information about the PEF's forest inventory plots. The `roads.*` shapefile holds roads and trails in and around the PEF.
 
@@ -218,7 +218,6 @@ There is nothing inherently spatial about this data structure---it is simply a d
 
 ```{r, tidy=FALSE}
 coordinates(plots) <- ~easting+northing
-
 class(plots)
 ```
 
@@ -226,7 +225,6 @@ Although `plots` is now a `SpatialPointsDataFrame`, it does not know to which CR
 
 ```{r, tidy = FALSE}
 proj4string(plots)
-
 proj4string(plots) <- CRS("+proj=utm +zone=19 +datum=NAD83 +units=m 
                              +no_defs +ellps=GRS80 +towgs84=0,0,0")                   
 ```
@@ -341,7 +339,7 @@ As seen in the `leaflet()` call above, the various `add...` functions can take l
 
 ## Subsetting Spatial Data
 
-You can imagine that we might want to subset spatial objects to map specific points, lines, or polygons that meet some criteria, or perhaps extract values from polygons or raster surfaces at a set of points or geographic extent. These, and similar types, of operations are easy in R (as long as all spatial objects are in a common CRS). Recall from Chapter \@ref(data-structures) how handy it is to subset data structures, e.g., vectors and data frames, using the `[]` operator and logical vectors? Well it's just as easy to subset spatial objects, thanks to the authors of `sp`, `raster`, and other spatial data packages.
+You can imagine that we might want to subset spatial objects to map specific points, lines, or polygons that meet some criteria, or perhaps extract values from polygons or raster surfaces at a set of points or geographic extent. These, and similar types, of operations are easy in R (as long as all spatial objects are in a common CRS). Recall from Chapter \@ref(structures) how handy it is to subset data structures, e.g., vectors and data frames, using the `[]` operator and logical vectors? Well it's just as easy to subset spatial objects, thanks to the authors of `sp`, `raster`, and other spatial data packages.
 
 ### Fetching and Cropping Data using `raster`
 
@@ -383,7 +381,7 @@ The `crop` is in effect doing a spatial setting of the raster data. We'll return
 
 ### Logical, Index, and Name Subsetting
 
-As promised, we can subset spatial objects using the `[]` operator and a logical, index, or name vector. The key is that `sp` objects behave like data frames, see Section \@ref(data-frames). A logical or index vector to the left of the comma in `[,]` accesses points, lines, polygons, or pixels. Similarly, a logical, index, or name vector to the right of the comma accesses variables.
+As promised, we can subset spatial objects using the `[]` operator and a logical, index, or name vector. The key is that `sp` objects behave like data frames, see Section \@ref(dataFrames). A logical or index vector to the left of the comma in `[,]` accesses points, lines, polygons, or pixels. Similarly, a logical, index, or name vector to the right of the comma accesses variables.
 
 For example, say we want to map forest inventory plots with more than 10,000 stems per hectare, `stems_ha` (the `min()` was added below to double check that the subset worked correctly. 
 
@@ -518,3 +516,8 @@ ggmap(basemap) +
 ## Where to go from here
 
 This chapter just scratches the surface of R's spatial data manipulation and visualization capabilities. The basic ideas we presented here should allow you to take a deeper look into `sp`, `rgdal`, `rgeos`, `ggmap`, `leaflet`, and a myriad of other excellent user-contributed R spatial data packages. A good place to start is with Edzer Pebesma's excellent vignette on the use of the map overlay and spatial aggregation, available [here](https://cran.r-project.org/web/packages/sp/vignettes/over.pdf), as well as *Applied Spatial Data Analysis with R* by \cite{Bivand13}. 
+
+## Homework
+
+**Exercise Spatial Data** Learning objectives: practice loading and reprojecting spatial data; analyze spatial data; create leaflet maps to convey analysis results; interpret analysis results.
+
