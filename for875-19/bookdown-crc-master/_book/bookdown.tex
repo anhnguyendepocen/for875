@@ -167,7 +167,7 @@
 
 \title{R Programming for Data Sciences}
 \author{Andrew O. Finley, Vince Melfi, Jeffrey W. Doser}
-\date{2019-06-05}
+\date{2019-06-06}
 
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}[chapter]
@@ -9431,7 +9431,7 @@ function (file, header = TRUE, sep = ",", quote = "\"", dec = ".",
     fill = TRUE, comment.char = "", ...) 
 read.table(file = file, header = header, sep = sep, quote = quote, 
     dec = dec, fill = fill, comment.char = comment.char, ...)
-<bytecode: 0x55e4fb9a6368>
+<bytecode: 0x56193cbdec10>
 <environment: namespace:utils>
 \end{verbatim}
 
@@ -13281,10 +13281,10 @@ a valid integer, so ignored
 \end{verbatim}
 
 \begin{verbatim}
-[1] "The number of HEADS out of 10 tosses is 6"
-[1] "The number of HEADS out of 10 tosses is 4"
 [1] "The number of HEADS out of 10 tosses is 3"
-[1] "The number of HEADS out of 10 tosses is 4"
+[1] "The number of HEADS out of 10 tosses is 6"
+[1] "The number of HEADS out of 10 tosses is 5"
+[1] "The number of HEADS out of 10 tosses is 6"
 [1] "The number of HEADS out of 10 tosses is 6"
 \end{verbatim}
 
@@ -13297,11 +13297,11 @@ a valid integer, so ignored
 \end{Shaded}
 
 \begin{verbatim}
-[1] "The number of HEADS out of 25 tosses is 15"
+[1] "The number of HEADS out of 25 tosses is 19"
 [1] "The number of HEADS out of 25 tosses is 11"
-[1] "The number of HEADS out of 25 tosses is 8"
-[1] "The number of HEADS out of 25 tosses is 13"
-[1] "The number of HEADS out of 25 tosses is 13"
+[1] "The number of HEADS out of 25 tosses is 15"
+[1] "The number of HEADS out of 25 tosses is 14"
+[1] "The number of HEADS out of 25 tosses is 9"
 \end{verbatim}
 
 \includegraphics{bookdown_files/figure-latex/cointoss-2.pdf}
@@ -13846,6 +13846,12 @@ install the package \texttt{tm}). Look at the R documentation for the
 \texttt{wordcloud} function included in the \texttt{wordcloud} package
 and create a wordcloud image of the most popular 500 words in the novel.
 Here is what mine looks like
+
+\begin{verbatim}
+Warning in wordcloud(md.data.frame$moby_dick,
+md.data.frame$Freq, max.words = 500, : the could not be
+fit on page. It will not be plotted.
+\end{verbatim}
 
 \includegraphics{bookdown_files/figure-latex/unnamed-chunk-314-1.pdf}
 
@@ -14489,10 +14495,10 @@ to install the microbenchmark package.
 
 \begin{verbatim}
 Unit: nanoseconds
-    expr   min    lq   mean median     uq     max
-  sum(x)   986  1068   1465   1111   1386   18518
- sumC(x)  2320  2506  12825   2638   2930  980317
- sumR(x) 97415 98485 145716 103768 116487 3348692
+    expr    min     lq   mean median     uq     max
+  sum(x)    983   1010   1090   1028   1082    1903
+ sumC(x)   2298   2404  11053   2444   2542  836825
+ sumR(x) 101355 102024 134115 102614 103248 3059411
  neval
    100
    100
@@ -14595,7 +14601,7 @@ could create a function that reproduces \texttt{rowSums()}:
 \end{Shaded}
 
 \begin{verbatim}
- [1] 363 568 594 554 411 441 589 561 549 420
+ [1] 359 564 383 535 492 523 534 697 417 546
 \end{verbatim}
 
 \begin{Shaded}
@@ -14605,7 +14611,7 @@ could create a function that reproduces \texttt{rowSums()}:
 \end{Shaded}
 
 \begin{verbatim}
- [1] 363 568 594 554 411 441 589 561 549 420
+ [1] 359 564 383 535 492 523 534 697 417 546
 \end{verbatim}
 
 Let's look at the main differences:
@@ -14871,8 +14877,7 @@ gigabytes of data. We will use a sample database provided by SQLite
 called \texttt{chinook} that contains data on store employees,
 customers, and the music they purchased.
 
-First, go to the link
-(here){[}\url{http://www.sqlitetutorial.net/sqlite-sample-database/}{]}
+First, go to \url{http://www.sqlitetutorial.net/sqlite-sample-database/}
 and download the \texttt{chinook} database into your R working directory
 so you can follow along with this example yourself.
 
@@ -14978,7 +14983,7 @@ database
 \begin{Shaded}
 \begin{Highlighting}[]
 \OperatorTok{>}\StringTok{ }\NormalTok{employees }\OperatorTok{%>%}\StringTok{ }
-\OperatorTok{+}\StringTok{   }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(LastName, FirstName, Phone, Email) }\OperatorTok{%>%}\StringTok{ }
+\OperatorTok{+}\StringTok{   }\KeywordTok{select}\NormalTok{(LastName, FirstName, Phone, Email) }\OperatorTok{%>%}\StringTok{ }
 \OperatorTok{+}\StringTok{   }\KeywordTok{arrange}\NormalTok{(LastName)}
 \end{Highlighting}
 \end{Shaded}
@@ -15003,8 +15008,8 @@ database
 \begin{Shaded}
 \begin{Highlighting}[]
 \OperatorTok{>}\StringTok{ }\NormalTok{employees }\OperatorTok{%>%}\StringTok{ }
-\OperatorTok{+}\StringTok{   }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(Title }\OperatorTok{==}\StringTok{ "Sales Support Agent"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
-\OperatorTok{+}\StringTok{   }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(LastName, FirstName, Address) }\OperatorTok{%>%}\StringTok{ }
+\OperatorTok{+}\StringTok{   }\KeywordTok{filter}\NormalTok{(Title }\OperatorTok{==}\StringTok{ "Sales Support Agent"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\OperatorTok{+}\StringTok{   }\KeywordTok{select}\NormalTok{(LastName, FirstName, Address) }\OperatorTok{%>%}\StringTok{ }
 \OperatorTok{+}\StringTok{   }\KeywordTok{arrange}\NormalTok{(LastName)}
 \end{Highlighting}
 \end{Shaded}
@@ -15057,8 +15062,8 @@ which at first you might think will output a \texttt{tibble} or
 \begin{Shaded}
 \begin{Highlighting}[]
 \OperatorTok{>}\StringTok{ }\NormalTok{salesSupportAgents <-}\StringTok{ }\NormalTok{employees }\OperatorTok{%>%}\StringTok{ }
-\OperatorTok{+}\StringTok{   }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(Title }\OperatorTok{==}\StringTok{ "Sales Support Agent"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
-\OperatorTok{+}\StringTok{   }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(LastName, FirstName, Address) }\OperatorTok{%>%}\StringTok{ }
+\OperatorTok{+}\StringTok{   }\KeywordTok{filter}\NormalTok{(Title }\OperatorTok{==}\StringTok{ "Sales Support Agent"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\OperatorTok{+}\StringTok{   }\KeywordTok{select}\NormalTok{(LastName, FirstName, Address) }\OperatorTok{%>%}\StringTok{ }
 \OperatorTok{+}\StringTok{   }\KeywordTok{arrange}\NormalTok{(LastName) }
 \OperatorTok{>}\StringTok{ }\NormalTok{salesSupportAgents}
 \end{Highlighting}
@@ -15088,8 +15093,8 @@ while.
 \begin{Shaded}
 \begin{Highlighting}[]
 \OperatorTok{>}\StringTok{ }\NormalTok{salesSupportAgents <-}\StringTok{ }\NormalTok{employees }\OperatorTok{%>%}\StringTok{ }
-\OperatorTok{+}\StringTok{   }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(Title }\OperatorTok{==}\StringTok{ "Sales Support Agent"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
-\OperatorTok{+}\StringTok{   }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(LastName, FirstName, Address) }\OperatorTok{%>%}\StringTok{ }
+\OperatorTok{+}\StringTok{   }\KeywordTok{filter}\NormalTok{(Title }\OperatorTok{==}\StringTok{ "Sales Support Agent"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\OperatorTok{+}\StringTok{   }\KeywordTok{select}\NormalTok{(LastName, FirstName, Address) }\OperatorTok{%>%}\StringTok{ }
 \OperatorTok{+}\StringTok{   }\KeywordTok{arrange}\NormalTok{(LastName) }\OperatorTok{%>%}\StringTok{ }
 \OperatorTok{+}\StringTok{   }\KeywordTok{collect}\NormalTok{()}
 \OperatorTok{>}\StringTok{ }\NormalTok{salesSupportAgents}
@@ -15130,7 +15135,7 @@ are in the database. We can produce a barplot to show this.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-345-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-346-1.pdf}
 
 We first load the \texttt{dbplot} package. Next we produce the bar plot.
 Notice that we can continue to use the convenient
@@ -15143,6 +15148,22 @@ is loaded).
 \begin{Shaded}
 \begin{Highlighting}[]
 \OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(ggplot2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+
+Attaching package: 'ggplot2'
+\end{verbatim}
+
+\begin{verbatim}
+The following object is masked from 'package:dplyr':
+
+    vars
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \OperatorTok{>}\StringTok{ }\NormalTok{employees }\OperatorTok{%>%}\StringTok{ }
 \OperatorTok{+}\StringTok{   }\KeywordTok{dbplot_bar}\NormalTok{(Title) }\OperatorTok{+}\StringTok{ }
 \OperatorTok{+}\StringTok{   }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Employee Types"}\NormalTok{) }\OperatorTok{+}\StringTok{ }
@@ -15151,7 +15172,299 @@ is loaded).
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-346-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-347-1.pdf}
+
+\subsection{Using Google BigQuery}\label{using-google-bigquery}
+
+For a second example, we will utilize a database from Google BigQuery,
+Google's fully managed low cost analytics data warehouse. The package
+\texttt{bigrquery} provides an R interface to Google BigQuery. If not
+already installed, install the package with our usual method.
+
+We will use data from a great set of sample tables that BigQuery
+provides to its users. First we will look at the \texttt{shakespeare}
+table that contains a word index of the different works of Shakespeare.
+Thus, given the data in the table, let's use \texttt{bigrquery},
+\texttt{DBI}, and \texttt{dplyr} to determine the ten words that appear
+most often in Shakespeare's works.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(bigrquery)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(DBI)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(dplyr)}
+\OperatorTok{>}\StringTok{ }\NormalTok{billing <-}\StringTok{ "for875-databases"}
+\OperatorTok{>}\StringTok{ }\NormalTok{con <-}\StringTok{ }\KeywordTok{dbConnect}\NormalTok{(}
+\OperatorTok{+}\StringTok{   }\KeywordTok{bigquery}\NormalTok{(),}
+\OperatorTok{+}\StringTok{   }\DataTypeTok{project =} \StringTok{"publicdata"}\NormalTok{,}
+\OperatorTok{+}\StringTok{   }\DataTypeTok{dataset =} \StringTok{"samples"}\NormalTok{,}
+\OperatorTok{+}\StringTok{   }\DataTypeTok{billing =}\NormalTok{ billing}
+\OperatorTok{+}\StringTok{ }\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\NormalTok{shakespeare <-}\StringTok{ }\NormalTok{con }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{tbl}\NormalTok{(}\StringTok{"shakespeare"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Auto-refreshing stale OAuth token.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{shakespeare }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{group_by}\NormalTok{(word) }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{n =} \KeywordTok{sum}\NormalTok{(word_count, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)) }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(n)) }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{head}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# Source:     lazy query [?? x 2]
+# Database:   BigQueryConnection
+# Ordered by: desc(n)
+   word      n
+   <chr> <int>
+ 1 the   25568
+ 2 I     21028
+ 3 and   19649
+ 4 to    17361
+ 5 of    16438
+ 6 a     13409
+ 7 you   12527
+ 8 my    11291
+ 9 in    10589
+10 is     8735
+# ... with more rows
+\end{verbatim}
+
+First we load the neceessary packages. We then provide the name of our
+project to the \texttt{billing} variable. In this case, I created a
+project called \texttt{for875-databases} for this course. The
+\texttt{con} variable establishes the connection to the database and the
+data that we want to look at. Notice the difference in connecting to the
+Google BigQuery database, which is stored remotely on Google's servers,
+as compared to the previous example when connecting to a SQLite database
+stored on your computer's hard drive. This example is much more
+realistic of the connections you would make when accessing external
+databases. The \texttt{bigquery()} statement tells DBI we will be
+working with a database from Google BigQuery. The project and dataset
+options tell DBI what database to look for inside of the Google BigQuery
+framework. We then supply the name of our project to the
+\texttt{billing} option to tell BigQuery what account to ``bill'' (this
+only costs money if you surpass the monthly limit given by Google).
+
+If you run this code by yourself, you'll notice that R will ask you to
+sign in to a google account (your MSU account), and then after you allow
+the \texttt{bigrquery} package to connect to your account, you will be
+able to run all the code without a problem.
+
+From here we can establish a connection to a specific table by using the
+\texttt{tbl()} function as shown above. We can then use \texttt{dplyr}
+like we did previously to group the data by words, determine the count
+of each word, and then order it in decreasing order to obtain the top
+ten words in Shakespeare's works. Notice that when you run this code you
+may obtain a message in red describing the total amount of bytes billed.
+This is how Google manages how much its users are querying and using its
+data. We're just tinkering around here, so we won't surpass the monthly
+limit on free queries.
+
+This code again displays the benefits of the ``lazy evaluation'' that R
+employs. The \texttt{con} variable and \texttt{shakespeare} variable do
+not store the database or the specific table in R itself, instead they
+serve as references to the database where the specific data they are
+referencing is contained. Only when the \texttt{dplyr} query is written
+and called using the \texttt{collect()} function is any data from the
+database actually brought into R. R waits till the last possible second
+(i.e.~is lazy) to perform any computations.
+
+A second table in the \texttt{publicdata} project on Google BigQuery
+contains weather data from NOAA ranging from the years 1929 to 2010.
+Let's first make a connection to this table and explore its structure.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{weather <-}\StringTok{ }\NormalTok{con }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{tbl}\NormalTok{(}\StringTok{"gsod"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{dbListFields}\NormalTok{(con, }\StringTok{"gsod"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+ [1] "station_number"                    
+ [2] "wban_number"                       
+ [3] "year"                              
+ [4] "month"                             
+ [5] "day"                               
+ [6] "mean_temp"                         
+ [7] "num_mean_temp_samples"             
+ [8] "mean_dew_point"                    
+ [9] "num_mean_dew_point_samples"        
+[10] "mean_sealevel_pressure"            
+[11] "num_mean_sealevel_pressure_samples"
+[12] "mean_station_pressure"             
+[13] "num_mean_station_pressure_samples" 
+[14] "mean_visibility"                   
+[15] "num_mean_visibility_samples"       
+[16] "mean_wind_speed"                   
+[17] "num_mean_wind_speed_samples"       
+[18] "max_sustained_wind_speed"          
+[19] "max_gust_wind_speed"               
+[20] "max_temperature"                   
+[21] "max_temperature_explicit"          
+[22] "min_temperature"                   
+[23] "min_temperature_explicit"          
+[24] "total_precipitation"               
+[25] "snow_depth"                        
+[26] "fog"                               
+[27] "rain"                              
+[28] "snow"                              
+[29] "hail"                              
+[30] "thunder"                           
+[31] "tornado"                           
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{weather }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{select}\NormalTok{(thunder, mean_wind_speed) }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{head}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# Source:   lazy query [?? x 2]
+# Database: BigQueryConnection
+   thunder mean_wind_speed
+   <lgl>             <dbl>
+ 1 FALSE              7   
+ 2 FALSE             14.5 
+ 3 FALSE             28.7 
+ 4 FALSE             15.5 
+ 5 FALSE              0   
+ 6 FALSE             15   
+ 7 FALSE             15   
+ 8 FALSE             21   
+ 9 FALSE              8.90
+10 TRUE              13   
+# ... with more rows
+\end{verbatim}
+
+First we establish a connection to the weather table. We then use the
+\texttt{dbListFields()} function from the \texttt{DBI} package to
+display the fields in the table. We then view the first 10 records in
+the table. We see that there are 31 different variables on information
+for the weather on a given day from 1929 to 2010. Let's say we are
+interested in determining the total number of days where the
+\texttt{mean\_temp\ \textgreater{}\ 60} and
+\texttt{mean\_wind\_speed\ \textgreater{}\ 10}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{weather }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{filter}\NormalTok{(mean_temp }\OperatorTok{>}\StringTok{ }\DecValTok{60} \OperatorTok{&}\StringTok{ }\NormalTok{mean_wind_speed }\OperatorTok{>}\StringTok{ }\DecValTok{10}\NormalTok{) }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{count =} \KeywordTok{n}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# Source:   lazy query [?? x 1]
+# Database: BigQueryConnection
+    count
+    <int>
+1 6581146
+\end{verbatim}
+
+Further, suppose we are interested in determining how the average wind
+speed has changed from 1929 to 2010. We can use \texttt{dbplot} to plot
+the data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{weather }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{dbplot_line}\NormalTok{(year, }\DataTypeTok{average_wind_speed =} \KeywordTok{mean}\NormalTok{(mean_wind_speed, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-352-1.pdf}
+
+Upon first glance at this plot, a naive student might think ``Wow! Wind
+speeds have decreased dramatically since the 1930s'', and just accept
+this as true since that is what the graph shows. But since we are all
+data analysts at heart (otherwise you wouldn't be taking this course!),
+we want to explore this further. We might ask why the wind was so high
+in the late 1920s and early 1930s? An average wind speed of above 12
+miles per hour seems pretty high. Let's explore the entries for all
+years in the 1930s and 1920s.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{weather }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{select}\NormalTok{(year, mean_wind_speed) }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{filter}\NormalTok{(year }\OperatorTok{<}\StringTok{ }\DecValTok{1940} \OperatorTok{&}\StringTok{ }\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(mean_wind_speed)) }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{dbplot_histogram}\NormalTok{(mean_wind_speed)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-353-1.pdf}
+
+Well that's interesting. Just from looking at the distribution of the
+average wind speeds for all years lower than 1940 it looks like most
+records have wind speeds lower than 10. We have to keep in mind that we
+may not have the same number of entries for each year. Let's see how
+many records there are with a mean wind speed for each year before 1940.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{weather }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{filter}\NormalTok{(year }\OperatorTok{<}\StringTok{ }\DecValTok{1940} \OperatorTok{&}\StringTok{ }\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(mean_wind_speed)) }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{group_by}\NormalTok{(year) }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{count =} \KeywordTok{n}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+# Source:   lazy query [?? x 2]
+# Database: BigQueryConnection
+    year count
+   <int> <int>
+ 1  1936 50514
+ 2  1937 83310
+ 3  1931  9726
+ 4  1934 20334
+ 5  1935 26829
+ 6  1939 65623
+ 7  1929  2037
+ 8  1930  7101
+ 9  1933 17708
+10  1938 51770
+# ... with more rows
+\end{verbatim}
+
+Interesting! We see that there are only 2037 records from 1929, while
+there are 65623 records from 1939. This could explain the pattern we saw
+in the previous histogram. Let's look at the histogram for 1929 only to
+help confirm this conjecture.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{weather }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{select}\NormalTok{(year, mean_wind_speed) }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{filter}\NormalTok{(year }\OperatorTok{==}\StringTok{ }\DecValTok{1929} \OperatorTok{&}\StringTok{ }\OperatorTok{!}\KeywordTok{is.na}\NormalTok{(mean_wind_speed)) }\OperatorTok{%>%}
+\OperatorTok{+}\StringTok{   }\KeywordTok{dbplot_histogram}\NormalTok{(mean_wind_speed)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-355-1.pdf}
+
+Just from looking at this graph, we can see that the
+\texttt{mean\_wind\_speed} is closer to 12, which is what we found in
+the original line plot as well. Was the wind in 1929 really that much
+stronger than it is now? Maybe. Or we could be experiencing something
+known as \emph{sampling bias} in which the 2037 records from 1929 are
+not a valid random representation of all the wind speeds occurring in
+1929. Determining whether sampling bias is causing the pattern we see
+requires further investigation, which we leave to you if you so desire.
 
 \section{Changing Records in the
 Database}\label{changing-records-in-the-database}
@@ -15192,14 +15505,14 @@ If interested, the page
 provides a good overview of how to get the most out of these
 connections.
 
-\section{Other Options}\label{other-options}
+\section{Further Resources}\label{further-resources}
 
 There are numerous other methods besides \texttt{dplyr} to work with
 databases in R that involve using more standard SQL queries. If you come
 from a SQL background and want to use these other methods, then explore
-the \href{http://db.rstudio.com/}{RStudio Databases using R page}. But
-while doing this, keep in mind that we (and R Studio) both recommend
-using \texttt{dplyr} for querying an external database within R.
+the \href{http://db.rstudio.com/}{RStudio Databases using R page}. This
+website will be an essential resource for you if you get more involved
+with using databases within the R environment.
 
 \section{Homework}\label{homework-10}
 
@@ -15262,9 +15575,9 @@ discrete time signals. \emph{Continuous Time Signals}, as you might
 suspect, are continuous. They are defined at all instances of time over
 a given period. These types of signals are commonly referred to as
 \emph{analog} signals. An example of an analog signal would be a simple
-sine curve plotted in @ref(fig:analogsignal\}. Notice that the sine
-curve is defined for every value on the interval from 0 to 2\(\pi\).
-This is an analog signal.
+sine curve plotted in \ref{fig:analogsignal}. Notice that the sine curve
+is defined for every value on the interval from 0 to 2\(\pi\). This is
+an analog signal.
 
 \begin{figure}
 \centering
@@ -15331,8 +15644,8 @@ topics to DSP:
   of signal processing is understanding how noise is affecting your data
   and how you can efficiently remove or manage it.
 \item
-  \textbf{Filters}: filters allow you to remove out specific portions of
-  a signal at once, or allow you to remove noise from certain signals.
+  \textbf{Filters}: allow you to remove out specific portions of a
+  signal at once, or allow you to remove noise from certain signals.
 \end{enumerate}
 
 We will first briefly discuss working with noise and filters in R, and
@@ -15384,10 +15697,11 @@ influence the signal. We will graph these as digital signals.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(dplyr)}
 \OperatorTok{>}\StringTok{ }\NormalTok{x <-}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{2} \OperatorTok{*}\StringTok{ }\NormalTok{pi, .}\DecValTok{1}\NormalTok{)}
 \OperatorTok{>}\StringTok{ }\NormalTok{standard <-}\StringTok{ }\KeywordTok{sin}\NormalTok{(x)}
 \OperatorTok{>}\StringTok{ }\NormalTok{altered <-}\StringTok{ }\DecValTok{2}\OperatorTok{*}\KeywordTok{sin}\NormalTok{(}\DecValTok{3} \OperatorTok{*}\StringTok{ }\NormalTok{(x }\OperatorTok{-}\StringTok{ }\DecValTok{1}\NormalTok{)) }\OperatorTok{+}\StringTok{ }\DecValTok{4}
-\OperatorTok{>}\StringTok{ }\NormalTok{graphData <-}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{data_frame}\NormalTok{(x, standard, altered)}
+\OperatorTok{>}\StringTok{ }\NormalTok{graphData <-}\StringTok{ }\KeywordTok{tibble}\NormalTok{(x, standard, altered)}
 \OperatorTok{>}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ graphData, }\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x)) }\OperatorTok{+}\StringTok{ }
 \OperatorTok{+}\StringTok{   }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ standard, }\DataTypeTok{color =} \StringTok{"sin(x)"}\NormalTok{)) }\OperatorTok{+}\StringTok{ }
 \OperatorTok{+}\StringTok{   }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ altered, }\DataTypeTok{color =} \StringTok{"2*sin(3 * (x - 1)) + 4"}\NormalTok{)) }\OperatorTok{+}\StringTok{ }
@@ -15397,7 +15711,7 @@ influence the signal. We will graph these as digital signals.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-347-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-356-1.pdf}
 
 Now that we understand the fundamentals of sinusoids, let's see how we
 can work with noise and filters on sinusoids using R.
@@ -15427,7 +15741,7 @@ For a first example, consider the sinusoid generated below.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-348-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-357-1.pdf}
 
 This is a simple sinusoid that has an amplitude of 1 and a frequency of
 1. It is not likely that when obtaining a real-world signal you would
@@ -15442,7 +15756,7 @@ some noise to it.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-349-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-358-1.pdf}
 
 We add noise to the function by adding a random value
 (\texttt{0.25*rnorm(length(t)}) to each value in the signal. This is
@@ -15474,7 +15788,7 @@ recovered signal.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-350-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-359-1.pdf}
 
 You can see that the recovered signal is not perfect, as there is still
 some noise in the signal, and the timing of the peaks in the signal is
@@ -15502,7 +15816,7 @@ sample signal. Let's start with a noisy signal
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-351-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-360-1.pdf}
 
 Again, you can easily recognize the pattern is sinusoidal, but there is
 noise in the signal that you want to extract. Perhaps you are interested
@@ -15529,24 +15843,23 @@ this we can again use the Butterworth filter.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-352-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-361-1.pdf}
 
 \section{Fourier Transforms and
 Spectrograms}\label{fourier-transforms-and-spectrograms}
 
-When working with sound (or any type of signal) you often have to
-consider whether or not you want to be working in the \emph{time domain}
-or the \emph{frequency domain}. These two different domains can provide
-valuable information about a signal. The most popular way to explore
-signals in the frequency domain is to use Fourier Transforms. A
-\emph{Fourier Transform} is a reversible mathematical transform
-developed by Joseph Fourier in the early 1800s. The transform breaks
-apart a time series into a sum of finite series of sine or cosine
-functions. This was a huge break through of it's time, as Fourier argues
-that any signal can be broken down into a series of sine and cosine
-curves. This was a fantastic development and is still one of the most
-widely used tools in digital signal processing, which tells you how
-useful it truly is (and how brilliant Fourier was).
+When working with signals you often have to consider whether or not you
+need to work in the \emph{time domain} or the \emph{frequency domain}.
+These two different domains can provide valuable information about a
+signal. The most popular way to explore signals in the frequency domain
+is to use Fourier Transforms. A \emph{Fourier Transform} is a reversible
+mathematical transform developed by Joseph Fourier in the early 1800s.
+The transform breaks apart a time series into a sum of finite series of
+sine or cosine functions. This was a huge break through of it's time, as
+Fourier argues that any signal can be broken down into a series of sine
+and cosine curves. This was a fantastic development and is still one of
+the most widely used tools in digital signal processing, which tells you
+how useful it truly is (and how brilliant Fourier was).
 
 The Discrete Fourier Transform (DFT) is a specific form of the Fourier
 Transform applied to a time wave. The DFT allows you to switch from
@@ -15609,7 +15922,7 @@ the R environment.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics[width=5cm]{bookdown_files/figure-latex/unnamed-chunk-353-1}
+\includegraphics[width=1\linewidth]{bookdown_files/figure-latex/unnamed-chunk-362-1}
 
 Let's explore more of the parameters for this function to get a better
 understanding of how it is working. Type in \texttt{?spectro} in the R
@@ -15630,7 +15943,7 @@ produced.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-354-1.pdf}
+\includegraphics[width=1\linewidth]{bookdown_files/figure-latex/unnamed-chunk-363-1}
 
 You can immediately see that there are some slight differences between
 the spectrograms. The first spectrogram appears to be more precise than
@@ -15701,7 +16014,7 @@ field of bioacoustics, xeno-canto. \texttt{warbleR} allows you to easily
 query the database and work with the sounds maintained in their library.
 We are interested in the sounds of Cedar Waxwings, which just so happen
 to be my favorite species of bird. They are small, beautiful, majestic
-birds that are fairly commonly in rural and suburban areas (Figure
+birds that are fairly common in rural and suburban areas (Figure
 \ref{fig:waxwing}). They also have a very large geographical region,
 spanning across all three countries in North America (no wall can stop
 Cedar Waxwings from crossing the border).
@@ -15711,7 +16024,7 @@ the recordings of Cedar Waxwings (\emph{Bombycilla cedrorum}) without
 downloading them.
 
 \begin{figure}
-\includegraphics[width=16.67in]{figures/cedarWaxwing} \caption{Two cedar waxwings, possibly pondering whether or not Ross and Rachel will ever get back together (oh wait no that's me as I write this chapter between binge watching Friends)}\label{fig:waxwing}
+\includegraphics[width=1\linewidth]{figures/cedarWaxwing} \caption{Two cedar waxwings, possibly pondering whether or not Ross and Rachel will ever get back together (oh wait no that's me as I write this chapter between binge watching Friends)}\label{fig:waxwing}
 \end{figure}
 
 \begin{Shaded}
@@ -15821,23 +16134,17 @@ of the messiness of real-world data. Users from around the world input
 their data into this website, and this results in many different ways of
 describing the vocalizations produced by the birds. You can see the
 users used many different ways to describe the calls of cedar waxwings.
-There are \texttt{table(cedarWax\$Vocalization\_type){[}"call"{]}}
-recordings labeled as ``call'' so we will just focus on these
-recordings, but keep in mind that in a more serious study, we may want
-to manipulate the labels and combine vocalizations that are actually of
-the same type.
+There are 63 recordings labeled as ``call'' so we will just focus on
+these recordings, but keep in mind that in a more serious study, we may
+want to manipulate the labels and combine vocalizations that are
+actually of the same type.
 
 Now that we have the recordings we want to work with, we download them
 and convert them to wav files. Since this is only an example, we will
 look specifically at six of the calls within the \texttt{cedarWax}
 recordings to minimize downloading and computation time.\footnote{Sound
   files are pretty large so working with these files using the warbleR
-  package can be time consuming.} \texttt{warbleR} and \texttt{seewave}
-are designed to work with wav files while the xeno-canto database stores
-its recordings as mp3 files. Luckily there is a very simple function
-\texttt{mp32wav} that converts all the mp3 files in the working
-directory to wav files. We then remove all the mp3 files from the
-current directory using the \texttt{system} function.
+  package can be time consuming.}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -15851,6 +16158,13 @@ current directory using the \texttt{system} function.
 Downloading files...
 double-checking downloaded files
 \end{verbatim}
+
+\texttt{warbleR} and \texttt{seewave} are designed to work with wav
+files while the xeno-canto database stores its recordings as mp3 files.
+Luckily there is a very simple function \texttt{mp32wav} that converts
+all the mp3 files in the working directory to wav files. We then remove
+all the mp3 files from the current directory using the \texttt{system}
+function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -15905,12 +16219,6 @@ specify exactly what type of signal you are looking for in your data. To
 help us figure out what parameters we want to use, let's first look at
 an example spectrogram of one of the recordings (Figure
 \ref{fig:spectrogram}).
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\OperatorTok{>}\StringTok{ }\NormalTok{knitr}\OperatorTok{::}\KeywordTok{include_graphics}\NormalTok{(}\StringTok{"figures/sampleSpectrogram.jpg"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
 
 \begin{figure}
 \includegraphics[width=18.89in]{figures/sampleSpectrogram} \caption{Example spectrogram of Cedar Waxwing calls}\label{fig:spectrogram}
@@ -16064,26 +16372,25 @@ on the recording ID.
 Joining, by = "Recording_ID"
 \end{verbatim}
 
-We will do this using a process called Principal Components Analysis.
-For now don't focus on the details of this procedure, and rather focus
-on the results.
+We will do this using a process called Principal Components Analysis, a
+statistical dimension reduction technique that can be used to find
+latent variables that explain large amounts of variation in a data set.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \OperatorTok{>}\StringTok{ }\CommentTok{# Remove the non-numeric variables and then run the pca}
-\ErrorTok{>}\StringTok{ }\NormalTok{pca <-}\StringTok{ }\KeywordTok{prcomp}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ finalData[, }\KeywordTok{sapply}\NormalTok{(finalData, is.numeric)], }
-\OperatorTok{+}\StringTok{   }\DataTypeTok{scale. =} \OtherTok{TRUE}\NormalTok{)}
+\ErrorTok{>}\StringTok{ }\NormalTok{pca <-}\StringTok{ }\KeywordTok{prcomp}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ finalData[, }\KeywordTok{sapply}\NormalTok{(finalData, is.numeric)], }\DataTypeTok{scale. =} \OtherTok{TRUE}\NormalTok{)}
 \OperatorTok{>}\StringTok{ }\NormalTok{score <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(pca[[}\DecValTok{5}\NormalTok{]])}
 \OperatorTok{>}\StringTok{ }\NormalTok{ID <-}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(finalData}\OperatorTok{$}\NormalTok{Recording_ID)}
-\OperatorTok{>}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ score, }\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(PC1, PC2)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{color =}\NormalTok{ finalData}\OperatorTok{$}\NormalTok{Recording_ID, }
-\OperatorTok{+}\StringTok{   }\DataTypeTok{shape =}\NormalTok{ finalData}\OperatorTok{$}\NormalTok{Country))}
+\OperatorTok{>}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ score, }\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(PC1, PC2)) }\OperatorTok{+}
+\OperatorTok{+}\StringTok{   }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{color =}\NormalTok{ finalData}\OperatorTok{$}\NormalTok{Recording_ID, }\DataTypeTok{shape =}\NormalTok{ finalData}\OperatorTok{$}\NormalTok{Country)) }
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-366-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-376-1.pdf}
 
-Well from the graph we see that two birds from the US form a group with
-a bird from Mexico, and a bird from the US forms a group with a bird
+From the graph, we see that two birds from the US form a group with a
+bird from Mexico, and a bird from the US forms a group with two birds
 from Canada. Depending on where exactly the birds from the US are
 located, this could potentially suggest some variation across
 geographical distance. We leave this to you to explore further if you so

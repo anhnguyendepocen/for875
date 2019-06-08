@@ -10,7 +10,7 @@ In this chapter we will give a brief introduction to some central concepts in DS
 
 First let's go over some basics of DSP before we delve into working with signals in R. *Digital Signal Processing* is the use of digital tools to perform different signal processing operations, such as the analysis, synthesis, and modification of signals. But what exactly constitutes a signal? A *signal* is anything that carries information. In other words, it is a quantity that varies with time, temperature, pressure, or any other independent variable. As described above, signals pervade our everyday life, and thus the study of their behavior, how they work, how we can manipulate them, and how we can extract information from them is extremely important. 
 
-There are two main types of signals: continuous time signals and discrete time signals. *Continuous Time Signals*, as you might suspect, are continuous. They are defined at all instances of time over a given period. These types of signals are commonly referred to as *analog* signals. An example of an analog signal would be a simple sine curve plotted in \@ref(fig:analogsignal}. Notice that the sine curve is defined for every value on the interval from 0 to 2$\pi$. This is an analog signal. 
+There are two main types of signals: continuous time signals and discrete time signals. *Continuous Time Signals*, as you might suspect, are continuous. They are defined at all instances of time over a given period. These types of signals are commonly referred to as *analog* signals. An example of an analog signal would be a simple sine curve plotted in \@ref(fig:analogsignal). Notice that the sine curve is defined for every value on the interval from 0 to 2$\pi$. This is an analog signal. 
 
 ```{r analogsignal, echo = FALSE, fig.width = 4, fig.height = 4, fig.cap = "Example of an analog signal: a simple sine curve"}
 x <- seq(0, 2 * pi, .05)
@@ -35,7 +35,7 @@ Now that we have a general understanding of what a signal is and how we can use 
 
 1. **Fourier Transforms**: signal processing involves looking at the frequency representation of signals for both insight and computations.
 2. **Noise**: defined as any signal that is not desired. A huge part of signal processing is understanding how noise is affecting your data and how you can efficiently remove or manage it.
-3. **Filters**: filters allow you to remove out specific portions of a signal at once, or allow you to remove noise from certain signals.
+3. **Filters**: allow you to remove out specific portions of a signal at once, or allow you to remove noise from certain signals.
 
 We will first briefly discuss working with noise and filters in R, and then we will work with Fourier Transforms in the context of audio data.
 
@@ -59,10 +59,11 @@ The translations that you see above from the standard sine wave (sin($\theta$)) 
 Next we draw a few plots to show graphically how all these parameters influence the signal. We will graph these as digital signals. 
 
 ```{r, tidy = FALSE}
+library(dplyr)
 x <- seq(0, 2 * pi, .1)
 standard <- sin(x)
 altered <- 2*sin(3 * (x - 1)) + 4
-graphData <- dplyr::data_frame(x, standard, altered)
+graphData <- tibble(x, standard, altered)
 ggplot(data = graphData, mapping = aes(x = x)) + 
   geom_point(mapping = aes(y = standard, color = "sin(x)")) + 
   geom_point(mapping = aes(y = altered, color = "2*sin(3 * (x - 1)) + 4")) + 
@@ -142,7 +143,7 @@ ggplot(signals, aes(t)) +
 
 ## Fourier Transforms and Spectrograms
 
-When working with sound (or any type of signal) you often have to consider whether or not you want to be working in the *time domain* or the *frequency domain*. These two different domains can provide valuable information about a signal. The most popular way to explore signals in the frequency domain is to use Fourier Transforms. A *Fourier Transform* is a reversible mathematical transform developed by Joseph Fourier in the early 1800s. The transform breaks apart a time series into a sum of finite series of sine or cosine functions. This was a huge break through of it's time, as Fourier argues that any signal can be broken down into a series of sine and cosine curves. This was a fantastic development and is still one of the most widely used tools in digital signal processing, which tells you how useful it truly is (and how brilliant Fourier was). 
+When working with signals you often have to consider whether or not you need to work in the *time domain* or the *frequency domain*. These two different domains can provide valuable information about a signal. The most popular way to explore signals in the frequency domain is to use Fourier Transforms. A *Fourier Transform* is a reversible mathematical transform developed by Joseph Fourier in the early 1800s. The transform breaks apart a time series into a sum of finite series of sine or cosine functions. This was a huge break through of it's time, as Fourier argues that any signal can be broken down into a series of sine and cosine curves. This was a fantastic development and is still one of the most widely used tools in digital signal processing, which tells you how useful it truly is (and how brilliant Fourier was). 
 
 The Discrete Fourier Transform (DFT) is a specific form of the Fourier Transform applied to a time wave. The DFT allows you to switch from working in the time domain to the frequency domain by using the amplitude and the frequency of the signal to build the frequency spectrum of the original time wave.
 
@@ -159,7 +160,7 @@ We can plot the results of an STFT in what is called a *spectrogram*. The specto
 
 Let's use a sample audio file provided by the `seewave` package and produce a spectrogram of it using the `spectro` function. R provides multiple functions like `spectro` that make the creation of spectrograms and Fourier Transforms extremely easy and logical, which is one of the many reasons to perform digital signal processing within the R environment. 
 
-```{r, out.width = "5cm"}
+```{r, out.width = "100%"}
 library(seewave)
 data(tico)
 spectro(tico)
@@ -167,7 +168,7 @@ spectro(tico)
 
 Let's explore more of the parameters for this function to get a better understanding of how it is working. Type in `?spectro` in the R console. The `spectro()` function contains a lot of different arguments that allow you to control how the spectrogram is created. The `f` argument allows you to specify the sampling rate of your sound object. The `wl` option allows you to control the window length that is used when the successive DFTs are produced (aka the STFT). You can choose which window you want to use with the `wn` option. You can also specify the amount of `ovlp` between two successive windows with the `ovlp` argument. Let's use some of these arguments and compare it to the standard spectrogram we previously produced. 
 
-```{r}
+```{r, out.width = '100%'}
 spectro(tico, f = 22050, wl = 1024, wn = "bartlett", ovlp = 5)
 ```
 
@@ -194,11 +195,11 @@ First off, create a new directory where you want to store the data and change th
 setwd("/home/jeffdoser/Dropbox/teaching/for875/for875-19/bookdown-crc-master/")
 ```
 
-We will extract sounds from a large and very common database in the field of bioacoustics, xeno-canto. `warbleR` allows you to easily query the database and work with the sounds maintained in their library. We are interested in the sounds of Cedar Waxwings, which just so happen to be my favorite species of bird. They are small, beautiful, majestic birds that are fairly commonly in rural and suburban areas (Figure \@ref(fig:waxwing)). They also have a very large geographical region, spanning across all three countries in North America (no wall can stop Cedar Waxwings from crossing the border). 
+We will extract sounds from a large and very common database in the field of bioacoustics, xeno-canto. `warbleR` allows you to easily query the database and work with the sounds maintained in their library. We are interested in the sounds of Cedar Waxwings, which just so happen to be my favorite species of bird. They are small, beautiful, majestic birds that are fairly common in rural and suburban areas (Figure \@ref(fig:waxwing)). They also have a very large geographical region, spanning across all three countries in North America (no wall can stop Cedar Waxwings from crossing the border). 
 
 The `warbleR` package allows us to first query the database for the recordings of Cedar Waxwings (*Bombycilla cedrorum*) without downloading them. 
 
-```{r waxwing, echo = FALSE, fig.cap = "Two cedar waxwings, possibly pondering whether or not Ross and Rachel will ever get back together (oh wait no that's me as I write this chapter between binge watching Friends)"}
+```{r waxwing, echo = FALSE, fig.cap = "Two cedar waxwings, possibly pondering whether or not Ross and Rachel will ever get back together (oh wait no that's me as I write this chapter between binge watching Friends)", out.width = '100%'}
 knitr::include_graphics("figures/cedarWaxwing.jpg")
 ```
 
@@ -214,7 +215,7 @@ We use the `quer_xc` function to query the database, and use the restriction of 
 
 Now we produce a map showing the locations of all of the recordings. The `xc_maps` function allows you to either save a map as an image to your hard drive, or you can simply load the image in the R environment. We will load the image in the R environment by setting the `img` argument to `FALSE`. 
 
-```{r, fig = TRUE}
+```{r}
 xc_maps(X = cedarWax, img = FALSE)
 ```
 
@@ -224,13 +225,18 @@ The recordings are mostly in the United States, but you can see there are record
 table(cedarWax$Vocalization_type)
 ```
 
-Look closely at the output from this function. This is a great example of the messiness of real-world data. Users from around the world input their data into this website, and this results in many different ways of describing the vocalizations produced by the birds. You can see the users used many different ways to describe the calls of cedar waxwings. There are `table(cedarWax$Vocalization_type)["call"]` recordings labeled as "call" so we will just focus on these recordings, but keep in mind that in a more serious study, we may want to manipulate the labels and combine vocalizations that are actually of the same type. 
+Look closely at the output from this function. This is a great example of the messiness of real-world data. Users from around the world input their data into this website, and this results in many different ways of describing the vocalizations produced by the birds. You can see the users used many different ways to describe the calls of cedar waxwings. There are `r table(cedarWax$Vocalization_type)["call"]` recordings labeled as "call" so we will just focus on these recordings, but keep in mind that in a more serious study, we may want to manipulate the labels and combine vocalizations that are actually of the same type. 
 
-Now that we have the recordings we want to work with, we download them and convert them to wav files. Since this is only an example, we will look specifically at six of the calls within the `cedarWax` recordings to minimize downloading and computation time.^[Sound files are pretty large so working with these files using the warbleR package can be time consuming.] `warbleR` and `seewave` are designed to work with wav files while the xeno-canto database stores its recordings as mp3 files. Luckily there is a very simple function `mp32wav` that converts all the mp3 files in the working directory to wav files. We then remove all the mp3 files from the current directory using the `system` function.
+Now that we have the recordings we want to work with, we download them and convert them to wav files. Since this is only an example, we will look specifically at six of the calls within the `cedarWax` recordings to minimize downloading and computation time.^[Sound files are pretty large so working with these files using the warbleR package can be time consuming.]
 
 ```{r} 
 newCedarWax <- subset(cedarWax, cedarWax$Recording_ID %in% c(313682, 313683, 313684, 321881, 329907, 361006))
 quer_xc(X = newCedarWax)
+```
+
+`warbleR` and `seewave` are designed to work with wav files while the xeno-canto database stores its recordings as mp3 files. Luckily there is a very simple function `mp32wav` that converts all the mp3 files in the working directory to wav files. We then remove all the mp3 files from the current directory using the `system` function.
+
+```{r}
 mp32wav()
 system("rm *.mp3")
 ```
@@ -250,7 +256,7 @@ Remember that our ultimate goal is to determine whether or not Cedar Waxwing cal
 
 `autodetec` has a TON of parameters that you can use to help specify exactly what type of signal you are looking for in your data. To help us figure out what parameters we want to use, let's first look at an example spectrogram of one of the recordings (Figure \@ref(fig:spectrogram)).
 
-```{r spectrogram, fig.cap = "Example spectrogram of Cedar Waxwing calls"}
+```{r spectrogram, fig.cap = "Example spectrogram of Cedar Waxwing calls", echo = FALSE}
 knitr::include_graphics("figures/sampleSpectrogram.jpg")
 ```
 
@@ -305,9 +311,9 @@ newCedarWax$Recording_ID <- as.character(newCedarWax$Recording_ID)
 finalData <- inner_join(params, newCedarWax)
 ```
 
-We will do this using a process called Principal Components Analysis. For now don't focus on the details of this procedure, and rather focus on the results.
+We will do this using a process called Principal Components Analysis, a statistical dimension reduction technique that can be used to find latent variables that explain large amounts of variation in a data set. 
 
-```{r}
+```{r, tidy = FALSE}
 # Remove the non-numeric variables and then run the pca
 pca <- prcomp(x = finalData[, sapply(finalData, is.numeric)], scale. = TRUE)
 score <- as.data.frame(pca[[5]])
@@ -316,7 +322,7 @@ ggplot(data = score, mapping = aes(PC1, PC2)) +
   geom_point(aes(color = finalData$Recording_ID, shape = finalData$Country)) 
 ```
 
-Well from the graph we see that two birds from the US form a group with a bird from Mexico, and a bird from the US forms a group with a bird from Canada. Depending on where exactly the birds from the US are located, this could potentially suggest some variation across geographical distance. We leave this to you to explore further if you so desire. But for now, we see that the `warbleR` package has some fantastic tools for manipulating and working with audio signals within the R environment. 
+From the graph, we see that two birds from the US form a group with a bird from Mexico, and a bird from the US forms a group with two birds from Canada. Depending on where exactly the birds from the US are located, this could potentially suggest some variation across geographical distance. We leave this to you to explore further if you so desire. But for now, we see that the `warbleR` package has some fantastic tools for manipulating and working with audio signals within the R environment. 
 
 ```{r, echo = FALSE}
 system("rm *.wav *.tiff *.jpeg")
