@@ -4,11 +4,11 @@ output: html_document
 ---
 
 ## Learning objectives
-  + practice with lists, data frames, and associated functions
-  + summarize variables held in lists and data frames
-  + work with R's linear regression `lm` function output
-  + review logical subsetting of vectors for partitioning and assigning of new values
-  + generate and visualize data from mathematical functions
+  + Practice with lists, data frames, and associated functions
+  + Summarize variables held in lists and data frames
+  + Work with R's linear regression `lm` function output
+  + Review logical subsetting of vectors for partitioning and assigning of new values
+  + Generate and visualize data from mathematical functions
   
 ## Overview
 Modify this R Markdown file by filling in the code needed to answer the questions.
@@ -28,7 +28,7 @@ knitr::opts_chunk$set(comment = NA, tidy = TRUE)
 
 ## Lists
 
-The `lm` function fits a linear model and returns a list containing elements such as the coefficients of the fitted model, the residual values, etc. Built in to R is a dataset with the fertility rate and several socioeconomic variables for 47 French-speaking provinces in Switzerland, from the late 1800s. Of interest is how the socioeconomic values are related to the fertility rate. First we make the data available, and take a quick look.
+The `lm` function fits a linear model and returns a list containing elements such as the coefficients of the fitted model, the residual values, etc. Built in to R is a dataset with the fertility rate and several socioeconomic variables for 47 French-speaking provinces in Switzerland from the late 1800s. Of interest is how the socioeconomic values are related to the fertility rate. First we make the data available, and take a quick look.
 
 ```{r}
 data(swiss)
